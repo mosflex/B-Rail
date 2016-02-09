@@ -12,9 +12,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import be.b_rail.fragments.BaseFragment;
+import be.b_rail.fragments.StationsFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private int 						mCurrentTitle;
+    private static final int 			CASE_STATIONS 		  = 0;
+
+    private DrawerLayout                drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +41,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -77,25 +86,56 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        drawer.closeDrawer(GravityCompat.START);
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        //Check to see which item was being clicked and perform appropriate action
+        switch (id){
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+            //Replacing the main content with ContentFragment Which is our Inbox View;
+            case R.id.nav_camera:
+                selectFragment(CASE_STATIONS);
+                return true;
+            case R.id.nav_gallery:
+              //  selectFragment();
+                return true;
+            case R.id.nav_slideshow:
+               // selectFragment();
+                return true;
+            case R.id.nav_manage:
+               // selectFragment();
+                return true;
+            case R.id.nav_share:
+               // startActivity( new Intent(MainActivity.this, SettingsActivity.class));
+                return true;
+            case R.id.nav_send:
+                //startActivity( new Intent(MainActivity.this, HelpActivity.class));
+                return true;
+            default:
+                Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();
+                return true;
+        }
+    }
+    private void selectFragment(int position) {
 
-        } else if (id == R.id.nav_slideshow) {
+        switch (position) {
 
-        } else if (id == R.id.nav_manage) {
+            case CASE_STATIONS:  openFragment(StationsFragment.newInstance());  break;
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            default: break;
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+    }
+    private void openFragment(BaseFragment baseFragment) {
+        if (baseFragment != null) {
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frame_container, baseFragment)
+                            //   .addToBackStack("contacts")
+                    .commitAllowingStateLoss();
+
+            if (baseFragment.getTitleResourceId() > 0)
+                mCurrentTitle = baseFragment.getTitleResourceId();
+        }
     }
 }
