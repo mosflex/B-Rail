@@ -2,6 +2,8 @@ package be.b_rail.fragments;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -12,13 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import be.b_rail.R;
+import be.b_rail.adapters.AdapterRecyclerStations;
 
 /**
  * Created by Jawad on 09-02-16.
  */
 public class StationsFragment extends BaseFragment implements SearchView.OnQueryTextListener, SearchView.OnCloseListener{
-
-
 
     private Snackbar                            snackBar;
     // The SearchView for doing filtering.
@@ -27,6 +28,10 @@ public class StationsFragment extends BaseFragment implements SearchView.OnQuery
     private String                              mCurFilter;
 
     private boolean 							list_visible 		= true;
+
+    private AdapterRecyclerStations             mAdapter;
+    private RecyclerView.LayoutManager 		 	mLayoutManager;
+    private RecyclerView 						mStationsRecyclerView;
 
     @Override
     public int getTitleResourceId() {
@@ -89,6 +94,15 @@ public class StationsFragment extends BaseFragment implements SearchView.OnQuery
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        mStationsRecyclerView	= (RecyclerView)getActivity().findViewById(R.id.stations_recyclerview);
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mStationsRecyclerView.setLayoutManager(mLayoutManager);
+
+        // specify an adapters
+        mAdapter = new AdapterRecyclerStations(getActivity());
+        mStationsRecyclerView.setAdapter(mAdapter);
     }
     /*****************************************************************
      * Search*********************************************************
