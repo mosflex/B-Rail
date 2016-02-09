@@ -20,10 +20,20 @@ import be.b_rail.fragments.StationsFragment;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private int 						mCurrentTitle;
-    private static final int 			CASE_STATIONS 		  = 0;
-
     private DrawerLayout                drawer;
+
+    private int 						mCurrentTitle;
+    private int 						mSelectedFragment;
+
+    private static final int 			CASE_STATIONS 		  = 0;
+    //Used in savedInstanceState
+    private static String               BUNDLE_SELECTEDFRAGMENT 		= "BDL_SELFRG";
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(BUNDLE_SELECTEDFRAGMENT, mSelectedFragment);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +59,18 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //-----------------------------------------------------------------
+
+        if (savedInstanceState != null) {
+            mSelectedFragment = savedInstanceState.getInt(BUNDLE_SELECTEDFRAGMENT);
+
+            if ( getSupportFragmentManager().findFragmentById(R.id.frame_container) == null)
+                selectFragment(mSelectedFragment);
+
+        }else {
+            selectFragment(CASE_STATIONS);
+        }
     }
 
     @Override
@@ -75,10 +97,6 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -131,7 +149,6 @@ public class MainActivity extends AppCompatActivity
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frame_container, baseFragment)
-                            //   .addToBackStack("contacts")
                     .commitAllowingStateLoss();
 
             if (baseFragment.getTitleResourceId() > 0)
