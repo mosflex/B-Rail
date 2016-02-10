@@ -176,7 +176,7 @@ public class StationsFragment extends BaseFragment implements SearchView.OnQuery
         private static final String TAG = "GetStationsTask";
         //private static final String SERVER_URL = "https://irail.be/stations/NMBS";
         private static final String SERVER_URL = "stationsfr.json";
-
+        private int indice = 1;
 
 
         @Override
@@ -231,13 +231,14 @@ public class StationsFragment extends BaseFragment implements SearchView.OnQuery
                     Station station = gson.fromJson(finalObject.toString(), Station.class);
 
                     station.setIdStation(finalObject.getString("id"));
-                    station.setName(finalObject.getString("name"));
+                    station.setName(finalObject.getString("name") + indice);
+                    station.setId(indice);
                     // adding the final object in the list
                     stationList.add(station);
-
+                    Log.i("TEST",station.getName());
                     publishProgress(station);
 
-
+                    indice++;
                 }
 
             } catch (MalformedURLException e) {
