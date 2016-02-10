@@ -1,31 +1,41 @@
 package be.b_rail.Models;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by Jawad on 09-02-16.
  */
 public class Station {
 
-    private long id;
-    private long idStation;
+    private long _id;
+    @SerializedName("id")
+    private String idStation;
+    @SerializedName("name")
     private String name;
 
 
     /**************************************************/
     public Station(){}
 
+    public Station(long _id,String idStation, String name  ){
+        this._id = _id;
+        this.idStation = idStation;
+        this.name = name;
+    }
+
     public long getId() {
-        return id;
+        return _id;
     }
 
     public void setId(long id) {
-        this.id = id;
+        this._id = _id;
     }
 
-    public long getIdStation() {
+    public String getIdStation() {
         return idStation;
     }
 
-    public void setIdStation(long idStation) {
+    public void setIdStation(String idStation) {
         this.idStation = idStation;
     }
 
