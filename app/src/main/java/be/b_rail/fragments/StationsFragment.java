@@ -142,7 +142,7 @@ public class StationsFragment extends BaseFragment implements SearchView.OnQuery
     }
     private void clearSearch(){
         try {
-           // mAdapter.getFilter().filter("");
+            mAdapter.getFilter().filter("");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -154,7 +154,29 @@ public class StationsFragment extends BaseFragment implements SearchView.OnQuery
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        return false;
+        // Called when the action bar search text has changed.  Update
+        // the search filter, and restart the loader to do a new query
+        // with this filter.
+        String newFilter = !TextUtils.isEmpty(newText) ? newText : null;
+        // Don't do anything if the filter hasn't actually changed.
+        // Prevents restarting the loader when restoring state.
+        if (mCurFilter == null && newFilter == null) {
+            return true;
+        }
+        if (mCurFilter != null && mCurFilter.equals(newFilter)) {
+            return true;
+        }
+        mCurFilter = newFilter;
+        //getLoaderManager().restartLoader(0, null, this);
+
+        try {
+            mAdapter.getFilter().filter(newText.toString());
+            //txtNbContacts.setText(Html.fromHtml("<font color=\"blue\"><b>"+mAdapter.getCount_filter() + "</b></font> " + getString(R.string.contactss)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return true;
     }
 
     @Override
@@ -176,8 +198,6 @@ public class StationsFragment extends BaseFragment implements SearchView.OnQuery
         private static final String TAG = "GetStationsTask";
         //private static final String SERVER_URL = "https://irail.be/stations/NMBS";
         private static final String SERVER_URL = "stationsfr.json";
-        private int indice = 1;
-
 
         @Override
         protected void onPreExecute() {
@@ -231,14 +251,11 @@ public class StationsFragment extends BaseFragment implements SearchView.OnQuery
                     Station station = gson.fromJson(finalObject.toString(), Station.class);
 
                     station.setIdStation(finalObject.getString("id"));
-                    station.setName(finalObject.getString("name") + indice);
-                    station.setId(indice);
+                    station.setName(finalObject.getString("name"));
                     // adding the final object in the list
                     stationList.add(station);
                     Log.i("TEST",station.getName());
                     publishProgress(station);
-
-                    indice++;
                 }
 
             } catch (MalformedURLException e) {
