@@ -22,9 +22,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import be.b_rail.Models.Station;
 import be.b_rail.R;
+import be.b_rail.adapters.StationsAdapter;
 
 /**
  * Created by Jawad on 11-02-16.
@@ -34,8 +36,10 @@ public class ScheduleFragment extends BaseFragment  {
     private AutoCompleteTextView    mDepartureStationAutoCompleteTextView;
     private AutoCompleteTextView    mDirectionStationAutoCompleteTextView;
 
-    private List<String>            responseList;
+    //private List<String>            responseList;
+    private List<Station>            responseStationList;
     private ArrayAdapter<String>    test_adapter;
+    private StationsAdapter         stationsAdapter;
 
     private GetStationsJSONTask		getStationsJSONTask	= null;
 
@@ -64,14 +68,18 @@ public class ScheduleFragment extends BaseFragment  {
         mDepartureStationAutoCompleteTextView = (AutoCompleteTextView)getActivity().findViewById(R.id.departure_autoCompleteTextView);
         mDirectionStationAutoCompleteTextView = (AutoCompleteTextView)getActivity().findViewById(R.id.direction_autoCompleteTextView);
 
-        responseList = new ArrayList<>();
+        //responseList = new ArrayList<>();
 
+        responseStationList = new ArrayList<Station>();
         // specify an adapters
-        test_adapter = new ArrayAdapter<>(getActivity(),R.layout.custom_list_station,R.id.txtNameStation, responseList);
+       // test_adapter = new ArrayAdapter<>(getActivity(),R.layout.custom_list_station,R.id.txtNameStation, responseList);
+        stationsAdapter = new StationsAdapter(getActivity(),R.layout.custom_list_station,R.id.txtNameStation, responseStationList);
 
+       /* mDepartureStationAutoCompleteTextView.setAdapter(test_adapter);
+        mDirectionStationAutoCompleteTextView.setAdapter(test_adapter);*/
 
-        mDepartureStationAutoCompleteTextView.setAdapter(test_adapter);
-        mDirectionStationAutoCompleteTextView.setAdapter(test_adapter);
+        mDepartureStationAutoCompleteTextView.setAdapter(stationsAdapter);
+        mDirectionStationAutoCompleteTextView.setAdapter(stationsAdapter);
 
         getStationsJSONTask = new GetStationsJSONTask();
         getStationsJSONTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -137,7 +145,7 @@ public class ScheduleFragment extends BaseFragment  {
                 JSONObject parentObject = new JSONObject(finalJson);
                 JSONArray parentArray = parentObject.getJSONArray("station");
 
-                List<Station> stationList = new ArrayList<>();
+
 
 
                 Gson gson = new Gson();
@@ -150,7 +158,7 @@ public class ScheduleFragment extends BaseFragment  {
                     station.setName(finalObject.getString("name"));
                     // adding the final object in the list
                     Log.i("TEST", station.getName());
-                    stationList.add(station);
+                    responseStationList.add(station);
 
                     publishProgress(station);
                 }
@@ -180,7 +188,7 @@ public class ScheduleFragment extends BaseFragment  {
         @Override
         protected void onProgressUpdate(Object... values) {
             Station station = (Station)values[0];
-            test_adapter.add(station.getName());
+            stationsAdapter.add(station);
             super.onProgressUpdate(values);
         }
         @Override
