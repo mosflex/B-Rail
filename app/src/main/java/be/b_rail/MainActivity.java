@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import be.b_rail.fragments.BaseFragment;
 import be.b_rail.fragments.ScheduleFragment;
-import be.b_rail.fragments.StationsFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -117,7 +116,7 @@ public class MainActivity extends AppCompatActivity
                 selectFragment(CASE_SCHEDULE);
                 return true;
             case R.id.nav_camera:
-                selectFragment(CASE_STATIONS);
+               // selectFragment(CASE_STATIONS);
                 return true;
             case R.id.nav_slideshow:
                // selectFragment();
@@ -140,7 +139,6 @@ public class MainActivity extends AppCompatActivity
 
         switch (position) {
 
-            case CASE_STATIONS:  openFragment(StationsFragment.newInstance());  break;
             case CASE_SCHEDULE:  openFragment(ScheduleFragment.newInstance());  break;
 
             default: break;

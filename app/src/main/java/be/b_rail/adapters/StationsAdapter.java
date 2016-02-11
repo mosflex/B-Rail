@@ -1,5 +1,6 @@
 package be.b_rail.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +21,8 @@ import be.b_rail.R;
 public class StationsAdapter extends ArrayAdapter<Station> {
 
     Context context;
-    int resource, textViewResourceId;
-    List<Station> items, tempItems, suggestions;
+    int resource, textViewResourceId, count_filter;
+    List<Station> items, suggestions;
 
 
     public StationsAdapter(Context context, int resource, int textViewResourceId, List<Station> items) {
@@ -29,13 +30,12 @@ public class StationsAdapter extends ArrayAdapter<Station> {
         this.context = context;
         this.resource = resource;
         this.textViewResourceId = textViewResourceId;
-        this.items = items;
-        tempItems = new ArrayList<>(items); // this makes the difference.
-        suggestions = new ArrayList<>();
+        this.items = new ArrayList<>(items); // this makes the difference.
+        this.suggestions = new ArrayList<>(items);
     }
 
     public void add(Station station){
-        tempItems.add(station);
+        items.add(station);
         notifyDataSetChanged();
     }
 
@@ -45,9 +45,9 @@ public class StationsAdapter extends ArrayAdapter<Station> {
         View view = convertView;
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.custom_list_station, parent, false);
+            view = inflater.inflate(R.layout.item_station, parent, false);
         }
-        Station station = items.get(position);
+        Station station = suggestions.get(position);
         if (station != null) {
             TextView lblName = (TextView) view.findViewById(R.id.txtNameStation);
             if (lblName != null)
@@ -59,12 +59,17 @@ public class StationsAdapter extends ArrayAdapter<Station> {
 
     @Override
     public int getCount() {
-        return suggestions.size();
+        return count_filter;
     }
 
     @Override
     public long getItemId(int position) {
-        return position;
+        return suggestions.get(position).get_Id();
+    }
+
+    @Override
+    public Station getItem(int position) {
+        return suggestions.get(position);
     }
 
     @Override
@@ -81,34 +86,40 @@ public class StationsAdapter extends ArrayAdapter<Station> {
             return str;
         }
 
+        @SuppressLint("DefaultLocale")
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            if (constraint != null) {
-                suggestions.clear();
-                for (Station station : tempItems) {
-                    if (station.getName().toLowerCase().contains(constraint.toString().toLowerCase())) {
-                        suggestions.add(station);
+            FilterResults results = new FilterResults();
+            constraint = constraint.toString().toLowerCase();
+
+            if(constraint != null && constraint.toString().length() > 0){
+                ArrayList<Station> filteredItems = new ArrayList<>();
+
+                for(int i = 0, l = items.size(); i < l; i++){
+                    Station itemStation = items.get(i);
+
+                    if(itemStation.getName().toLowerCase().contains(constraint)){
+                        filteredItems.add(itemStation);
                     }
                 }
-                FilterResults filterResults = new FilterResults();
-                filterResults.values = suggestions;
-                filterResults.count = suggestions.size();
-                return filterResults;
-            } else {
-                return new FilterResults();
-            }
-        }
+                results.count  = filteredItems.size();
+                results.values = filteredItems;
 
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            List<Station> filterList = (ArrayList<Station>) results.values;
-            if (results != null && results.count > 0) {
-                clear();
-                for (Station station : filterList) {
-                    add(station);
-                    notifyDataSetChanged();
+            }else{
+                synchronized(this)
+                {
+                    results.values = items;
+                    results.count  = items.size();
                 }
             }
+            return results;
+        }
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            count_filter = results.count;
+            suggestions = (ArrayList<Station>)results.values;
+            notifyDataSetChanged();
         }
     };
 }

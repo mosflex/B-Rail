@@ -7,10 +7,12 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Station {
 
+
     private long _id;
 
     @SerializedName("id")
-    private String idStation;
+    private String id;
+
     @SerializedName("name")
     private String name;
 
@@ -18,31 +20,26 @@ public class Station {
 
 
     /**************************************************/
-    public Station(){}
-
-    public Station(String idStation, String name){
-        this.idStation = idStation;
-        this.name = name;
-    }
 
     public Station(Station station){
-        this.idStation = station.getIdStation();
+        this._id = station.get_Id();
         this.name = station.getName();
         this.nameHtml = station.getNameHtml();
     }
 
-    public long getId() {
+    public long get_Id() {
         return _id;
     }
-    public void setId(long id) {
+    public void set_Id(long _id) {
         this._id = _id;
     }
 
-    public String getIdStation() {
-        return idStation;
+    public String getId() {
+        return id;
     }
-    public void setIdStation(String idStation) {
-        this.idStation = idStation;
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {

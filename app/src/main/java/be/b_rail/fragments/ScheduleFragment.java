@@ -6,8 +6,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -22,7 +26,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 import be.b_rail.Models.Station;
 import be.b_rail.R;
@@ -37,7 +40,7 @@ public class ScheduleFragment extends BaseFragment  {
     private AutoCompleteTextView    mDirectionStationAutoCompleteTextView;
 
     //private List<String>            responseList;
-    private List<Station>            responseStationList;
+    private List<Station>           responseStationList;
     private ArrayAdapter<String>    test_adapter;
     private StationsAdapter         stationsAdapter;
 
@@ -68,16 +71,17 @@ public class ScheduleFragment extends BaseFragment  {
         mDepartureStationAutoCompleteTextView = (AutoCompleteTextView)getActivity().findViewById(R.id.departure_autoCompleteTextView);
         mDirectionStationAutoCompleteTextView = (AutoCompleteTextView)getActivity().findViewById(R.id.direction_autoCompleteTextView);
 
-        //responseList = new ArrayList<>();
-
-        responseStationList = new ArrayList<Station>();
-        // specify an adapters
-       // test_adapter = new ArrayAdapter<>(getActivity(),R.layout.custom_list_station,R.id.txtNameStation, responseList);
-
-
-       /* mDepartureStationAutoCompleteTextView.setAdapter(test_adapter);
-        mDirectionStationAutoCompleteTextView.setAdapter(test_adapter);*/
-
+        responseStationList = new ArrayList<>();
+        mDirectionStationAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View arg1, int pos, long id) {
+                Toast.makeText(getActivity(), "Position clicked: " + pos, Toast.LENGTH_SHORT).show();
+                   // mDirectionStationAutoCompleteTextView.setText(stationsAdapter.getItem(pos).getName());
+                LinearLayout ly = (LinearLayout) arg1;
+                TextView tv = (TextView) ly.getChildAt(0);
+                mDirectionStationAutoCompleteTextView.setText(tv.getText().toString());
+            }
+        });
 
         getStationsJSONTask = new GetStationsJSONTask();
         getStationsJSONTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -102,7 +106,6 @@ public class ScheduleFragment extends BaseFragment  {
 
         @Override
         protected void onPreExecute() {
-
         }
 
         @Override
@@ -143,20 +146,17 @@ public class ScheduleFragment extends BaseFragment  {
                 JSONObject parentObject = new JSONObject(finalJson);
                 JSONArray parentArray = parentObject.getJSONArray("station");
 
-
-
-
                 Gson gson = new Gson();
                 for(int i=0; i < parentArray.length(); i++) {
 
                     JSONObject finalObject = parentArray.getJSONObject(i);
                     Station station = gson.fromJson(finalObject.toString(), Station.class);
 
-                    station.setIdStation(finalObject.getString("id"));
+                    station.setId(finalObject.getString("id"));
+                    station.set_Id(Long.parseLong(station.getId().substring(8)));
                     station.setName(finalObject.getString("name"));
-                    station.setId(i);
                     // adding the final object in the list
-                    Log.i("TEST", station.getName());
+                    Log.i("TEST", station.getName() + "ID :" +station.get_Id());
                     responseStationList.add(station);
 
                    // publishProgress(station);
@@ -186,15 +186,14 @@ public class ScheduleFragment extends BaseFragment  {
         }
         @Override
         protected void onProgressUpdate(Object... values) {
-            Station station = (Station)values[0];
-            stationsAdapter.add(station);
+           // Station station = (Station)values[0];
+            //stationsAdapter.add(station);
             super.onProgressUpdate(values);
         }
         @Override
         protected void onPostExecute(Void params){
 
-
-            stationsAdapter = new StationsAdapter(getActivity(),R.layout.custom_list_station,R.id.txtNameStation, responseStationList);
+            stationsAdapter = new StationsAdapter(getActivity(),R.layout.item_station,R.id.txtNameStation, responseStationList);
             mDepartureStationAutoCompleteTextView.setAdapter(stationsAdapter);
             mDirectionStationAutoCompleteTextView.setAdapter(stationsAdapter);
 
