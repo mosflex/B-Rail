@@ -154,6 +154,7 @@ public class ScheduleFragment extends BaseFragment  {
 
                     station.setIdStation(finalObject.getString("id"));
                     station.setName(finalObject.getString("name"));
+                    station.setId(i);
                     // adding the final object in the list
                     Log.i("TEST", station.getName());
                     responseStationList.add(station);

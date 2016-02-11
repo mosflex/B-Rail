@@ -56,6 +56,17 @@ public class StationsAdapter extends ArrayAdapter<Station> {
         return view;
     }
 
+
+    @Override
+    public int getCount() {
+        return suggestions.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
     @Override
     public Filter getFilter() {
         return nameFilter;
