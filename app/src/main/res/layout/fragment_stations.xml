@@ -3,6 +3,25 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <AutoCompleteTextView
+        android:id="@+id/departure_autoCompleteTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="65dp"
+        android:ems="10" />
+
+    <AutoCompleteTextView
+        android:id="@+id/direction_autoCompleteTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="65dp"
+        android:ems="10" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/stations_recyclerview"
         android:layout_width="match_parent"

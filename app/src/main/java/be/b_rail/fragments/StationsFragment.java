@@ -14,6 +14,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 
 import com.google.gson.Gson;
 
@@ -30,6 +32,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import be.b_rail.Models.Station;
 import be.b_rail.R;
@@ -49,11 +52,17 @@ public class StationsFragment extends BaseFragment implements SearchView.OnQuery
     private boolean 							list_visible 		= true;
 
     private AdapterRecyclerStations             mAdapter;
+    private ArrayAdapter<String>                test_adapter;
     private RecyclerView.LayoutManager 		 	mLayoutManager;
     private RecyclerView 						mStationsRecyclerView;
 
 
     private GetStationsJSONTask					getStationsJSONTask	= null;
+
+    private AutoCompleteTextView mDepartureStationAutoCompleteTextView;
+    private AutoCompleteTextView mDirectionStationAutoCompleteTextView;
+
+    List<String> responseList;
 
     @Override
     public int getTitleResourceId() {
@@ -110,6 +119,7 @@ public class StationsFragment extends BaseFragment implements SearchView.OnQuery
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+
         return inflater.inflate(R.layout.fragment_stations, container, false);
     }
 
@@ -117,17 +127,28 @@ public class StationsFragment extends BaseFragment implements SearchView.OnQuery
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mStationsRecyclerView	= (RecyclerView)getActivity().findViewById(R.id.stations_recyclerview);
+        //mStationsRecyclerView	= (RecyclerView)getActivity().findViewById(R.id.stations_recyclerview);
+        mDepartureStationAutoCompleteTextView = (AutoCompleteTextView)getActivity().findViewById(R.id.departure_autoCompleteTextView);
+        mDirectionStationAutoCompleteTextView = (AutoCompleteTextView)getActivity().findViewById(R.id.direction_autoCompleteTextView);
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(getActivity());
-        mStationsRecyclerView.setLayoutManager(mLayoutManager);
+//        mStationsRecyclerView.setLayoutManager(mLayoutManager);
+
 
         // specify an adapters
-        mAdapter = new AdapterRecyclerStations(getActivity());
-        mStationsRecyclerView.setAdapter(mAdapter);
+        test_adapter = new ArrayAdapter<String>(getActivity(),R.layout.item_station_layout,responseList);
+
+        //mAdapter = new AdapterRecyclerStations(getActivity());
+
+        mDepartureStationAutoCompleteTextView.setAdapter(test_adapter);
+        mDirectionStationAutoCompleteTextView.setAdapter(test_adapter);
+       // mStationsRecyclerView.setAdapter(mAdapter);
+
 
         getStationsJSONTask = new GetStationsJSONTask();
         getStationsJSONTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+
     }
     /*****************************************************************
      * Search*********************************************************
@@ -185,7 +206,7 @@ public class StationsFragment extends BaseFragment implements SearchView.OnQuery
     }
     @Override
     public void onDestroy() {
-        try{
+       try{
             if(getStationsJSONTask != null)getStationsJSONTask.cancel(true);
         }catch(IllegalStateException e) {
             e.printStackTrace();
@@ -201,6 +222,7 @@ public class StationsFragment extends BaseFragment implements SearchView.OnQuery
 
         @Override
         protected void onPreExecute() {
+            responseList = new ArrayList<String>();
         }
 
         @Override
@@ -216,8 +238,8 @@ public class StationsFragment extends BaseFragment implements SearchView.OnQuery
                 reader = new BufferedReader(new InputStreamReader(getActivity().getAssets().open(SERVER_URL)));
 
 
-                /*
-                connection.setRequestMethod("POST");
+
+             /* connection.setRequestMethod("POST");
                 connection.setDoOutput(true);
                 connection.setDoInput(true);
                 connection.setUseCaches(false);
@@ -253,8 +275,9 @@ public class StationsFragment extends BaseFragment implements SearchView.OnQuery
                     station.setIdStation(finalObject.getString("id"));
                     station.setName(finalObject.getString("name"));
                     // adding the final object in the list
-                    stationList.add(station);
                     Log.i("TEST",station.getName());
+                    stationList.add(station);
+
                     publishProgress(station);
                 }
 
@@ -283,7 +306,7 @@ public class StationsFragment extends BaseFragment implements SearchView.OnQuery
         @Override
         protected void onProgressUpdate(Object... values) {
             Station station = (Station)values[0];
-            mAdapter.add(station);
+            responseList.add(station.getName());
             super.onProgressUpdate(values);
         }
         @Override
@@ -293,4 +316,5 @@ public class StationsFragment extends BaseFragment implements SearchView.OnQuery
 
         }
     }
+
 }
