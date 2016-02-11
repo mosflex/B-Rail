@@ -52,17 +52,13 @@ public class StationsFragment extends BaseFragment implements SearchView.OnQuery
     private boolean 							list_visible 		= true;
 
     private AdapterRecyclerStations             mAdapter;
-    private ArrayAdapter<String>                test_adapter;
     private RecyclerView.LayoutManager 		 	mLayoutManager;
     private RecyclerView 						mStationsRecyclerView;
 
 
     private GetStationsJSONTask					getStationsJSONTask	= null;
 
-    private AutoCompleteTextView mDepartureStationAutoCompleteTextView;
-    private AutoCompleteTextView mDirectionStationAutoCompleteTextView;
 
-    List<String> responseList;
 
     @Override
     public int getTitleResourceId() {
@@ -127,22 +123,17 @@ public class StationsFragment extends BaseFragment implements SearchView.OnQuery
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //mStationsRecyclerView	= (RecyclerView)getActivity().findViewById(R.id.stations_recyclerview);
-        mDepartureStationAutoCompleteTextView = (AutoCompleteTextView)getActivity().findViewById(R.id.departure_autoCompleteTextView);
-        mDirectionStationAutoCompleteTextView = (AutoCompleteTextView)getActivity().findViewById(R.id.direction_autoCompleteTextView);
+        mStationsRecyclerView	= (RecyclerView)getActivity().findViewById(R.id.stations_recyclerview);
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(getActivity());
-//        mStationsRecyclerView.setLayoutManager(mLayoutManager);
+        mStationsRecyclerView.setLayoutManager(mLayoutManager);
 
 
         // specify an adapters
-        test_adapter = new ArrayAdapter<String>(getActivity(),R.layout.item_station_layout,responseList);
 
-        //mAdapter = new AdapterRecyclerStations(getActivity());
+        mAdapter = new AdapterRecyclerStations(getActivity());
 
-        mDepartureStationAutoCompleteTextView.setAdapter(test_adapter);
-        mDirectionStationAutoCompleteTextView.setAdapter(test_adapter);
-       // mStationsRecyclerView.setAdapter(mAdapter);
+        mStationsRecyclerView.setAdapter(mAdapter);
 
 
         getStationsJSONTask = new GetStationsJSONTask();
@@ -222,7 +213,7 @@ public class StationsFragment extends BaseFragment implements SearchView.OnQuery
 
         @Override
         protected void onPreExecute() {
-            responseList = new ArrayList<String>();
+
         }
 
         @Override
@@ -275,7 +266,7 @@ public class StationsFragment extends BaseFragment implements SearchView.OnQuery
                     station.setIdStation(finalObject.getString("id"));
                     station.setName(finalObject.getString("name"));
                     // adding the final object in the list
-                    Log.i("TEST",station.getName());
+                    Log.i("TEST", station.getName());
                     stationList.add(station);
 
                     publishProgress(station);
@@ -306,7 +297,7 @@ public class StationsFragment extends BaseFragment implements SearchView.OnQuery
         @Override
         protected void onProgressUpdate(Object... values) {
             Station station = (Station)values[0];
-            responseList.add(station.getName());
+            mAdapter.add(station);
             super.onProgressUpdate(values);
         }
         @Override

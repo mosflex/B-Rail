@@ -2,6 +2,7 @@
     <string name="app_name">B-Rail</string>
 
     <string name="Stations">Stations</string>
+    <string name="Schedule">Schedule</string>
     <string name="Search">Search</string>
     <string name="search_hint">Search stations…</string>
 

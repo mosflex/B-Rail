@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import be.b_rail.fragments.BaseFragment;
+import be.b_rail.fragments.ScheduleFragment;
 import be.b_rail.fragments.StationsFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -25,7 +26,8 @@ public class MainActivity extends AppCompatActivity
     private int 						mCurrentTitle;
     private int 						mSelectedFragment;
 
-    private static final int 			CASE_STATIONS 		  = 0;
+    private static final int 			CASE_SCHEDULE 		  = 0;
+    private static final int 			CASE_STATIONS 		  = 1;
     //Used in savedInstanceState
     private static String               BUNDLE_SELECTEDFRAGMENT 		= "BDL_SELFRG";
 
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity
                 selectFragment(mSelectedFragment);
 
         }else {
-            selectFragment(CASE_STATIONS);
+            selectFragment(CASE_SCHEDULE);
         }
     }
 
@@ -111,11 +113,11 @@ public class MainActivity extends AppCompatActivity
         switch (id){
 
             //Replacing the main content with ContentFragment Which is our Inbox View;
+            case R.id.nav_gallery:
+                selectFragment(CASE_SCHEDULE);
+                return true;
             case R.id.nav_camera:
                 selectFragment(CASE_STATIONS);
-                return true;
-            case R.id.nav_gallery:
-              //  selectFragment();
                 return true;
             case R.id.nav_slideshow:
                // selectFragment();
@@ -139,6 +141,7 @@ public class MainActivity extends AppCompatActivity
         switch (position) {
 
             case CASE_STATIONS:  openFragment(StationsFragment.newInstance());  break;
+            case CASE_SCHEDULE:  openFragment(ScheduleFragment.newInstance());  break;
 
             default: break;
         }
