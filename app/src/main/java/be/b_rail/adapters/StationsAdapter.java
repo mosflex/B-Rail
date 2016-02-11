@@ -56,13 +56,13 @@ public class StationsAdapter extends ArrayAdapter<Station> {
         return view;
     }
 
-  /*  @Override
+    @Override
     public Filter getFilter() {
         return nameFilter;
     }
-    *//**
+    /**
      * Custom Filter implementation for custom suggestions we provide.
-     *//*
+     */
     Filter nameFilter = new Filter() {
         @Override
         public CharSequence convertResultToString(Object resultValue) {
@@ -99,5 +99,5 @@ public class StationsAdapter extends ArrayAdapter<Station> {
                 }
             }
         }
-    };*/
+    };
 }

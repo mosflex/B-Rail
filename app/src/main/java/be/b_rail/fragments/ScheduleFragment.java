@@ -73,13 +73,11 @@ public class ScheduleFragment extends BaseFragment  {
         responseStationList = new ArrayList<Station>();
         // specify an adapters
        // test_adapter = new ArrayAdapter<>(getActivity(),R.layout.custom_list_station,R.id.txtNameStation, responseList);
-        stationsAdapter = new StationsAdapter(getActivity(),R.layout.custom_list_station,R.id.txtNameStation, responseStationList);
+
 
        /* mDepartureStationAutoCompleteTextView.setAdapter(test_adapter);
         mDirectionStationAutoCompleteTextView.setAdapter(test_adapter);*/
 
-        mDepartureStationAutoCompleteTextView.setAdapter(stationsAdapter);
-        mDirectionStationAutoCompleteTextView.setAdapter(stationsAdapter);
 
         getStationsJSONTask = new GetStationsJSONTask();
         getStationsJSONTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -160,7 +158,7 @@ public class ScheduleFragment extends BaseFragment  {
                     Log.i("TEST", station.getName());
                     responseStationList.add(station);
 
-                    publishProgress(station);
+                   // publishProgress(station);
                 }
 
             } catch (MalformedURLException e) {
@@ -194,6 +192,10 @@ public class ScheduleFragment extends BaseFragment  {
         @Override
         protected void onPostExecute(Void params){
 
+
+            stationsAdapter = new StationsAdapter(getActivity(),R.layout.custom_list_station,R.id.txtNameStation, responseStationList);
+            mDepartureStationAutoCompleteTextView.setAdapter(stationsAdapter);
+            mDirectionStationAutoCompleteTextView.setAdapter(stationsAdapter);
 
 
         }
