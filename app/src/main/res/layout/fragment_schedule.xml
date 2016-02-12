@@ -1,21 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
     <AutoCompleteTextView
         android:id="@+id/departure_autoCompleteTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:ems="10" />
+        android:ems="10"
+        android:hint="Entrez le nom de la gare de départ"
+
+        />
 
     <AutoCompleteTextView
         android:id="@+id/direction_autoCompleteTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:ems="10" />
+        android:ems="10"
+        android:hint="Entrez le nom de la gare d'arrivée"
+        android:layout_below="@id/direction_autoCompleteTextView"
+       />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
 
-</LinearLayout>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rechercher"
+            android:textColor="@android:color/white"
+            android:background="?attr/colorPrimary" />
+
+    </LinearLayout>
+</RelativeLayout>
