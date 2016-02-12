@@ -90,9 +90,9 @@ public class StationsAdapter extends ArrayAdapter<Station> {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             FilterResults results = new FilterResults();
-            constraint = constraint.toString().toLowerCase();
 
             if(constraint != null && constraint.toString().length() > 0){
+                constraint = constraint.toString().toLowerCase();
                 ArrayList<Station> filteredItems = new ArrayList<>();
 
                 for(int i = 0, l = items.size(); i < l; i++){
