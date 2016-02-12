@@ -11,7 +11,6 @@ public class Connection {
     private int         id;
     @SerializedName("duration")
     private int         duration;
-
     @SerializedName("departure")
     private Departure   departure;
     @SerializedName("arrival")
