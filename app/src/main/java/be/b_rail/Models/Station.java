@@ -3,7 +3,7 @@ package be.b_rail.Models;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by Jawad on 09-02-16.
+ * Created by Jawad & Moshab on 09-02-16.
  */
 public class Station {
 
@@ -16,7 +16,14 @@ public class Station {
     @SerializedName("name")
     private String name;
 
-    private CharSequence nameHtml;
+    @SerializedName("locationX")
+    private String locationX;
+
+    @SerializedName("locationY")
+    private String locationY;
+
+    @SerializedName("standardname")
+    private String standardname;
 
 
     /**************************************************/
@@ -24,7 +31,7 @@ public class Station {
     public Station(Station station){
         this._id = station.get_Id();
         this.name = station.getName();
-        this.nameHtml = station.getNameHtml();
+
     }
 
     public long get_Id() {
@@ -49,10 +56,28 @@ public class Station {
         this.name = name;
     }
 
-    public CharSequence getNameHtml() {
-        return nameHtml;
+
+    public String getLocationY() {
+        return locationY;
     }
-    public void setNameHtml(CharSequence nameHtml) {
-        this.nameHtml = nameHtml;
+
+    public void setLocationY(String locationY) {
+        this.locationY = locationY;
+    }
+
+    public String getStandardname() {
+        return standardname;
+    }
+
+    public void setStandardname(String standardname) {
+        this.standardname = standardname;
+    }
+
+    public String getLocationX() {
+        return locationX;
+    }
+
+    public void setLocationX(String locationX) {
+        this.locationX = locationX;
     }
 }
