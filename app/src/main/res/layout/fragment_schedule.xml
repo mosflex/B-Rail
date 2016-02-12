@@ -16,8 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:ems="10"
-        android:hint="Entrez le nom de la gare de départ"
-
+        android:hint="@string/station_dep"
         />
 
     <AutoCompleteTextView
@@ -26,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:ems="10"
-        android:hint="Entrez le nom de la gare d'arrivée"
+        android:hint="@string/station_arr"
         android:layout_below="@id/direction_autoCompleteTextView"
        />
     </LinearLayout>

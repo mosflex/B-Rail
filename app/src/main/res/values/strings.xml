@@ -6,9 +6,8 @@
     <string name="Search">Search</string>
     <string name="search_hint">Search stations…</string>
 
-    <string name="type_list">View as List</string>
-    <string name="type_grid">View as Grid</string>
-
+    <string name="station_dep">Gare de départ</string>
+    <string name="station_arr">Gare d\'arrivée</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

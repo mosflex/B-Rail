@@ -72,16 +72,6 @@ public class ScheduleFragment extends BaseFragment  {
         mDirectionStationAutoCompleteTextView = (AutoCompleteTextView)getActivity().findViewById(R.id.direction_autoCompleteTextView);
 
         responseStationList = new ArrayList<>();
-        mDirectionStationAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View arg1, int pos, long id) {
-                Toast.makeText(getActivity(), "Position clicked: " + pos, Toast.LENGTH_SHORT).show();
-                   // mDirectionStationAutoCompleteTextView.setText(stationsAdapter.getItem(pos).getName());
-                LinearLayout ly = (LinearLayout) arg1;
-                TextView tv = (TextView) ly.getChildAt(0);
-                mDirectionStationAutoCompleteTextView.setText(tv.getText().toString());
-            }
-        });
 
         getStationsJSONTask = new GetStationsJSONTask();
         getStationsJSONTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
