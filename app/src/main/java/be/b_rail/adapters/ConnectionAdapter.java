@@ -23,7 +23,6 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Vi
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-
         private TextView mDurationTextView;
 
         public ViewHolder(View v) {

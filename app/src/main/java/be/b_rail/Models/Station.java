@@ -7,7 +7,6 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Station {
 
-
     private long _id;
 
     @SerializedName("id")
