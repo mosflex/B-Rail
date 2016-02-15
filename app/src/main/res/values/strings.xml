@@ -3,6 +3,7 @@
 
     <string name="Stations">Stations</string>
     <string name="Schedule">Schedule</string>
+    <string name="Connection">Connection</string>
     <string name="Search">Search</string>
     <string name="search_hint">Search stations…</string>
 

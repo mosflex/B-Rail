@@ -49,7 +49,7 @@ public class ScheduleFragment extends BaseFragment  {
     private StationsAdapter         stationsAdapter;
 
     private GetStationsJSONTask		getStationsJSONTask	= null;
-    private GetConnectionsJSONTask  getConnectionsJSONTask = null;
+    //private GetConnectionsJSONTask  getConnectionsJSONTask = null;
 
     @Override
     public int getTitleResourceId() {
@@ -83,8 +83,17 @@ public class ScheduleFragment extends BaseFragment  {
         requestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getConnectionsJSONTask = new GetConnectionsJSONTask();
-                getConnectionsJSONTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+//                getConnectionsJSONTask = new GetConnectionsJSONTask();
+//                getConnectionsJSONTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                ConnectionFragment connectionFragment = new ConnectionFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("Departure",mDepartureStationAutoCompleteTextView.getText().toString());
+                bundle.putString("Arrival",mDirectionStationAutoCompleteTextView.getText().toString());
+                connectionFragment.setArguments(bundle);
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame_container,connectionFragment,null)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 
@@ -97,99 +106,13 @@ public class ScheduleFragment extends BaseFragment  {
     public void onDestroy() {
         try{
             if(getStationsJSONTask != null)getStationsJSONTask.cancel(true);
-            if(getConnectionsJSONTask != null)getConnectionsJSONTask.cancel(true);
+           // if(getConnectionsJSONTask != null)getConnectionsJSONTask.cancel(true);
         }catch(IllegalStateException e) {
             e.printStackTrace();
         }
         super.onDestroy();
     }
-    /*************************************************************************************************************************/
-    private class GetConnectionsJSONTask extends AsyncTask<Void, Object, Void> {
-        private static final String TAG = "GetConnectionsJSONTask";
 
-        private  String SERVER_URL =
-                "http://api.irail.be/connections/?to="
-                        + mDepartureStationAutoCompleteTextView.getText().toString()+"&from="
-                        + mDirectionStationAutoCompleteTextView.getText().toString()+"&format=json&fast=true";
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            HttpURLConnection conn = null;
-            BufferedReader reader = null;
-            SERVER_URL = SERVER_URL.replace(" ", "%20");
-            try {
-                URL url = new URL(SERVER_URL);
-                conn = (HttpURLConnection) url.openConnection();
-
-                conn.setRequestProperty("Content-type", "application/json");
-                conn.connect();
-
-                InputStream stream = conn.getInputStream();
-                reader = new BufferedReader(new InputStreamReader(stream));
-                StringBuffer buffer = new StringBuffer();
-                String line =  "";
-                while ((line = reader.readLine()) != null){
-                    buffer.append(line);
-                }
-
-                String finalJson = buffer.toString();
-
-                Log.i("finalJson : ", finalJson);
-
-
-                JSONObject parentObject = new JSONObject(finalJson);
-                JSONArray parentArray = parentObject.getJSONArray("connection");
-
-                Gson gson = new Gson();
-                for(int i=0; i < parentArray.length(); i++) {
-
-                    JSONObject finalObject = parentArray.getJSONObject(i);
-                    Connection connection = gson.fromJson(finalObject.toString(), Connection.class);
-
-                    connection.setId(finalObject.getInt("id"));
-                    connection.setDuration(finalObject.getInt("duration"));
-
-                    publishProgress(connection);
-                }
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } finally {
-                if(conn != null) {
-                    conn.disconnect();
-                }
-                try {
-                    if(reader != null) {
-                        reader.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-        }
-
-        @Override
-        protected void onProgressUpdate(Object... values) {
-            Connection c = (Connection)values[0];
-            responseTextView.setText("Connection : "+c.getId() + c.getDuration());
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-        }
-    }
 
     private class GetStationsJSONTask extends AsyncTask<Void, Object, Void> {
 
