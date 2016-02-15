@@ -2,6 +2,8 @@ package be.b_rail.fragments;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +23,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import be.b_rail.Models.Connection;
 import be.b_rail.R;
+import be.b_rail.adapters.ConnectionAdapter;
 
 /**
  * Created by TTM on 15/02/2016.
@@ -33,7 +38,10 @@ public class ConnectionFragment extends BaseFragment {
     private String departure, arrival;
     private GetConnectionsJSONTask  getConnectionsJSONTask = null;
     private TextView responseTextView2;
-
+    private RecyclerView connectionListRecycleView;
+    private RecyclerView.Adapter mConnectionAdapter;
+    private List<Connection>  responseConnectionList;
+    private RecyclerView.LayoutManager mLayoutManager;
     @Override
     public int getTitleResourceId() {
         return R.string.Connection;
@@ -48,18 +56,32 @@ public class ConnectionFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        responseTextView2 = (TextView)getActivity().findViewById(R.id.responseTextView2);
-        getConnectionsJSONTask = new GetConnectionsJSONTask();
-        getConnectionsJSONTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ViewGroup rootView = (ViewGroup) inflater.inflate(
+                R.layout.fragment_connection, container, false);
+
+
         setHasOptionsMenu(true);
         Bundle bundle = this.getArguments();
         departure = bundle.getString("Departure");
         arrival = bundle.getString("Arrival");
-        return inflater.inflate(R.layout.fragment_connection, container, false);
+
+        getConnectionsJSONTask = new GetConnectionsJSONTask();
+        getConnectionsJSONTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        responseConnectionList = new ArrayList<>();
+        connectionListRecycleView = (RecyclerView) rootView.findViewById(R.id.cardList_connections);
+//        connectionListRecycleView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getActivity());
+
+        connectionListRecycleView.setLayoutManager(mLayoutManager);
+
+
+
+        return rootView;
 
     }
 
@@ -124,9 +146,13 @@ public class ConnectionFragment extends BaseFragment {
 
                     connection.setId(finalObject.getInt("id"));
                     connection.setDuration(finalObject.getInt("duration"));
+                    responseConnectionList.add(connection);
 
-                    publishProgress(connection);
+
+                    //publishProgress(connection);
                 }
+
+
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -151,13 +177,16 @@ public class ConnectionFragment extends BaseFragment {
 
         @Override
         protected void onPostExecute(Void aVoid) {
+            mConnectionAdapter = new ConnectionAdapter(responseConnectionList);
+            connectionListRecycleView.setAdapter(mConnectionAdapter);
             super.onPostExecute(aVoid);
         }
 
         @Override
         protected void onProgressUpdate(Object... values) {
-            Connection c = (Connection)values[0];
-            responseTextView2.setText("Connection : "+c.getId() + c.getDuration());
+//            Connection connection = (Connection)values[0];
+////            responseTextView2.setText("Connection : "+c.getId() + c.getDuration());
+//            responseConnectionList.add(connection);
             super.onProgressUpdate(values);
         }
 

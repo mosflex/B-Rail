@@ -152,6 +152,7 @@ public class ScheduleFragment extends BaseFragment  {
                     station.setStandardname(finalObject.getString("standardname"));
                     // adding the final object in the list
                     responseStationList.add(station);
+
                 }
 
             } catch (MalformedURLException e) {
