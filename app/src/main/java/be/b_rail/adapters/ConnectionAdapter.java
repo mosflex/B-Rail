@@ -79,7 +79,7 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Vi
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        holder.mTimeDepartureTextView.setText((int) d.getTime());
+        holder.mTimeDepartureTextView.setText(connection.getArrival().getTime());
         holder.mTimeArrivalTextView.setText(connection.getArrival().getTime());
         holder.mDurationTravelTextView.setText(String.valueOf(connection.getDuration()));
 
