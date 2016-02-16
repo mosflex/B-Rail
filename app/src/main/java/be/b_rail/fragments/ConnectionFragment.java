@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
@@ -63,32 +64,8 @@ public class ConnectionFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        InputMethodManager inputManager = (InputMethodManager)
-               getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-
-        inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                InputMethodManager.HIDE_NOT_ALWAYS);
-
-        ViewGroup rootView = (ViewGroup) inflater.inflate(
-                R.layout.fragment_connection, container, false);
-
-
         setHasOptionsMenu(true);
-        Bundle bundle = this.getArguments();
-        departure = bundle.getString("Departure");
-        arrival = bundle.getString("Arrival");
-
-        getConnectionsJSONTask = new GetConnectionsJSONTask();
-        getConnectionsJSONTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        responseConnectionList = new ArrayList<>();
-        connectionListRecycleView = (RecyclerView) rootView.findViewById(R.id.cardList_connections);
-//        connectionListRecycleView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(getActivity());
-
-        connectionListRecycleView.setLayoutManager(mLayoutManager);
-
-
+        ViewGroup rootView = (ViewGroup) inflater.inflate( R.layout.fragment_connection, container, false);
 
         return rootView;
 
@@ -97,6 +74,24 @@ public class ConnectionFragment extends BaseFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        getActivity().getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+        );
+
+
+
+        Bundle bundle = this.getArguments();
+        departure = bundle.getString("Departure");
+        arrival = bundle.getString("Arrival");
+
+        getConnectionsJSONTask = new GetConnectionsJSONTask();
+        getConnectionsJSONTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        responseConnectionList = new ArrayList<>();
+        connectionListRecycleView = (RecyclerView) getActivity().findViewById(R.id.cardList_connections);
+//        connectionListRecycleView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getActivity());
+
+        connectionListRecycleView.setLayoutManager(mLayoutManager);
     }
 
     @Override
