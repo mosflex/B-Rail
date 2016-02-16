@@ -16,7 +16,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:ems="10"
-            android:hint="@string/station_dep"/>
+            android:hint="@string/station_dep"
+            android:text="Bruxelles Central"/>
 
         <AutoCompleteTextView
             android:id="@+id/direction_autoCompleteTextView"
@@ -24,7 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:ems="10"
-            android:hint="@string/station_arr"/>
+            android:hint="@string/station_arr"
+            android:text="Bockstael"/>
 
         <TextView
             android:id="@+id/responseTextView"
