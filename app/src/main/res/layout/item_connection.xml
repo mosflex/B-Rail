@@ -1,31 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/card_view"
-    android:layout_gravity="center"
+<LinearLayout xmlns:android=" http://schemas.android.com/apk/res/android"
+    xmlns:card_view=" http://schemas.android.com/apk/res-auto"
+    xmlns:tool=" http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
-    card_view:cardCornerRadius="4dp"
-    card_view:cardUseCompatPadding="true"
-    card_view:cardBackgroundColor="#BBFFFFFF">
-    <RelativeLayout
-        android:id="@+id/layout"
-        android:orientation="horizontal"
-        android:layout_gravity="center_vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center">
-        <TextView
-            android:id="@+id/info_text"
-            android:textSize="18sp"
-            android:textAppearance="@android:style/TextAppearance.Medium"
-            android:textStyle="bold"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </RelativeLayout>
+    android:layout_height="match_parent">
 
-</android.support.v7.widget.CardView>
+    <android.support.v7.widget.CardView
+        android:background="@android:color/black"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardCornerRadius="4dp"
+        android:layout_margin="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/time_departure_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            tool:text ="DEPARTURE"
+            />
+
+        <TextView
+            android:id="@+id/time_arrival_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            tool:text ="ARRIVAL"/>
+
+        <TextView
+            android:id="@+id/duration_travel_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            tool:text ="DURATION"/>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>
