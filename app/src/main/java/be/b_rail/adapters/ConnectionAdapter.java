@@ -9,7 +9,11 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import be.b_rail.Models.Connection;
 import be.b_rail.R;
@@ -24,12 +28,16 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Vi
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
 
-        private TextView mDurationTextView;
+        private TextView mTimeDepartureTextView;
+        private TextView mTimeArrivalTextView;
+        private TextView mDurationTravelTextView;
 
         public ViewHolder(View v) {
 
             super(v);
-            mDurationTextView = (TextView) v.findViewById(R.id.info_text) ;
+            mTimeDepartureTextView =(TextView) v.findViewById(R.id.time_departure_textview);
+            mTimeArrivalTextView =(TextView) v.findViewById(R.id.time_arrival_textview);
+            mDurationTravelTextView = (TextView) v.findViewById(R.id.duration_travel_textview) ;
         }
     }
 
@@ -64,7 +72,16 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Vi
         // - replace the contents of the view with that element
 
         Connection connection  = mConnectionsList.get(position);
-        holder.mDurationTextView.setText(String.valueOf(connection.getDuration()));
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.FRENCH);
+        Date d = new Date();
+        try {
+            d = sdf.parse(connection.getDeparture().getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        holder.mTimeDepartureTextView.setText((int) d.getTime());
+        holder.mTimeArrivalTextView.setText(connection.getArrival().getTime());
+        holder.mDurationTravelTextView.setText(String.valueOf(connection.getDuration()));
 
     }
 
