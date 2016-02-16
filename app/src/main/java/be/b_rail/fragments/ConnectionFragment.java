@@ -116,8 +116,8 @@ public class ConnectionFragment extends BaseFragment {
 
         private  String SERVER_URL =
                 "http://api.irail.be/connections/?to="
-                        + departure+"&from="
-                        + arrival+"&format=json&fast=true";
+                        + arrival+"&from="
+                        + departure+"&format=json&fast=true";
 
         @Override
         protected Void doInBackground(Void... params) {

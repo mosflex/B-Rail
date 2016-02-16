@@ -1,33 +1,35 @@
 package be.b_rail.Utils;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Created by Jawad on 16-02-16.
  */
 public class Utils {
 
-    public static String getFormatDate(String value) {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.SSSZ", Locale.FRENCH);
-       /* Date d = new Date();
+    public static String getTimeFromDate(String dateFromAPI) {
+        Date date;
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Brussels"));
         try {
-            d = sdf.parse(value);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }*/
-        Calendar calendar = null;
-        try {
-            calendar.setTime(new Date(sdf.parse(value).getTime()));
-          //  Date dateTimeObj = ISODateTimeFormat.dateTime().parseDateTime(value);
-        } catch (ParseException e) {
-            e.printStackTrace();
+
+            date = new Date((Long.valueOf(dateFromAPI)) * 1000);
+            //Log.i("", "getMinutsFromDate: " + date.toString());
+            return dateFormat.format(date);
+        } catch (Exception e) {
+            return dateFromAPI;
         }
-        return calendar.toString();
+
     }
+
+
 
     public static String getDurationString(long seconds) {
 
@@ -35,7 +37,7 @@ public class Utils {
         long minutes = (seconds % 3600) / 60;
         seconds = seconds % 60;
 
-        return twoDigitString(hours) + ":" + twoDigitString(minutes) + ":" + twoDigitString(seconds);
+        return twoDigitString(hours) + ":" + twoDigitString(minutes);
     }
 
     public static String twoDigitString(long number) {

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -74,9 +75,9 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Vi
 
         Connection connection  = mConnectionsList.get(position);
 
-        holder.mTimeDepartureTextView.setText(String.valueOf(Utils.getFormatDate(connection.getDeparture().getTime())));
-        holder.mTimeArrivalTextView.setText(String.valueOf(Utils.getFormatDate(connection.getArrival().getTime())));
-        holder.mDurationTravelTextView.setText(Utils.getDurationString(connection.getDuration()));
+            holder.mTimeDepartureTextView.setText(Utils.getTimeFromDate(connection.getDeparture().getTime()));
+            holder.mTimeArrivalTextView.setText(Utils.getTimeFromDate(connection.getArrival().getTime()));
+            holder.mDurationTravelTextView.setText(Utils.getDurationString(connection.getDuration()));
 
     }
 
