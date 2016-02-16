@@ -17,6 +17,7 @@ import java.util.Locale;
 
 import be.b_rail.Models.Connection;
 import be.b_rail.R;
+import be.b_rail.Utils.Utils;
 
 /**
  * Created by TTM on 15/02/2016.
@@ -72,16 +73,10 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Vi
         // - replace the contents of the view with that element
 
         Connection connection  = mConnectionsList.get(position);
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.FRENCH);
-        Date d = new Date();
-        try {
-            d = sdf.parse(connection.getDeparture().getTime());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        holder.mTimeDepartureTextView.setText(connection.getArrival().getTime());
-        holder.mTimeArrivalTextView.setText(connection.getArrival().getTime());
-        holder.mDurationTravelTextView.setText(String.valueOf(connection.getDuration()));
+
+        holder.mTimeDepartureTextView.setText(String.valueOf(Utils.getFormatDate(connection.getDeparture().getTime())));
+        holder.mTimeArrivalTextView.setText(String.valueOf(Utils.getFormatDate(connection.getArrival().getTime())));
+        holder.mDurationTravelTextView.setText(Utils.getDurationString(connection.getDuration()));
 
     }
 

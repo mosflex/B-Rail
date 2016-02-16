@@ -153,15 +153,8 @@ public class ConnectionFragment extends BaseFragment {
                     JSONObject finalObject = parentArray.getJSONObject(i);
                     Connection connection = gson.fromJson(finalObject.toString(), Connection.class);
 
-                    connection.setId(finalObject.getInt("id"));
-                    connection.setDuration(finalObject.getInt("duration"));
                     responseConnectionList.add(connection);
-
-
-                    //publishProgress(connection);
                 }
-
-
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
