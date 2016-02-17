@@ -33,6 +33,8 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Vi
         private TextView mTimeDepartureTextView;
         private TextView mTimeArrivalTextView;
         private TextView mDurationTravelTextView;
+        private TextView mStationDepartureTextView;
+        private TextView mStationArrivalTextView;
 
         public ViewHolder(View v) {
 
@@ -40,6 +42,8 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Vi
             mTimeDepartureTextView =(TextView) v.findViewById(R.id.time_departure_textview);
             mTimeArrivalTextView =(TextView) v.findViewById(R.id.time_arrival_textview);
             mDurationTravelTextView = (TextView) v.findViewById(R.id.duration_travel_textview) ;
+            mStationDepartureTextView =(TextView)v.findViewById(R.id.station_departure_textview);
+            mStationArrivalTextView =(TextView)v.findViewById(R.id.station_arrival_textview);
         }
     }
 
@@ -78,6 +82,8 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Vi
             holder.mTimeDepartureTextView.setText(Utils.getTimeFromDate(connection.getDeparture().getTime()));
             holder.mTimeArrivalTextView.setText(Utils.getTimeFromDate(connection.getArrival().getTime()));
             holder.mDurationTravelTextView.setText(Utils.getDurationString(connection.getDuration()));
+            holder.mStationDepartureTextView.setText(connection.getDeparture().getStation());
+            holder.mStationArrivalTextView.setText(connection.getArrival().getStation());
 
     }
 
