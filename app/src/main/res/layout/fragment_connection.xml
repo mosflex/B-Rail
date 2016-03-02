@@ -1,13 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_window"
+    android:gravity="center">
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/cardList_connections"
+    <TextView
+        android:id="@+id/txt_header_connection"
+        android:textSize="18sp"
+        android:ellipsize="end"
+        android:textAppearance="@android:style/TextAppearance.Medium"
+        android:singleLine="true"
+        android:padding="10dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/Loading"
+        android:textStyle="bold"
+        android:textColor="@android:color/background_light"
+        android:background="@color/colorPrimaryDark"/>
+    <ViewFlipper
+        android:id="@+id/viewFlipper"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center" >
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="250dp"
+            android:gravity="center"
+            android:orientation="vertical" >
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?android:attr/progressBarStyleLarge"/>
+        </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/cardList_connections"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginBottom="1dp"
+            android:drawSelectorOnTop="true" />
+    </ViewFlipper>
 
 </LinearLayout>

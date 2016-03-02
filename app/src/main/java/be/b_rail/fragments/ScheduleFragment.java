@@ -2,17 +2,12 @@ package be.b_rail.fragments;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -22,15 +17,11 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import be.b_rail.Models.Connection;
 import be.b_rail.Models.Station;
 import be.b_rail.R;
 import be.b_rail.adapters.StationsAdapter;
@@ -42,14 +33,12 @@ public class ScheduleFragment extends BaseFragment  {
 
     private AutoCompleteTextView    mDepartureStationAutoCompleteTextView;
     private AutoCompleteTextView    mDirectionStationAutoCompleteTextView;
-    private TextView                responseTextView;
-    private Button                  requestButton;
+    private FloatingActionButton    requestButton;
 
     private List<Station>           responseStationList;
     private StationsAdapter         stationsAdapter;
 
     private GetStationsJSONTask		getStationsJSONTask	= null;
-    //private GetConnectionsJSONTask  getConnectionsJSONTask = null;
 
     @Override
     public int getTitleResourceId() {
@@ -75,16 +64,14 @@ public class ScheduleFragment extends BaseFragment  {
 
         mDepartureStationAutoCompleteTextView = (AutoCompleteTextView)getActivity().findViewById(R.id.departure_autoCompleteTextView);
         mDirectionStationAutoCompleteTextView = (AutoCompleteTextView)getActivity().findViewById(R.id.direction_autoCompleteTextView);
-        responseTextView = (TextView)getActivity().findViewById(R.id.responseTextView);
-        requestButton = (Button)getActivity().findViewById(R.id.requestButton);
+
+        requestButton = (FloatingActionButton)getActivity().findViewById(R.id.requestButton);
 
         responseStationList = new ArrayList<>();
 
         requestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                getConnectionsJSONTask = new GetConnectionsJSONTask();
-//                getConnectionsJSONTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 ConnectionFragment connectionFragment = new ConnectionFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("Departure",mDepartureStationAutoCompleteTextView.getText().toString());
@@ -106,7 +93,6 @@ public class ScheduleFragment extends BaseFragment  {
     public void onDestroy() {
         try{
             if(getStationsJSONTask != null)getStationsJSONTask.cancel(true);
-           // if(getConnectionsJSONTask != null)getConnectionsJSONTask.cancel(true);
         }catch(IllegalStateException e) {
             e.printStackTrace();
         }

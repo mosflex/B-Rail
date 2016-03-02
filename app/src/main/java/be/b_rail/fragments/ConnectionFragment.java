@@ -1,17 +1,15 @@
 package be.b_rail.fragments;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import com.google.gson.Gson;
 
@@ -34,41 +32,35 @@ import be.b_rail.R;
 import be.b_rail.adapters.ConnectionAdapter;
 
 /**
- * Created by TTM on 15/02/2016.
+ * Created by Jawad & TTM on 15/02/2016.
  */
 public class ConnectionFragment extends BaseFragment {
 
-    private String departure, arrival;
-    private GetConnectionsJSONTask  getConnectionsJSONTask = null;
-    private TextView responseTextView2;
-    private RecyclerView connectionListRecycleView;
-    private RecyclerView.Adapter mConnectionAdapter;
-    private List<Connection>  responseConnectionList;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private String                      departure, arrival;
+    private GetConnectionsJSONTask      getConnectionsJSONTask = null;
+    private RecyclerView                connectionListRecycleView;
+    private RecyclerView.Adapter        mConnectionAdapter;
+    private List<Connection>            responseConnectionList;
+    private RecyclerView.LayoutManager  mLayoutManager;
+
+    private TextView                    txt_header_connection;
+    private ViewFlipper                 vf;
+
     @Override
     public int getTitleResourceId() {
         return R.string.Connection;
     }
 
-    public static ConnectionFragment newInstance() {
-        return new ConnectionFragment();
-    }
-
-
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         ViewGroup rootView = (ViewGroup) inflater.inflate( R.layout.fragment_connection, container, false);
-
         return rootView;
-
     }
 
     @Override
@@ -78,20 +70,25 @@ public class ConnectionFragment extends BaseFragment {
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
 
-
-
         Bundle bundle = this.getArguments();
-        departure = bundle.getString("Departure");
-        arrival = bundle.getString("Arrival");
+        departure   = bundle.getString("Departure");
+        arrival     = bundle.getString("Arrival");
+
+        connectionListRecycleView   = (RecyclerView) getActivity().findViewById(R.id.cardList_connections);
+        txt_header_connection       = (TextView) getActivity().findViewById(R.id.txt_header_connection);
+        vf                          = (ViewFlipper) getActivity().findViewById(R.id.viewFlipper);
+
+        //Using one of the built in animations:
+        vf.setInAnimation(getActivity(), android.R.anim.fade_in);
+        vf.setOutAnimation(getActivity(), android.R.anim.fade_out);
+
+        responseConnectionList  = new ArrayList<>();
+        mLayoutManager          = new LinearLayoutManager(getActivity());
+        connectionListRecycleView.setLayoutManager(mLayoutManager);
 
         getConnectionsJSONTask = new GetConnectionsJSONTask();
         getConnectionsJSONTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        responseConnectionList = new ArrayList<>();
-        connectionListRecycleView = (RecyclerView) getActivity().findViewById(R.id.cardList_connections);
-//        connectionListRecycleView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(getActivity());
 
-        connectionListRecycleView.setLayoutManager(mLayoutManager);
     }
 
     @Override
@@ -109,7 +106,7 @@ public class ConnectionFragment extends BaseFragment {
     private class GetConnectionsJSONTask extends AsyncTask<Void, Object, Void> {
         private static final String TAG = "GetConnectionsJSONTask";
 
-        private  String SERVER_URL =
+        private String SERVER_URL =
                 "http://api.irail.be/connections/?to="
                         + arrival+"&from="
                         + departure+"&format=json&fast=true";
@@ -119,7 +116,9 @@ public class ConnectionFragment extends BaseFragment {
             HttpURLConnection conn = null;
             BufferedReader reader = null;
             SERVER_URL = SERVER_URL.replace(" ", "%20");
+
             try {
+
                 URL url = new URL(SERVER_URL);
                 conn = (HttpURLConnection) url.openConnection();
 
@@ -136,18 +135,13 @@ public class ConnectionFragment extends BaseFragment {
 
                 String finalJson = buffer.toString();
 
-                Log.i("finalJson : ", finalJson);
-
-
                 JSONObject parentObject = new JSONObject(finalJson);
                 JSONArray parentArray = parentObject.getJSONArray("connection");
 
                 Gson gson = new Gson();
                 for(int i=0; i < parentArray.length(); i++) {
-
                     JSONObject finalObject = parentArray.getJSONObject(i);
                     Connection connection = gson.fromJson(finalObject.toString(), Connection.class);
-
                     responseConnectionList.add(connection);
                 }
 
@@ -176,14 +170,14 @@ public class ConnectionFragment extends BaseFragment {
         protected void onPostExecute(Void aVoid) {
             mConnectionAdapter = new ConnectionAdapter(responseConnectionList);
             connectionListRecycleView.setAdapter(mConnectionAdapter);
+            txt_header_connection.setText(departure +" > " + arrival);
+            vf.showNext();
+
             super.onPostExecute(aVoid);
         }
 
         @Override
         protected void onProgressUpdate(Object... values) {
-//            Connection connection = (Connection)values[0];
-////            responseTextView2.setText("Connection : "+c.getId() + c.getDuration());
-//            responseConnectionList.add(connection);
             super.onProgressUpdate(values);
         }
 

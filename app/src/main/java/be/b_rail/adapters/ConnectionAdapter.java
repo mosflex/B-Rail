@@ -21,14 +21,13 @@ import be.b_rail.R;
 import be.b_rail.Utils.Utils;
 
 /**
- * Created by TTM on 15/02/2016.
+ * Created by Jawad & TTM on 15/02/2016.
  */
 public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.ViewHolder>{
 
     private List<Connection> mConnectionsList;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
 
         private TextView mTimeDepartureTextView;
         private TextView mTimeArrivalTextView;
@@ -50,7 +49,6 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Vi
 
     public ConnectionAdapter(List<Connection> connectionsList) {
         mConnectionsList = connectionsList;
-
     }
 
     public void add(Connection connection){
@@ -60,12 +58,10 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Vi
     }
     // Create new views (invoked by the layout manager)
     @Override
-    public ConnectionAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
+    public ConnectionAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,int viewType) {
         Context context = parent.getContext();
         // create a new view
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_connection, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_connection, parent, false);
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
         return vh;
@@ -79,14 +75,14 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Vi
 
         Connection connection  = mConnectionsList.get(position);
 
-            holder.mTimeDepartureTextView.setText(Utils.getTimeFromDate(connection.getDeparture().getTime()));
-            holder.mTimeArrivalTextView.setText(Utils.getTimeFromDate(connection.getArrival().getTime()));
-            holder.mDurationTravelTextView.setText(Utils.getDurationString(connection.getDuration()));
-            holder.mStationDepartureTextView.setText(connection.getDeparture().getStation());
-            holder.mStationArrivalTextView.setText(connection.getArrival().getStation());
+        holder.mStationDepartureTextView.setText(connection.getDeparture().getStation());
+        holder.mTimeDepartureTextView.setText(Utils.getTimeFromDate(connection.getDeparture().getTime()));
 
+        holder.mDurationTravelTextView.setText(Utils.getDurationString(connection.getDuration()));
+
+        holder.mStationArrivalTextView.setText(connection.getArrival().getStation());
+        holder.mTimeArrivalTextView.setText(Utils.getTimeFromDate(connection.getArrival().getTime()));
     }
-
 
     public Connection getItem(int position) {
         return mConnectionsList.get(position);
