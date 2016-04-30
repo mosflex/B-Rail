@@ -4,6 +4,7 @@
     <string name="Stations">Stations</string>
     <string name="Schedule">Schedule</string>
     <string name="Connection">Connection</string>
+    <string name="Journey">Journey</string>
     <string name="Unknown">Unknown</string>
     <string name="Loading">Loading...</string>
 
@@ -17,4 +18,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="text_journey">Recherchez votre itinéraire, puis enregistrez-les dans cet espace pour être accompagnée en temps réel.</string>
 </resources>
