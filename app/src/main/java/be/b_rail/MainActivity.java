@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity
                 selectFragment(mSelectedFragment);
 
         }else {
-            selectFragment(CASE_SCHEDULE);
+            selectFragment(CASE_JOURNEY);
         }
     }
 
