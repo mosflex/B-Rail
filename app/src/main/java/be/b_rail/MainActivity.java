@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity
         switch (position) {
 
             case CASE_JOURNEY:  openFragment(JourneyFragment.newInstance());  break;
-            case CASE_SCHEDULE:  openFragment(ScheduleFragment.newInstance());  break;
+            case CASE_SCHEDULE: openFragment(ScheduleFragment.newInstance());  break;
 
             default: break;
         }
