@@ -2,6 +2,7 @@ package be.b_rail.fragments;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -43,7 +44,7 @@ public class ConnectionFragment extends BaseFragment {
     private List<Connection>            responseConnectionList;
     private RecyclerView.LayoutManager  mLayoutManager;
 
-    private TextView                    txt_header_connection;
+    private TextView txt_header_connection;
     private ViewFlipper                 vf;
 
     @Override
