@@ -6,31 +6,51 @@
     tools:context="be.b_rail.fragments.JourneyFragment">
 
     <!-- TODO: Update blank fragment layout -->
-
-    <LinearLayout
-        android:id="@+id/layout_nojourney"
+    <ViewFlipper
+        android:id="@+id/viewFlipper"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginTop="38dp"
-        android:animateLayoutChanges="true"
-        android:orientation="vertical">
+        android:gravity="center">
+        <LinearLayout
+            android:id="@+id/layout_nojourney"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:src="@mipmap/ic_transfer"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_marginTop="38dp"
+                android:layout_height="160dp"
+                android:src="@mipmap/ic_transfer"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:lineSpacingMultiplier="1.4"
-            android:layout_marginTop="18dp"
-            android:gravity="center"
-            android:textColor="@android:color/darker_gray"
-            android:text="@string/text_journey" />
-    </LinearLayout>
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:lineSpacingMultiplier="1.4"
+                android:layout_marginTop="18dp"
+                android:gravity="center"
+                android:textColor="@android:color/darker_gray"
+                android:text="@string/text_journey" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_journeys"
+            android:visibility="gone"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/cardList_journeys"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginBottom="1dp"
+                android:drawSelectorOnTop="true" />
+        </LinearLayout>
+    </ViewFlipper>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_journey"
         android:layout_width="wrap_content"

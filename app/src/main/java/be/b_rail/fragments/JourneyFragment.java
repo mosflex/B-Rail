@@ -7,11 +7,18 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ViewFlipper;
 
+import java.util.ArrayList;
+
+import be.b_rail.Models.Connection;
 import be.b_rail.R;
+import be.b_rail.Utils.PrefsUtils;
+import be.b_rail.adapters.JourneysAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,8 +40,10 @@ public class JourneyFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private FloatingActionButton button_add_journey;
-
+    private FloatingActionButton    button_add_journey;
+    private ViewFlipper             vf;
+    private RecyclerView            journeysListRecycleView;
+    private RecyclerView.Adapter    mJourneysAdapter;
 
     public JourneyFragment() {
         // Required empty public constructor
@@ -69,6 +78,8 @@ public class JourneyFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        vf  = (ViewFlipper) getActivity().findViewById(R.id.viewFlipper);
+        journeysListRecycleView   = (RecyclerView)getActivity().findViewById(R.id.cardList_journeys);
         button_add_journey = (FloatingActionButton)getActivity().findViewById(R.id.add_journey);
         button_add_journey.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,14 +93,18 @@ public class JourneyFragment extends Fragment {
                         .commit();
             }
         });
+
+        ArrayList<Connection> ListConnections = PrefsUtils.loadConnections(getContext());
+        if(ListConnections != null && !ListConnections.isEmpty()){
+            mJourneysAdapter = new JourneysAdapter(getActivity(),ListConnections);
+            journeysListRecycleView.setAdapter(mJourneysAdapter);
+            vf.showNext();
+        }
+
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-       /* TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.tabLayout);
-        tabLayout.setVisibility(View.GONE);
-        ViewPager mViewPager = (ViewPager) getActivity().findViewById(R.id.viewpager);
-        mViewPager.setVisibility(View.GONE);*/
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_journey, container, false);
     }
@@ -116,7 +131,6 @@ public class JourneyFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
 
     /**
      * This interface must be implemented by activities that contain this

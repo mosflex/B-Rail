@@ -172,7 +172,7 @@ public class ConnectionActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            mConnectionAdapter = new ConnectionAdapter(responseConnectionList);
+            mConnectionAdapter = new ConnectionAdapter(ConnectionActivity.this,responseConnectionList);
             connectionListRecycleView.setAdapter(mConnectionAdapter);
             txt_header_connection.setText(departure +"  >  " + arrival);
             txt_header_date.setText(DateFormat.getDateInstance().format(Calendar.getInstance().getTime()));
