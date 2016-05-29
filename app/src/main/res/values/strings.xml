@@ -12,8 +12,11 @@
     <string name="Search">Search</string>
     <string name="search_hint">Search stations…</string>
 
-    <string name="station_dep">Départ</string>
-    <string name="station_arr">Arrivée</string>
+    <string name="station_dep">Departure</string>
+    <string name="station_arr">Arrival</string>
+
+    <string name="err_msg_depart">Enter departure</string>
+    <string name="err_msg_arr">Enter arrival</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

@@ -4,11 +4,15 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 
 import com.google.gson.Gson;
@@ -36,6 +40,9 @@ public class ScheduleFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+
+    private TextInputLayout         inputLayoutDepart, inputLayoutArr;
 
     private AutoCompleteTextView    mDepartureStationAutoCompleteTextView;
     private AutoCompleteTextView    mDirectionStationAutoCompleteTextView;
@@ -80,29 +87,80 @@ public class ScheduleFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mDepartureStationAutoCompleteTextView = (AutoCompleteTextView)getActivity().findViewById(R.id.departure_autoCompleteTextView);
-        mDirectionStationAutoCompleteTextView = (AutoCompleteTextView)getActivity().findViewById(R.id.direction_autoCompleteTextView);
-
-        requestButton = (FloatingActionButton)getActivity().findViewById(R.id.requestButton);
 
         responseStationList = new ArrayList<>();
 
+        mDepartureStationAutoCompleteTextView = (AutoCompleteTextView)getActivity().findViewById(R.id.departure_autoCompleteTextView);
+        mDirectionStationAutoCompleteTextView = (AutoCompleteTextView)getActivity().findViewById(R.id.direction_autoCompleteTextView);
+
+        inputLayoutDepart = (TextInputLayout) getActivity().findViewById(R.id.input_layout_depart);
+        inputLayoutArr = (TextInputLayout) getActivity().findViewById(R.id.input_layout_arr);
+
+        mDepartureStationAutoCompleteTextView.addTextChangedListener(new MyTextWatcher(mDepartureStationAutoCompleteTextView));
+        mDirectionStationAutoCompleteTextView.addTextChangedListener(new MyTextWatcher(mDirectionStationAutoCompleteTextView));
+
+
+        requestButton = (FloatingActionButton)getActivity().findViewById(R.id.requestButton);
         requestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), ConnectionActivity.class);
-                // extras
-                intent.putExtra("Departure", mDepartureStationAutoCompleteTextView.getText().toString());
-                intent.putExtra("Arrival", mDirectionStationAutoCompleteTextView.getText().toString());
-                startActivity(intent);
+                submitForm();
+
             }
         });
 
         getStationsJSONTask = new GetStationsJSONTask();
         getStationsJSONTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-
     }
+
+    /**
+     * Validating form
+     */
+    private void submitForm() {
+        if (!validateDepart()) {
+            return;
+        }
+
+        if (!validateArr()) {
+            return;
+        }
+
+        Intent intent = new Intent(getContext(), ConnectionActivity.class);
+        // extras
+        intent.putExtra("Departure", mDepartureStationAutoCompleteTextView.getText().toString());
+        intent.putExtra("Arrival", mDirectionStationAutoCompleteTextView.getText().toString());
+        startActivity(intent);
+    }
+    private boolean validateDepart() {
+        if (mDepartureStationAutoCompleteTextView.getText().toString().trim().isEmpty()) {
+            inputLayoutDepart.setError(getString(R.string.err_msg_depart));
+            requestFocus(mDepartureStationAutoCompleteTextView);
+            return false;
+        } else {
+            inputLayoutDepart.setErrorEnabled(false);
+        }
+
+        return true;
+    }
+
+    private boolean validateArr() {
+        if (mDirectionStationAutoCompleteTextView.getText().toString().trim().isEmpty()) {
+            inputLayoutArr.setError(getString(R.string.err_msg_arr));
+            requestFocus(mDirectionStationAutoCompleteTextView);
+            return false;
+        } else {
+            inputLayoutArr.setErrorEnabled(false);
+        }
+
+        return true;
+    }
+    private void requestFocus(View view) {
+        if (view.requestFocus()) {
+            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
+    }
+
     @Override
     public void onDestroy() {
         try{
@@ -113,6 +171,31 @@ public class ScheduleFragment extends Fragment {
         super.onDestroy();
     }
 
+    private class MyTextWatcher implements TextWatcher {
+
+        private View view;
+
+        private MyTextWatcher(View view) {
+            this.view = view;
+        }
+
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        public void afterTextChanged(Editable editable) {
+            switch (view.getId()) {
+                case R.id.departure_autoCompleteTextView:
+                    validateDepart();
+                    break;
+                case R.id.direction_autoCompleteTextView:
+                    validateArr();
+                    break;
+            }
+        }
+    }
 
     private class GetStationsJSONTask extends AsyncTask<Void, Object, Void> {
 
