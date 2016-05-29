@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -110,7 +109,7 @@ public class MainActivity extends AppCompatActivity
         switch (id){
 
             //Replacing the main content with ContentFragment Which is our Inbox View;
-            case R.id.nav_gallery:
+            case R.id.nav_home:
                 selectFragment(CASE_HOME);
                 return true;
             case R.id.nav_camera:
