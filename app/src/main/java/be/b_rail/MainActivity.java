@@ -1,11 +1,10 @@
 package be.b_rail;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,9 +13,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import be.b_rail.Utils.PrefsUtils;
 import be.b_rail.fragments.BaseFragment;
-import be.b_rail.fragments.JourneyFragment;
-import be.b_rail.fragments.ScheduleFragment;
+import be.b_rail.fragments.HomeFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -26,9 +25,7 @@ public class MainActivity extends AppCompatActivity
     private int 						mCurrentTitle;
     private int 						mSelectedFragment;
 
-    private static final int 			CASE_JOURNEY 		  = 0;
-    private static final int 			CASE_SCHEDULE 		  = 1;
-    private static final int 			CASE_STATIONS 		  = 2;
+    private static final int 			CASE_HOME 		  = 0;
     //Used in savedInstanceState
     private static String               BUNDLE_SELECTEDFRAGMENT 		= "BDL_SELFRG";
 
@@ -42,38 +39,37 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        // Check if the EULA has been accepted; if not, show it.
+       // if (!PrefsUtils.isTosAccepted(this)) {
+       //     startActivity(new Intent(this, WelcomeActivity.class));
+       //     finish();
+       // }else{
 
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+
+            drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.addDrawerListener(toggle);
+            toggle.syncState();
+
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
+
+            //-----------------------------------------------------------------
+
+            if (savedInstanceState != null) {
+                mSelectedFragment = savedInstanceState.getInt(BUNDLE_SELECTEDFRAGMENT);
+
+                if ( getSupportFragmentManager().findFragmentById(R.id.frame_container) == null)
+                    selectFragment(mSelectedFragment);
+
+            }else {
+                selectFragment(CASE_HOME);
             }
-        });*/
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+      //  }
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        //-----------------------------------------------------------------
-
-        if (savedInstanceState != null) {
-            mSelectedFragment = savedInstanceState.getInt(BUNDLE_SELECTEDFRAGMENT);
-
-            if ( getSupportFragmentManager().findFragmentById(R.id.frame_container) == null)
-                selectFragment(mSelectedFragment);
-
-        }else {
-            selectFragment(CASE_JOURNEY);
-        }
     }
 
     @Override
@@ -115,7 +111,7 @@ public class MainActivity extends AppCompatActivity
 
             //Replacing the main content with ContentFragment Which is our Inbox View;
             case R.id.nav_gallery:
-                selectFragment(CASE_JOURNEY);
+                selectFragment(CASE_HOME);
                 return true;
             case R.id.nav_camera:
                // selectFragment(CASE_STATIONS);
@@ -141,8 +137,7 @@ public class MainActivity extends AppCompatActivity
 
         switch (position) {
 
-            case CASE_JOURNEY:  openFragment(JourneyFragment.newInstance());  break;
-            case CASE_SCHEDULE: openFragment(ScheduleFragment.newInstance());  break;
+            case CASE_HOME:  openFragment(HomeFragment.newInstance("",""));  break;
 
             default: break;
         }

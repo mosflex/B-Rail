@@ -1,12 +1,15 @@
-package be.b_rail.fragments;
+package be.b_rail;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -28,13 +31,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import be.b_rail.Models.Connection;
-import be.b_rail.R;
 import be.b_rail.adapters.ConnectionAdapter;
 
-/**
- * Created by Jawad & TTM on 15/02/2016.
- */
-public class ConnectionFragment extends BaseFragment {
+public class ConnectionActivity extends AppCompatActivity {
 
     private String                      departure, arrival;
     private GetConnectionsJSONTask      getConnectionsJSONTask = null;
@@ -47,61 +46,61 @@ public class ConnectionFragment extends BaseFragment {
     private ViewFlipper                 vf;
 
     @Override
-    public int getTitleResourceId() {
-        return R.string.Connection;
-    }
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_connection);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setTitle(R.string.Connection);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
-        ViewGroup rootView = (ViewGroup) inflater.inflate( R.layout.fragment_connection, container, false);
-        return rootView;
-    }
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getActivity().getWindow().setSoftInputMode(
+
+        getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
 
-        Bundle bundle = this.getArguments();
-        departure   = bundle.getString("Departure");
-        arrival     = bundle.getString("Arrival");
+        // 1. get passed intent
+        Intent intent = getIntent();
+        departure   = intent.getStringExtra("Departure");
+        arrival     = intent.getStringExtra("Arrival");
 
-        connectionListRecycleView   = (RecyclerView) getActivity().findViewById(R.id.cardList_connections);
-        txt_header_connection       = (TextView) getActivity().findViewById(R.id.txt_header_connection);
-        vf                          = (ViewFlipper) getActivity().findViewById(R.id.viewFlipper);
+        connectionListRecycleView   = (RecyclerView) findViewById(R.id.cardList_connections);
+        txt_header_connection       = (TextView) findViewById(R.id.txt_header_connection);
+        vf                          = (ViewFlipper) findViewById(R.id.viewFlipper);
 
         //Using one of the built in animations:
-        vf.setInAnimation(getActivity(), android.R.anim.fade_in);
-        vf.setOutAnimation(getActivity(), android.R.anim.fade_out);
+        vf.setInAnimation(this, android.R.anim.fade_in);
+        vf.setOutAnimation(this, android.R.anim.fade_out);
 
         responseConnectionList  = new ArrayList<>();
-        mLayoutManager          = new LinearLayoutManager(getActivity());
+        mLayoutManager          = new LinearLayoutManager(this);
         connectionListRecycleView.setLayoutManager(mLayoutManager);
 
         getConnectionsJSONTask = new GetConnectionsJSONTask();
         getConnectionsJSONTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-    }
 
+    }
     @Override
     public void onDestroy() {
         try{
-             if(getConnectionsJSONTask != null)getConnectionsJSONTask.cancel(true);
+            if(getConnectionsJSONTask != null)getConnectionsJSONTask.cancel(true);
         }catch(IllegalStateException e) {
             e.printStackTrace();
         }
         super.onDestroy();
     }
-
-
     /*************************************************************************************************************************/
     private class GetConnectionsJSONTask extends AsyncTask<Void, Object, Void> {
         private static final String TAG = "GetConnectionsJSONTask";

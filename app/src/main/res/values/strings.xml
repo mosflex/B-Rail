@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">OneTime</string>
 
+    <string name="Home">Home</string>
     <string name="Stations">Stations</string>
     <string name="Schedule">Schedule</string>
     <string name="Connection">Connection</string>
@@ -21,4 +22,12 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="text_journey">Recherchez votre itinéraire, puis enregistrez-les dans cet espace pour être accompagnée en temps réel.</string>
+    <string name="title_activity_connection">Connection</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="title_activity_welcome">Welcome</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

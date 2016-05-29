@@ -1,8 +1,10 @@
 package be.b_rail.fragments;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +24,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import be.b_rail.ConnectionActivity;
 import be.b_rail.Models.Station;
 import be.b_rail.R;
 import be.b_rail.adapters.StationsAdapter;
@@ -29,7 +32,10 @@ import be.b_rail.adapters.StationsAdapter;
 /**
  * Created by Jawad on 11-02-16.
  */
-public class ScheduleFragment extends BaseFragment  {
+public class ScheduleFragment extends Fragment {
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
 
     private AutoCompleteTextView    mDepartureStationAutoCompleteTextView;
     private AutoCompleteTextView    mDirectionStationAutoCompleteTextView;
@@ -40,15 +46,27 @@ public class ScheduleFragment extends BaseFragment  {
 
     private GetStationsJSONTask		getStationsJSONTask	= null;
 
-    @Override
-    public int getTitleResourceId() {
-        return R.string.Schedule;
+
+    public ScheduleFragment() {
+        // Required empty public constructor
     }
+
     /**
-     * Creates a new instance of a ScheduleFragment.
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment JourneyFragment.
      */
-    public static ScheduleFragment newInstance() {
-        return new ScheduleFragment();
+    // TODO: Rename and change types and number of parameters
+    public static ScheduleFragment newInstance(String param1, String param2) {
+        ScheduleFragment fragment = new ScheduleFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -72,15 +90,11 @@ public class ScheduleFragment extends BaseFragment  {
         requestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ConnectionFragment connectionFragment = new ConnectionFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("Departure",mDepartureStationAutoCompleteTextView.getText().toString());
-                bundle.putString("Arrival",mDirectionStationAutoCompleteTextView.getText().toString());
-                connectionFragment.setArguments(bundle);
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame_container,connectionFragment,null)
-                        .addToBackStack(null)
-                        .commit();
+                Intent intent = new Intent(getContext(), ConnectionActivity.class);
+                // extras
+                intent.putExtra("Departure", mDepartureStationAutoCompleteTextView.getText().toString());
+                intent.putExtra("Arrival", mDirectionStationAutoCompleteTextView.getText().toString());
+                startActivity(intent);
             }
         });
 

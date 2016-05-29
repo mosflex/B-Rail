@@ -11,8 +11,7 @@ import java.net.URL;
 /**
  * Created by Jawad on 10-02-16.
  */
-public class NetworkUtil {
-    /************************************************************************************************************************/
+public class NetworkUtils {
 
     public static boolean isConnectToInternet(Context context){
         boolean isConnect = false;
