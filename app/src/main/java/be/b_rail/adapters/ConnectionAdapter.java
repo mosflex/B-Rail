@@ -1,6 +1,8 @@
 package be.b_rail.adapters;
 
 import android.content.Context;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,20 +28,18 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Vi
         private TextView mTimeDepartureTextView;
         private TextView mTimeArrivalTextView;
         private TextView mDurationTravelTextView;
-        private TextView mStationDepartureTextView;
-        private TextView mStationArrivalTextView;
+
+        private FloatingActionButton btn_add_journey;
 
         public ViewHolder(View v) {
 
             super(v);
-            mTimeDepartureTextView =(TextView) v.findViewById(R.id.time_departure_textview);
-            mTimeArrivalTextView =(TextView) v.findViewById(R.id.time_arrival_textview);
-            mDurationTravelTextView = (TextView) v.findViewById(R.id.duration_travel_textview) ;
-    /*        mStationDepartureTextView =(TextView)v.findViewById(R.id.station_departure_textview);
-            mStationArrivalTextView =(TextView)v.findViewById(R.id.station_arrival_textview);*/
+            mTimeDepartureTextView  = (TextView) v.findViewById(R.id.time_departure_textview);
+            mTimeArrivalTextView    = (TextView) v.findViewById(R.id.time_arrival_textview);
+            mDurationTravelTextView = (TextView) v.findViewById(R.id.duration_travel_textview);
+            btn_add_journey         = (FloatingActionButton) v.findViewById(R.id.add_journey);
         }
     }
-
 
     public ConnectionAdapter(List<Connection> connectionsList) {
         mConnectionsList = connectionsList;
@@ -67,11 +67,16 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Vi
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
-        Connection connection  = mConnectionsList.get(position);
-
+        final Connection connection  = mConnectionsList.get(position);
+        holder.btn_add_journey.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "connection : " + connection.toString(), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
         //holder.mStationDepartureTextView.setText(connection.getDeparture().getStation());
         holder.mTimeDepartureTextView.setText(Utils.getTimeFromDate(connection.getDeparture().getTime()));
-
         holder.mDurationTravelTextView.setText(Utils.getDurationString(connection.getDuration()));
 
         //holder.mStationArrivalTextView.setText(connection.getArrival().getStation());

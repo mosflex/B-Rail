@@ -27,7 +27,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import be.b_rail.Models.Connection;
@@ -43,6 +45,8 @@ public class ConnectionActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager  mLayoutManager;
 
     private TextView                    txt_header_connection;
+    private TextView                    txt_header_date;
+    private TextView                    txt_header_time;
     private ViewFlipper                 vf;
 
     @Override
@@ -56,14 +60,14 @@ public class ConnectionActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setTitle(R.string.Connection);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+      /*  FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
 
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
@@ -76,6 +80,8 @@ public class ConnectionActivity extends AppCompatActivity {
 
         connectionListRecycleView   = (RecyclerView) findViewById(R.id.cardList_connections);
         txt_header_connection       = (TextView) findViewById(R.id.txt_header_connection);
+        txt_header_date             = (TextView) findViewById(R.id.txt_header_date);
+        txt_header_time             = (TextView) findViewById(R.id.txt_header_time);
         vf                          = (ViewFlipper) findViewById(R.id.viewFlipper);
 
         //Using one of the built in animations:
@@ -168,7 +174,9 @@ public class ConnectionActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             mConnectionAdapter = new ConnectionAdapter(responseConnectionList);
             connectionListRecycleView.setAdapter(mConnectionAdapter);
-            txt_header_connection.setText(departure +" > " + arrival);
+            txt_header_connection.setText(departure +"  >  " + arrival);
+            txt_header_date.setText(DateFormat.getDateInstance().format(Calendar.getInstance().getTime()));
+            txt_header_time.setText(DateFormat.getTimeInstance().format(Calendar.getInstance().getTime()));
             vf.showNext();
 
             super.onPostExecute(aVoid);
