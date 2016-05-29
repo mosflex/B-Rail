@@ -65,7 +65,6 @@ public class ConnectionActivity extends AppCompatActivity {
             }
         });
 
-
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
