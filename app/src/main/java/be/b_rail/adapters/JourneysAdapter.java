@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,7 @@ import be.b_rail.Utils.Utils;
 /**
  * Created by Jawad on 29-05-16.
  */
-public class JourneysAdapter  extends RecyclerView.Adapter<JourneysAdapter.ViewHolder>{
+public class JourneysAdapter extends RecyclerView.Adapter<JourneysAdapter.ViewHolder>{
     private List<Connection> mConnectionsList;
     private Context context;
 
@@ -44,6 +45,7 @@ public class JourneysAdapter  extends RecyclerView.Adapter<JourneysAdapter.ViewH
     public JourneysAdapter(Context mContext, List<Connection> connectionsList) {
         context = mContext;
         mConnectionsList = connectionsList;
+
     }
     // Create new views (invoked by the layout manager)
     @Override
@@ -65,7 +67,7 @@ public class JourneysAdapter  extends RecyclerView.Adapter<JourneysAdapter.ViewH
         holder.btn_share_journey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "connection ajouté : " + connection.toString(), Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "connection : " + connection.toString(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });

@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.TextAppearanceSpan;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -62,10 +63,14 @@ public class PrefsUtils {
         settings = context.getSharedPreferences(PREF_CONNECTIONS,Context.MODE_PRIVATE);
         if (settings.contains(CONNECTIONS)) {
             String jsonConnections = settings.getString(CONNECTIONS, null);
+            Log.d("jsonConnections : ",jsonConnections);
             Gson gson = new Gson();
             Connection[] connectionItems = gson.fromJson(jsonConnections,Connection[].class);
+
+            Log.d("connectionItems : ",connectionItems.length+"");
             connections = Arrays.asList(connectionItems);
             connections = new ArrayList(connections);
+            Log.d("ArrayList size: ",connections.size()+"");
         } else
             return null;
         return (ArrayList) connections;

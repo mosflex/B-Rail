@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ViewFlipper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import be.b_rail.Models.Connection;
 import be.b_rail.R;
@@ -44,6 +46,7 @@ public class JourneyFragment extends Fragment {
     private ViewFlipper             vf;
     private RecyclerView            journeysListRecycleView;
     private RecyclerView.Adapter    mJourneysAdapter;
+    private RecyclerView.LayoutManager  mLayoutManager;
 
     public JourneyFragment() {
         // Required empty public constructor
@@ -94,7 +97,9 @@ public class JourneyFragment extends Fragment {
             }
         });
 
-        ArrayList<Connection> ListConnections = PrefsUtils.loadConnections(getContext());
+        mLayoutManager          = new LinearLayoutManager(getActivity());
+        journeysListRecycleView.setLayoutManager(mLayoutManager);
+        List<Connection> ListConnections = PrefsUtils.loadConnections(getContext());
         if(ListConnections != null && !ListConnections.isEmpty()){
             mJourneysAdapter = new JourneysAdapter(getActivity(),ListConnections);
             journeysListRecycleView.setAdapter(mJourneysAdapter);
