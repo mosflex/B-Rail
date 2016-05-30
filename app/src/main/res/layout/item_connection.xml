@@ -41,12 +41,18 @@
                 android:text="00:00"
                 android:textColor="@color/colorPrimary"/>
         </LinearLayout>
+    <LinearLayout
+        android:layout_weight=".5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:gravity="center"
+        android:orientation="vertical">
         <LinearLayout
-            android:layout_weight=".5"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:gravity="center"
+            android:padding="8dp"
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="wrap_content"
@@ -61,7 +67,15 @@
                 android:gravity="center"
                 android:textStyle="bold"
                 android:text="00:00"/>
+
+
         </LinearLayout>
+        <TextView
+            android:id="@+id/vias_number_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
         <LinearLayout
             android:layout_width="0dip"
             android:layout_weight=".5"

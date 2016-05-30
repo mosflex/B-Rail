@@ -30,6 +30,7 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Vi
         private TextView mTimeDepartureTextView;
         private TextView mTimeArrivalTextView;
         private TextView mDurationTravelTextView;
+        private TextView mViasNumberTextView;
 
         private FloatingActionButton btn_add_journey;
 
@@ -40,6 +41,7 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Vi
             mTimeArrivalTextView    = (TextView) v.findViewById(R.id.time_arrival_textview);
             mDurationTravelTextView = (TextView) v.findViewById(R.id.duration_travel_textview);
             btn_add_journey         = (FloatingActionButton) v.findViewById(R.id.add_journey);
+            mViasNumberTextView     = (TextView) v.findViewById(R.id.vias_number_textview);
         }
     }
 
@@ -86,6 +88,10 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Vi
 
         //holder.mStationArrivalTextView.setText(connection.getArrival().getStation());
         holder.mTimeArrivalTextView.setText(Utils.getTimeFromDate(connection.getArrival().getTime()));
+
+        if(connection.getVias()!=null){
+           holder.mViasNumberTextView.setText(connection.getVias().getNumber() + " correspondance");
+        }
     }
 
     public Connection getItem(int position) {

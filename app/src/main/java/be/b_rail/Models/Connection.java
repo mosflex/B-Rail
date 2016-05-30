@@ -15,6 +15,8 @@ public class Connection {
     private Departure   departure;
     @SerializedName("arrival")
     private Arrival     arrival;
+    @SerializedName("vias")
+    private Vias vias;
 
 
     public int getId() {
@@ -47,5 +49,13 @@ public class Connection {
 
     public void setArrival(Arrival arrival) {
         this.arrival = arrival;
+    }
+
+    public Vias getVias() {
+        return this.vias;
+    }
+
+    public void setVias(Vias vias) {
+        this.vias = vias;
     }
 }
