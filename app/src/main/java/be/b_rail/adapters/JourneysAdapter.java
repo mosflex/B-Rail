@@ -10,12 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.liulishuo.magicprogresswidget.MagicProgressCircle;
+
 import java.util.List;
 
 import be.b_rail.Models.Connection;
 import be.b_rail.R;
 import be.b_rail.Utils.PrefsUtils;
 import be.b_rail.Utils.Utils;
+import be.b_rail.widget.AnimTextView;
 
 /**
  * Created by Jawad on 29-05-16.
@@ -32,6 +35,9 @@ public class JourneysAdapter extends RecyclerView.Adapter<JourneysAdapter.ViewHo
         private TextView mStationArrivalTextView;
         private TextView mDurationTravelTextView;
 
+        private MagicProgressCircle demoMpc;
+        private AnimTextView demoTv;
+
         private FloatingActionButton btn_share_journey;
 
         public ViewHolder(View v) {
@@ -42,6 +48,10 @@ public class JourneysAdapter extends RecyclerView.Adapter<JourneysAdapter.ViewHo
             mStationArrivalTextView    = (TextView) v.findViewById(R.id.station_arrival_textview);
             mDurationTravelTextView = (TextView) v.findViewById(R.id.duration_travel_textview);
             btn_share_journey       = (FloatingActionButton) v.findViewById(R.id.share_journey);
+
+
+            demoMpc = (MagicProgressCircle) v.findViewById(R.id.demo_mpc);
+            demoTv = (AnimTextView) v.findViewById(R.id.demo_tv);
         }
     }
 
