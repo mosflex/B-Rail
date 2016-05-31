@@ -28,15 +28,18 @@ public class JourneysAdapter extends RecyclerView.Adapter<JourneysAdapter.ViewHo
 
         private TextView mTimeDepartureTextView;
         private TextView mTimeArrivalTextView;
+        private TextView mStationDepartureTextView;
+        private TextView mStationArrivalTextView;
         private TextView mDurationTravelTextView;
 
         private FloatingActionButton btn_share_journey;
 
         public ViewHolder(View v) {
-
             super(v);
             mTimeDepartureTextView  = (TextView) v.findViewById(R.id.time_departure_textview);
             mTimeArrivalTextView    = (TextView) v.findViewById(R.id.time_arrival_textview);
+            mStationDepartureTextView  = (TextView) v.findViewById(R.id.station_departure_textview);
+            mStationArrivalTextView    = (TextView) v.findViewById(R.id.station_arrival_textview);
             mDurationTravelTextView = (TextView) v.findViewById(R.id.duration_travel_textview);
             btn_share_journey       = (FloatingActionButton) v.findViewById(R.id.share_journey);
         }
@@ -71,11 +74,12 @@ public class JourneysAdapter extends RecyclerView.Adapter<JourneysAdapter.ViewHo
                         .setAction("Action", null).show();
             }
         });
-        //holder.mStationDepartureTextView.setText(connection.getDeparture().getStation());
+        holder.mStationDepartureTextView.setText(connection.getDeparture().getStation());
         holder.mTimeDepartureTextView.setText(Utils.getTimeFromDate(connection.getDeparture().getTime()));
-        holder.mDurationTravelTextView.setText(Utils.getDurationString(connection.getDuration()));
-        //holder.mStationArrivalTextView.setText(connection.getArrival().getStation());
+        holder.mStationArrivalTextView.setText(connection.getArrival().getStation());
         holder.mTimeArrivalTextView.setText(Utils.getTimeFromDate(connection.getArrival().getTime()));
+
+        holder.mDurationTravelTextView.setText(Utils.getDurationString(connection.getDuration()));
     }
 
     public Connection getItem(int position) {

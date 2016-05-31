@@ -5,13 +5,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
     card_view:cardCornerRadius="2dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:gravity="center"
+        android:gravity="start"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,22 +22,21 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="12dp"
                 android:orientation="horizontal"
                 android:gravity="start">
-
                 <TextView
                     android:id="@+id/time_departure_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:text="00:00"
                     android:textColor="@color/colorPrimary"/>
                 <TextView
                     android:id="@+id/station_departure_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
                     android:textSize="16sp"
                     android:text="Unknwon"
                     android:textColor="@color/colorPrimary"/>
@@ -45,7 +45,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
+                android:padding="12dp"
                 android:gravity="start"
                 android:orientation="horizontal">
                 <TextView
@@ -53,7 +53,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:text="00:00"
                     android:textColor="@color/colorPrimary"/>
 
@@ -61,25 +61,24 @@
                     android:id="@+id/station_arrival_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
                     android:textSize="16sp"
                     android:text="00:00"
                     android:textColor="@color/colorPrimary"/>
-
-                <TextView
-                    android:id="@+id/duration_travel_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="16dp"
-                    android:gravity="center"
-                    android:textStyle="bold"
-                    android:text="00:00"/>
             </LinearLayout>
+            <TextView
+                android:id="@+id/duration_travel_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:text="00:00"/>
         </LinearLayout>
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/share_journey"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
             android:src="@drawable/ic_share_white_24dp"
             android:scaleType="center"
             card_view:fabSize="mini"
