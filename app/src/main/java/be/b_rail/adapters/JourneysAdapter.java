@@ -55,6 +55,7 @@ public class JourneysAdapter extends RecyclerView.Adapter<JourneysAdapter.ViewHo
         }
     }
 
+
     public JourneysAdapter(Context mContext, List<Connection> connectionsList) {
         context = mContext;
         mConnectionsList = connectionsList;
