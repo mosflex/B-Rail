@@ -6,5 +6,6 @@
 
     <color name="background_window">#ededed</color>
 
+    <color name="expandable_item_indicator_color">#42000000</color>
     <color name="black_overlay">#66000000</color>
 </resources>

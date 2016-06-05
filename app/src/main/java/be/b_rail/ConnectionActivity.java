@@ -3,6 +3,7 @@ package be.b_rail;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.google.gson.Gson;
+import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
+import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchActionGuardManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,7 +38,12 @@ import java.util.List;
 import be.b_rail.Models.Connection;
 import be.b_rail.adapters.ConnectionAdapter;
 
-public class ConnectionActivity extends AppCompatActivity {
+public class ConnectionActivity extends AppCompatActivity
+        implements RecyclerViewExpandableItemManager.OnGroupCollapseListener,
+        RecyclerViewExpandableItemManager.OnGroupExpandListener {
+
+
+    private static final String SAVED_STATE_EXPANDABLE_ITEM_MANAGER = "RecyclerViewExpandableItemManager";
 
     private String                      departure, arrival;
     private GetConnectionsJSONTask      getConnectionsJSONTask = null;
@@ -43,6 +51,9 @@ public class ConnectionActivity extends AppCompatActivity {
     private RecyclerView.Adapter        mConnectionAdapter;
     private List<Connection>            responseConnectionList;
     private RecyclerView.LayoutManager  mLayoutManager;
+
+    private RecyclerViewExpandableItemManager mRecyclerViewExpandableItemManager;
+    private RecyclerViewTouchActionGuardManager mRecyclerViewTouchActionGuardManager;
 
     private TextView                    txt_header_connection;
     private TextView                    txt_header_date;
@@ -92,6 +103,16 @@ public class ConnectionActivity extends AppCompatActivity {
         mLayoutManager          = new LinearLayoutManager(this);
         connectionListRecycleView.setLayoutManager(mLayoutManager);
 
+        final Parcelable eimSavedState = (savedInstanceState != null) ? savedInstanceState.getParcelable(SAVED_STATE_EXPANDABLE_ITEM_MANAGER) : null;
+        mRecyclerViewExpandableItemManager = new RecyclerViewExpandableItemManager(eimSavedState);
+        mRecyclerViewExpandableItemManager.setOnGroupExpandListener(this);
+        mRecyclerViewExpandableItemManager.setOnGroupCollapseListener(this);
+
+        // touch guard manager  (this class is required to suppress scrolling while swipe-dismiss animation is running)
+        mRecyclerViewTouchActionGuardManager = new RecyclerViewTouchActionGuardManager();
+        mRecyclerViewTouchActionGuardManager.setInterceptVerticalScrollingWhileAnimationRunning(true);
+        mRecyclerViewTouchActionGuardManager.setEnabled(true);
+
         getConnectionsJSONTask = new GetConnectionsJSONTask();
         getConnectionsJSONTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
@@ -105,6 +126,26 @@ public class ConnectionActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         super.onDestroy();
+    }
+
+    @Override
+    public void onGroupCollapse(int groupPosition, boolean fromUser) {
+
+    }
+
+    @Override
+    public void onGroupExpand(int groupPosition, boolean fromUser) {
+
+        // NOTE: fromUser is false because explicitly calling the
+        // RecyclerViewExpandableItemManager.expand() method in adapter
+        adjustScrollPositionOnGroupExpanded(groupPosition);
+    }
+    private void adjustScrollPositionOnGroupExpanded(int groupPosition) {
+        int childItemHeight = getResources().getDimensionPixelSize(R.dimen.list_child_item_height);
+        int topMargin = (int) (getResources().getDisplayMetrics().density * 16); // top-spacing: 16dp
+        int bottomMargin = topMargin; // bottom-spacing: 16dp
+
+        mRecyclerViewExpandableItemManager.scrollToGroup(groupPosition, childItemHeight, topMargin, bottomMargin);
     }
     /*************************************************************************************************************************/
     private class GetConnectionsJSONTask extends AsyncTask<Void, Object, Void> {
@@ -172,7 +213,7 @@ public class ConnectionActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            mConnectionAdapter = new ConnectionAdapter(ConnectionActivity.this,responseConnectionList);
+            mConnectionAdapter = new ConnectionAdapter(ConnectionActivity.this,responseConnectionList,mRecyclerViewExpandableItemManager);
             connectionListRecycleView.setAdapter(mConnectionAdapter);
             txt_header_connection.setText(departure +"  >  " + arrival);
             txt_header_date.setText(DateFormat.getDateInstance().format(Calendar.getInstance().getTime()));

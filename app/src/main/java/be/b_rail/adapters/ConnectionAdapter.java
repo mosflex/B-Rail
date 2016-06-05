@@ -8,7 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+
+import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemConstants;
+import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
+import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAdapter;
+import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
+
 
 import java.util.List;
 
@@ -16,17 +25,35 @@ import be.b_rail.Models.Connection;
 import be.b_rail.R;
 import be.b_rail.Utils.PrefsUtils;
 import be.b_rail.Utils.Utils;
+import be.b_rail.widget.ExpandableItemIndicator;
 
 /**
  * Created by Jawad & TTM on 15/02/2016.
  */
-public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.ViewHolder>{
+public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionAdapter.GroupViewHolder,ConnectionAdapter.ChildViewHolder> {
+
 
     private List<Connection> mConnectionsList;
     private Context context;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    private static RecyclerViewExpandableItemManager mExpandableItemManager;
 
+    private interface Expandable extends ExpandableItemConstants {
+    }
+
+    public static abstract class BaseViewHolder extends AbstractExpandableItemViewHolder {
+
+        public LinearLayout mContainer;
+
+        public BaseViewHolder(View v) {
+            super(v);
+            mContainer              = (LinearLayout) v.findViewById(R.id.container);
+        }
+    }
+
+    public static class GroupViewHolder extends BaseViewHolder {
+
+        public ExpandableItemIndicator mIndicator;
         private TextView mTimeDepartureTextView;
         private TextView mTimeArrivalTextView;
         private TextView mDurationTravelTextView;
@@ -34,9 +61,9 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Vi
 
         private FloatingActionButton btn_add_journey;
 
-        public ViewHolder(View v) {
-
+        public GroupViewHolder(View v) {
             super(v);
+            mIndicator = (ExpandableItemIndicator) v.findViewById(R.id.indicator);
             mTimeDepartureTextView  = (TextView) v.findViewById(R.id.time_departure_textview);
             mTimeArrivalTextView    = (TextView) v.findViewById(R.id.time_arrival_textview);
             mDurationTravelTextView = (TextView) v.findViewById(R.id.duration_travel_textview);
@@ -45,8 +72,15 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Vi
         }
     }
 
-    public ConnectionAdapter(Context mContext, List<Connection> connectionsList) {
+    public static class ChildViewHolder extends BaseViewHolder {
+        public ChildViewHolder(View v) {
+            super(v);
+        }
+    }
+
+    public ConnectionAdapter(Context mContext, List<Connection> connectionsList, RecyclerViewExpandableItemManager expandableItemManager) {
         context = mContext;
+        mExpandableItemManager = expandableItemManager;
         mConnectionsList = connectionsList;
     }
 
@@ -55,24 +89,46 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Vi
         notifyDataSetChanged();
 
     }
-    // Create new views (invoked by the layout manager)
+    private static final String TAG = "ConnectionItemAdapter";
+
     @Override
-    public ConnectionAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,int viewType) {
-        Context context = parent.getContext();
-        // create a new view
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_connection, parent, false);
-        // set the view's size, margins, paddings and layout parameters
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+    public int getGroupCount() {
+        return mConnectionsList.size();
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
+    public int getChildCount(int groupPosition) {
+        return Integer.parseInt(mConnectionsList.get(groupPosition).getVias().getNumber());
+    }
 
-        final Connection connection  = mConnectionsList.get(position);
+    @Override
+    public long getGroupId(int groupPosition) {
+        return mConnectionsList.get(groupPosition).getId();
+    }
+
+    @Override
+    public long getChildId(int groupPosition, int childPosition) {
+        return groupPosition+childPosition;
+    }
+
+    @Override
+    public GroupViewHolder onCreateGroupViewHolder(ViewGroup parent, int viewType) {
+        final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        final View v = inflater.inflate(R.layout.item_connection, parent, false);
+        return new GroupViewHolder(v);
+    }
+
+    @Override
+    public ChildViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType) {
+
+        final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        final View v = inflater.inflate(R.layout.item_connection_child, parent, false);
+        return new ChildViewHolder(v);
+    }
+
+    @Override
+    public void onBindGroupViewHolder(GroupViewHolder holder, int groupPosition, int viewType) {
+        final Connection connection  = mConnectionsList.get(groupPosition);
         holder.btn_add_journey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,17 +146,20 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Vi
         holder.mTimeArrivalTextView.setText(Utils.getTimeFromDate(connection.getArrival().getTime()));
 
         if(connection.getVias()!=null){
-           holder.mViasNumberTextView.setText(connection.getVias().getNumber() + " correspondance");
+            holder.mViasNumberTextView.setText(connection.getVias().getNumber() + " correspondance");
         }
     }
 
-    public Connection getItem(int position) {
-        return mConnectionsList.get(position);
+    @Override
+    public void onBindChildViewHolder(ChildViewHolder holder, int groupPosition, int childPosition, int viewType) {
+
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
-    public int getItemCount() {
-        return mConnectionsList.size();
+    public boolean onCheckCanExpandOrCollapseGroup(GroupViewHolder holder, int groupPosition, int x, int y, boolean expand) {
+        return false;
     }
+
+
+
 }

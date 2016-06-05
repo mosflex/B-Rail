@@ -10,6 +10,7 @@
     card_view:cardCornerRadius="2dp">
 
     <LinearLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
@@ -45,7 +46,6 @@
         android:layout_weight=".5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:gravity="center"
         android:orientation="vertical">
         <LinearLayout
@@ -74,6 +74,11 @@
             android:id="@+id/vias_number_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <be.b_rail.widget.ExpandableItemIndicator
+            android:id="@+id/indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
         <LinearLayout
