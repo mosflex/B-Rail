@@ -16,6 +16,8 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.google.gson.Gson;
+import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
+import com.h6ah4i.android.widget.advrecyclerview.animator.RefactoredDefaultItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchActionGuardManager;
 
@@ -52,6 +54,8 @@ public class ConnectionActivity extends AppCompatActivity
     private List<Connection>            responseConnectionList;
     private RecyclerView.LayoutManager  mLayoutManager;
 
+
+    private RecyclerView.Adapter                mWrappedAdapter;
     private RecyclerViewExpandableItemManager mRecyclerViewExpandableItemManager;
     private RecyclerViewTouchActionGuardManager mRecyclerViewTouchActionGuardManager;
 
@@ -214,7 +218,23 @@ public class ConnectionActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(Void aVoid) {
             mConnectionAdapter = new ConnectionAdapter(ConnectionActivity.this,responseConnectionList,mRecyclerViewExpandableItemManager);
-            connectionListRecycleView.setAdapter(mConnectionAdapter);
+
+
+
+            mWrappedAdapter = mRecyclerViewExpandableItemManager.createWrappedAdapter(mConnectionAdapter);       // wrap for expanding
+
+            final GeneralItemAnimator animator = new RefactoredDefaultItemAnimator();
+
+            // Change animations are enabled by default since support-v7-recyclerview v22.
+            // Disable the change animation in order to make turning back animation of swiped item works properly.
+            // Also need to disable them when using animation indicator.
+            animator.setSupportsChangeAnimations(false);
+
+            // requires *wrapped* adapter
+            connectionListRecycleView.setAdapter(mWrappedAdapter);
+            connectionListRecycleView.setItemAnimator(animator);
+            connectionListRecycleView.setHasFixedSize(false);
+
             txt_header_connection.setText(departure +"  >  " + arrival);
             txt_header_date.setText(DateFormat.getDateInstance().format(Calendar.getInstance().getTime()));
             txt_header_time.setText(DateFormat.getTimeInstance().format(Calendar.getInstance().getTime()));

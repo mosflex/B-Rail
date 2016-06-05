@@ -82,6 +82,10 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
         context = mContext;
         mExpandableItemManager = expandableItemManager;
         mConnectionsList = connectionsList;
+
+        // ExpandableItemAdapter requires stable ID, and also
+        // have to implement the getGroupItemId()/getChildItemId() methods appropriately.
+        setHasStableIds(true);
     }
 
     public void add(Connection connection){
@@ -98,7 +102,11 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
 
     @Override
     public int getChildCount(int groupPosition) {
-        return Integer.parseInt(mConnectionsList.get(groupPosition).getVias().getNumber());
+        if(mConnectionsList.get(groupPosition).getVias() != null){
+
+            return Integer.parseInt(mConnectionsList.get(groupPosition).getVias().getNumber());
+        }
+        return 0;
     }
 
     @Override
