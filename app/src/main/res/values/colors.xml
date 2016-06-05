@@ -7,5 +7,9 @@
     <color name="background_window">#ededed</color>
 
     <color name="expandable_item_indicator_color">#42000000</color>
+    <color name="bg_group_item_expanded_state">#ff88dd88</color>
+    <color name="bg_group_item_expanded_pressed_state">#ff99cc99</color>
+    <color name="bg_group_item_normal_state">#ffddffdd</color>
+    <color name="bg_group_item_normal_pressed_state">#ff99cc99</color>
     <color name="black_overlay">#66000000</color>
 </resources>

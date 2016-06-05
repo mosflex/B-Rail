@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 
 import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemConstants;
+import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemViewHolder;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
@@ -41,14 +42,26 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
     private interface Expandable extends ExpandableItemConstants {
     }
 
-    public static abstract class BaseViewHolder extends AbstractExpandableItemViewHolder {
+    public static abstract class BaseViewHolder extends AbstractExpandableItemViewHolder
+            implements ExpandableItemViewHolder {
 
         public LinearLayout mContainer;
+        private int             mExpandStateFlags;
 
         public BaseViewHolder(View v) {
             super(v);
-            mContainer              = (LinearLayout) v.findViewById(R.id.container);
+            mContainer = (LinearLayout) v.findViewById(R.id.container);
         }
+        @Override
+        public int getExpandStateFlags() {
+            return mExpandStateFlags;
+        }
+
+        @Override
+        public void setExpandStateFlags(int flag) {
+            mExpandStateFlags = flag;
+        }
+
     }
 
     public static class GroupViewHolder extends BaseViewHolder {
@@ -64,11 +77,11 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
         public GroupViewHolder(View v) {
             super(v);
             mIndicator = (ExpandableItemIndicator) v.findViewById(R.id.indicator);
-            mTimeDepartureTextView  = (TextView) v.findViewById(R.id.time_departure_textview);
-            mTimeArrivalTextView    = (TextView) v.findViewById(R.id.time_arrival_textview);
+            mTimeDepartureTextView = (TextView) v.findViewById(R.id.time_departure_textview);
+            mTimeArrivalTextView = (TextView) v.findViewById(R.id.time_arrival_textview);
             mDurationTravelTextView = (TextView) v.findViewById(R.id.duration_travel_textview);
-            btn_add_journey         = (FloatingActionButton) v.findViewById(R.id.add_journey);
-            mViasNumberTextView     = (TextView) v.findViewById(R.id.vias_number_textview);
+            btn_add_journey = (FloatingActionButton) v.findViewById(R.id.add_journey);
+            mViasNumberTextView = (TextView) v.findViewById(R.id.vias_number_textview);
         }
     }
 
@@ -88,11 +101,12 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
         setHasStableIds(true);
     }
 
-    public void add(Connection connection){
+    public void add(Connection connection) {
         mConnectionsList.add(connection);
         notifyDataSetChanged();
 
     }
+
     private static final String TAG = "ConnectionItemAdapter";
 
     @Override
@@ -102,7 +116,7 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
 
     @Override
     public int getChildCount(int groupPosition) {
-        if(mConnectionsList.get(groupPosition).getVias() != null){
+        if (mConnectionsList.get(groupPosition).getVias() != null) {
 
             return Integer.parseInt(mConnectionsList.get(groupPosition).getVias().getNumber());
         }
@@ -116,7 +130,7 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        return groupPosition+childPosition;
+        return groupPosition + childPosition;
     }
 
     @Override
@@ -136,12 +150,12 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
 
     @Override
     public void onBindGroupViewHolder(GroupViewHolder holder, int groupPosition, int viewType) {
-        final Connection connection  = mConnectionsList.get(groupPosition);
+        final Connection connection = mConnectionsList.get(groupPosition);
         holder.btn_add_journey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                PrefsUtils.addConnection(context,connection);
+                PrefsUtils.addConnection(context, connection);
                 Snackbar.make(view, "connection ajouté : " + connection.toString(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
@@ -153,8 +167,30 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
         //holder.mStationArrivalTextView.setText(connection.getArrival().getStation());
         holder.mTimeArrivalTextView.setText(Utils.getTimeFromDate(connection.getArrival().getTime()));
 
-        if(connection.getVias()!=null){
+        if (connection.getVias() != null) {
             holder.mViasNumberTextView.setText(connection.getVias().getNumber() + " correspondance");
+        }
+
+        holder.itemView.setClickable(true);
+
+        // set background resource (target view ID: container)
+        final int expandState = holder.getExpandStateFlags();
+
+        if ((expandState & ExpandableItemConstants.STATE_FLAG_IS_UPDATED) != 0) {
+            int bgResId;
+            boolean isExpanded;
+            boolean animateIndicator = ((expandState & Expandable.STATE_FLAG_HAS_EXPANDED_STATE_CHANGED) != 0);
+
+            if ((expandState & Expandable.STATE_FLAG_IS_EXPANDED) != 0) {
+                bgResId = R.drawable.bg_group_item_expanded_state;
+                isExpanded = true;
+            } else {
+                bgResId = R.drawable.bg_group_item_normal_state;
+                isExpanded = false;
+            }
+
+            holder.mContainer.setBackgroundResource(bgResId);
+            holder.mIndicator.setExpandedState(isExpanded, animateIndicator);
         }
     }
 
@@ -165,9 +201,10 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
 
     @Override
     public boolean onCheckCanExpandOrCollapseGroup(GroupViewHolder holder, int groupPosition, int x, int y, boolean expand) {
+        // check the item is *not* pinned
         return false;
     }
-
-
-
 }
+
+
+

@@ -20,6 +20,7 @@ import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.animator.RefactoredDefaultItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchActionGuardManager;
+import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -129,6 +130,24 @@ public class ConnectionActivity extends AppCompatActivity
         }catch(IllegalStateException e) {
             e.printStackTrace();
         }
+
+        if (mRecyclerViewExpandableItemManager != null) {
+            mRecyclerViewExpandableItemManager.release();
+            mRecyclerViewExpandableItemManager = null;
+        }
+
+        if (connectionListRecycleView != null) {
+            connectionListRecycleView.setItemAnimator(null);
+            connectionListRecycleView.setAdapter(null);
+            connectionListRecycleView = null;
+        }
+
+        if (mWrappedAdapter != null) {
+            WrapperAdapterUtils.releaseAll(mWrappedAdapter);
+            mWrappedAdapter = null;
+        }
+        mConnectionAdapter = null;
+        mLayoutManager = null;
         super.onDestroy();
     }
 
@@ -219,8 +238,6 @@ public class ConnectionActivity extends AppCompatActivity
         protected void onPostExecute(Void aVoid) {
             mConnectionAdapter = new ConnectionAdapter(ConnectionActivity.this,responseConnectionList,mRecyclerViewExpandableItemManager);
 
-
-
             mWrappedAdapter = mRecyclerViewExpandableItemManager.createWrappedAdapter(mConnectionAdapter);       // wrap for expanding
 
             final GeneralItemAnimator animator = new RefactoredDefaultItemAnimator();
@@ -234,6 +251,8 @@ public class ConnectionActivity extends AppCompatActivity
             connectionListRecycleView.setAdapter(mWrappedAdapter);
             connectionListRecycleView.setItemAnimator(animator);
             connectionListRecycleView.setHasFixedSize(false);
+
+            mRecyclerViewExpandableItemManager.attachRecyclerView(connectionListRecycleView);
 
             txt_header_connection.setText(departure +"  >  " + arrival);
             txt_header_date.setText(DateFormat.getDateInstance().format(Calendar.getInstance().getTime()));
