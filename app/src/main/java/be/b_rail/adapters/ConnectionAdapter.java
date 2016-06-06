@@ -33,11 +33,10 @@ import be.b_rail.widget.ExpandableItemIndicator;
  */
 public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionAdapter.GroupViewHolder,ConnectionAdapter.ChildViewHolder> {
 
+    private static final String TAG = "ConnectionItemAdapter";
 
-    private List<Connection> mConnectionsList;
-    private Context context;
-
-    private static RecyclerViewExpandableItemManager mExpandableItemManager;
+    private List<Connection>    mConnectionsList;
+    private Context             context;
 
     private interface Expandable extends ExpandableItemConstants {
     }
@@ -45,7 +44,7 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
     public static abstract class BaseViewHolder extends AbstractExpandableItemViewHolder
             implements ExpandableItemViewHolder {
 
-        public LinearLayout mContainer;
+        public LinearLayout     mContainer;
         private int             mExpandStateFlags;
 
         public BaseViewHolder(View v) {
@@ -91,9 +90,8 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
         }
     }
 
-    public ConnectionAdapter(Context mContext, List<Connection> connectionsList, RecyclerViewExpandableItemManager expandableItemManager) {
+    public ConnectionAdapter(Context mContext, List<Connection> connectionsList) {
         context = mContext;
-        mExpandableItemManager = expandableItemManager;
         mConnectionsList = connectionsList;
 
         // ExpandableItemAdapter requires stable ID, and also
@@ -104,10 +102,8 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
     public void add(Connection connection) {
         mConnectionsList.add(connection);
         notifyDataSetChanged();
-
     }
 
-    private static final String TAG = "ConnectionItemAdapter";
 
     @Override
     public int getGroupCount() {
@@ -117,7 +113,6 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
     @Override
     public int getChildCount(int groupPosition) {
         if (mConnectionsList.get(groupPosition).getVias() != null) {
-
             return Integer.parseInt(mConnectionsList.get(groupPosition).getVias().getNumber());
         }
         return 0;
@@ -202,7 +197,7 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
     @Override
     public boolean onCheckCanExpandOrCollapseGroup(GroupViewHolder holder, int groupPosition, int x, int y, boolean expand) {
         // check the item is *not* pinned
-        return false;
+        return true;
     }
 }
 

@@ -1,11 +1,14 @@
 package be.b_rail;
 
 import android.content.Intent;
+import android.graphics.drawable.NinePatchDrawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +21,8 @@ import android.widget.ViewFlipper;
 import com.google.gson.Gson;
 import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.animator.RefactoredDefaultItemAnimator;
+import com.h6ah4i.android.widget.advrecyclerview.decoration.ItemShadowDecorator;
+import com.h6ah4i.android.widget.advrecyclerview.decoration.SimpleListDividerDecorator;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchActionGuardManager;
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
@@ -54,7 +59,6 @@ public class ConnectionActivity extends AppCompatActivity
     private RecyclerView.Adapter        mConnectionAdapter;
     private List<Connection>            responseConnectionList;
     private RecyclerView.LayoutManager  mLayoutManager;
-
 
     private RecyclerView.Adapter                mWrappedAdapter;
     private RecyclerViewExpandableItemManager mRecyclerViewExpandableItemManager;
@@ -153,7 +157,6 @@ public class ConnectionActivity extends AppCompatActivity
 
     @Override
     public void onGroupCollapse(int groupPosition, boolean fromUser) {
-
     }
 
     @Override
@@ -169,6 +172,9 @@ public class ConnectionActivity extends AppCompatActivity
         int bottomMargin = topMargin; // bottom-spacing: 16dp
 
         mRecyclerViewExpandableItemManager.scrollToGroup(groupPosition, childItemHeight, topMargin, bottomMargin);
+    }
+    private boolean supportsViewElevation() {
+        return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
     }
     /*************************************************************************************************************************/
     private class GetConnectionsJSONTask extends AsyncTask<Void, Object, Void> {
@@ -236,7 +242,7 @@ public class ConnectionActivity extends AppCompatActivity
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            mConnectionAdapter = new ConnectionAdapter(ConnectionActivity.this,responseConnectionList,mRecyclerViewExpandableItemManager);
+            mConnectionAdapter = new ConnectionAdapter(ConnectionActivity.this,responseConnectionList);
 
             mWrappedAdapter = mRecyclerViewExpandableItemManager.createWrappedAdapter(mConnectionAdapter);       // wrap for expanding
 
@@ -251,6 +257,15 @@ public class ConnectionActivity extends AppCompatActivity
             connectionListRecycleView.setAdapter(mWrappedAdapter);
             connectionListRecycleView.setItemAnimator(animator);
             connectionListRecycleView.setHasFixedSize(false);
+
+            // additional decorations
+            //noinspection StatementWithEmptyBody
+            if (supportsViewElevation()) {
+                // Lollipop or later has native drop shadow feature. ItemShadowDecorator is not required.
+            } else {
+                connectionListRecycleView.addItemDecoration(new ItemShadowDecorator((NinePatchDrawable) ContextCompat.getDrawable(ConnectionActivity.this, R.drawable.material_shadow_z1)));
+            }
+            connectionListRecycleView.addItemDecoration(new SimpleListDividerDecorator(ContextCompat.getDrawable(ConnectionActivity.this, R.drawable.list_divider_h), true));
 
             mRecyclerViewExpandableItemManager.attachRecyclerView(connectionListRecycleView);
 

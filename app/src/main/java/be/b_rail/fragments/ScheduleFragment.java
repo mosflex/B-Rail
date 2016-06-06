@@ -53,7 +53,6 @@ public class ScheduleFragment extends Fragment {
 
     private GetStationsJSONTask		getStationsJSONTask	= null;
 
-
     public ScheduleFragment() {
         // Required empty public constructor
     }
@@ -87,7 +86,6 @@ public class ScheduleFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
         responseStationList = new ArrayList<>();
 
         mDepartureStationAutoCompleteTextView = (AutoCompleteTextView)getActivity().findViewById(R.id.departure_autoCompleteTextView);
@@ -99,13 +97,11 @@ public class ScheduleFragment extends Fragment {
         mDepartureStationAutoCompleteTextView.addTextChangedListener(new MyTextWatcher(mDepartureStationAutoCompleteTextView));
         mDirectionStationAutoCompleteTextView.addTextChangedListener(new MyTextWatcher(mDirectionStationAutoCompleteTextView));
 
-
         requestButton = (FloatingActionButton)getActivity().findViewById(R.id.requestButton);
         requestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 submitForm();
-
             }
         });
 
