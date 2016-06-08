@@ -4,22 +4,146 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+     <android.support.v7.widget.CardView
+         xmlns:android="http://schemas.android.com/apk/res/android"
+         xmlns:card_view="http://schemas.android.com/apk/res-auto"
+         android:id="@+id/card_view"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_marginBottom="8dp"
+         card_view:cardCornerRadius="2dp"
+     >
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+         <LinearLayout
+             android:padding="16dp"
+             android:layout_weight=".5"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal">
+
+            <TextView
+               android:layout_weight=".5"
+                android:id="@+id/time_departure_textview_child"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="00:00"/>
+
+             <TextView
+                 android:layout_weight=".5"
+                 android:id="@+id/station_departure_textview_child"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="GARE"/>
+
+             <TextView
+                 android:layout_weight=".5"
+                 android:id="@+id/platform_departure_textview_child"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="end"
+                 android:textAlignment="textEnd"
+                 android:textColor="@color/colorAccent"
+                 android:textStyle="bold"
+                 android:text="VOIE"/>
+         </LinearLayout>
+        <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/colorAccent"/>
     <LinearLayout
-        android:id="@+id/container"
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
+        android:id="@+id/vias_linearlayout_child"
+        android:visibility="gone"
+        android:padding="16dp"
+        android:layout_weight=".5"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dip"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?attr/selectableItemBackground">
+        android:orientation="horizontal">
 
-
-        <TextView
+        <LinearLayout
+            android:layout_weight=".5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Salut"/>
+            android:orientation="vertical">
+        <TextView
+        android:id="@+id/time_via_arrival_textview_child"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="00:00"/>
 
+        <TextView
+            android:id="@+id/time_via_departure_textview_child"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="00:00"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/station_via_textview_child"
+            android:layout_weight=".5"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="GARE"/>
+
+        <TextView
+            android:id="@+id/platform_via_textview_child"
+            android:layout_weight=".5"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textAlignment="textEnd"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
+            android:text="VOIE"/>
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/colorAccent"/>
+         <LinearLayout
+             android:padding="16dp"
+             android:layout_weight=".5"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:orientation="horizontal">
+
+             <TextView
+                 android:layout_weight=".5"
+                 android:id="@+id/time_arrival_textview_child"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="00:00"/>
+
+             <TextView
+                 android:layout_weight=".5"
+                 android:id="@+id/station_arrival_textview_child"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="GARE"/>
+
+             <TextView
+                 android:layout_gravity="end"
+                 android:textAlignment="textEnd"
+                 android:layout_weight=".5"
+                 android:id="@+id/platform_arrival_textview_child"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:textColor="@color/colorAccent"
+                 android:textStyle="bold"
+                 android:text="VOIE"/>
+         </LinearLayout>
+
+
+</LinearLayout>
+        </android.support.v7.widget.CardView>
+
+
 
 </LinearLayout>

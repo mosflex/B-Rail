@@ -1,6 +1,7 @@
 package be.b_rail.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
@@ -20,9 +21,13 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAda
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
+import be.b_rail.MainActivity;
 import be.b_rail.Models.Connection;
+
+import be.b_rail.Models.Via;
 import be.b_rail.R;
 import be.b_rail.Utils.PrefsUtils;
 import be.b_rail.Utils.Utils;
@@ -85,8 +90,40 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
     }
 
     public static class ChildViewHolder extends BaseViewHolder {
+
+        private TextView mTimeDepartureChildTextView;
+        private TextView mTimeArrivalChildTextView;
+        private TextView mTimeDepartureViaChildTextView;
+        private TextView mTimeArrivalViaChildTextView;
+
+        private TextView mStationDepartureChildTextView;
+        private TextView mStationArrivalChildTextView;
+        private TextView mStationViaChildTextView;
+
+        private TextView mPlatformDepartureChildTextView;
+        private TextView mPlatformArrivalChildTextView;
+        private TextView mPlatformViaChildTextView;
+
+        private LinearLayout mViasChildLinearLayout;
+
+
         public ChildViewHolder(View v) {
-            super(v);
+           super(v);
+            mTimeArrivalChildTextView = (TextView) v.findViewById(R.id.time_arrival_textview_child);
+            mTimeDepartureChildTextView = (TextView) v.findViewById(R.id.time_departure_textview_child);
+            mTimeDepartureViaChildTextView = (TextView) v.findViewById(R.id.time_via_departure_textview_child) ;
+            mTimeArrivalViaChildTextView =(TextView)v.findViewById(R.id.time_via_arrival_textview_child);
+
+            mStationDepartureChildTextView = (TextView) v.findViewById(R.id.station_departure_textview_child);
+            mStationArrivalChildTextView = (TextView) v.findViewById(R.id.station_arrival_textview_child);
+            mStationViaChildTextView = (TextView)v.findViewById(R.id.station_via_textview_child);
+
+            mPlatformDepartureChildTextView = (TextView) v.findViewById(R.id.platform_departure_textview_child);
+            mPlatformArrivalChildTextView = (TextView) v.findViewById(R.id.platform_arrival_textview_child);
+            mPlatformViaChildTextView = (TextView) v.findViewById(R.id.platform_via_textview_child);
+
+            mViasChildLinearLayout =(LinearLayout) v.findViewById(R.id.vias_linearlayout_child);
+
         }
     }
 
@@ -115,7 +152,7 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
         if (mConnectionsList.get(groupPosition).getVias() != null) {
             return Integer.parseInt(mConnectionsList.get(groupPosition).getVias().getNumber());
         }
-        return 0;
+        return 1;
     }
 
     @Override
@@ -125,7 +162,8 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        return groupPosition + childPosition;
+        if (mConnectionsList.get(groupPosition).getVias()!= null) return mConnectionsList.get(groupPosition).getVias().getVia().get(childPosition).getId();
+        return 0;
     }
 
     @Override
@@ -153,6 +191,9 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
                 PrefsUtils.addConnection(context, connection);
                 Snackbar.make(view, "connection ajouté : " + connection.toString(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                Intent intent = new Intent(context, MainActivity.class);
+                context.startActivity(intent);
+
             }
         });
         //holder.mStationDepartureTextView.setText(connection.getDeparture().getStation());
@@ -169,7 +210,7 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
         holder.itemView.setClickable(true);
 
         // set background resource (target view ID: container)
-        final int expandState = holder.getExpandStateFlags();
+       /* final int expandState = holder.getExpandStateFlags();
 
         if ((expandState & ExpandableItemConstants.STATE_FLAG_IS_UPDATED) != 0) {
             int bgResId;
@@ -186,11 +227,33 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
 
             holder.mContainer.setBackgroundResource(bgResId);
             holder.mIndicator.setExpandedState(isExpanded, animateIndicator);
-        }
+
+        }*/
     }
 
     @Override
     public void onBindChildViewHolder(ChildViewHolder holder, int groupPosition, int childPosition, int viewType) {
+        final Connection connection = mConnectionsList.get(groupPosition);
+        ArrayList<Via> mVias;
+        holder.mViasChildLinearLayout.setVisibility(View.GONE);
+        holder.mTimeDepartureChildTextView.setText(Utils.getTimeFromDate(connection.getDeparture().getTime()));
+        holder.mTimeArrivalChildTextView.setText(Utils.getTimeFromDate(connection.getArrival().getTime()));
+
+        holder.mStationDepartureChildTextView.setText(connection.getDeparture().getStation());
+        holder.mStationArrivalChildTextView.setText(connection.getArrival().getStation());
+        holder.mPlatformDepartureChildTextView.setText(connection.getDeparture().getPlatform());
+        holder.mPlatformArrivalChildTextView.setText(connection.getArrival().getPlatform());
+
+        if (connection.getVias() != null) {
+            holder.mViasChildLinearLayout.setVisibility(View.VISIBLE);
+            mVias = connection.getVias().getVia();
+            holder.mTimeArrivalViaChildTextView.setText(Utils.getTimeFromDate(mVias.get(childPosition).getArrival().getTime()));
+            holder.mTimeDepartureViaChildTextView.setText(Utils.getTimeFromDate(mVias.get(childPosition).getDeparture().getTime()));
+
+            holder.mStationViaChildTextView.setText(mVias.get(childPosition).getStation());
+            holder.mPlatformViaChildTextView.setText(mVias.get(childPosition).getDeparture().getPlatform());
+         }
+        //holder.mDirectionChildTextView.setText(connection.getDeparture().getVehicle().substring(8)+""+connection.getDeparture().getDirection().getName());
 
     }
 

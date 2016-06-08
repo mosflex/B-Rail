@@ -7,6 +7,8 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Via {
 
+    @SerializedName("id")
+    private int id;
     @SerializedName("timeBetween")
     private String timeBetween;
     @SerializedName("arrival")
@@ -56,5 +58,13 @@ public class Via {
 
     public void setArrival(Arrival arrival) {
         this.arrival = arrival;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
