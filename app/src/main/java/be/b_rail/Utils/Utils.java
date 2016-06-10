@@ -29,8 +29,6 @@ public class Utils {
 
     }
 
-
-
     public static String getDurationString(long seconds) {
 
         long hours = seconds / 3600;

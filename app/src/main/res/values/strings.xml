@@ -9,6 +9,8 @@
     <string name="Journey">Journey</string>
     <string name="Unknown">Unknown</string>
     <string name="Loading">Loading...</string>
+    <string name="minutes">minutes</string>
+    <string name="Departurein">Departure in</string>
 
     <string name="Search">Search</string>
     <string name="search_hint">Search stations…</string>

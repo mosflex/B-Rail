@@ -42,10 +42,10 @@ public class JourneyFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private FloatingActionButton    button_add_journey;
-    private ViewFlipper             vf;
-    private RecyclerView            journeysListRecycleView;
-    private RecyclerView.Adapter    mJourneysAdapter;
+    private FloatingActionButton        button_add_journey;
+    private ViewFlipper                 vf;
+    private RecyclerView                journeysListRecycleView;
+    private RecyclerView.Adapter        mJourneysAdapter;
     private RecyclerView.LayoutManager  mLayoutManager;
 
     public JourneyFragment() {

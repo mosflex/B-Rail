@@ -1,5 +1,8 @@
 package be.b_rail.adapters;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.TextView;
 
 import com.liulishuo.magicprogresswidget.MagicProgressCircle;
@@ -33,12 +37,12 @@ public class JourneysAdapter extends RecyclerView.Adapter<JourneysAdapter.ViewHo
         private TextView mTimeArrivalTextView;
         private TextView mStationDepartureTextView;
         private TextView mStationArrivalTextView;
-        private TextView mDurationTravelTextView;
+     //   private TextView mDurationTravelTextView;
 
         private MagicProgressCircle demoMpc;
-        private AnimTextView demoTv;
+        private AnimTextView        mAnimTextView_time;
 
-        private FloatingActionButton btn_share_journey;
+        //private FloatingActionButton btn_share_journey;
 
         public ViewHolder(View v) {
             super(v);
@@ -46,12 +50,11 @@ public class JourneysAdapter extends RecyclerView.Adapter<JourneysAdapter.ViewHo
             mTimeArrivalTextView    = (TextView) v.findViewById(R.id.time_arrival_textview);
             mStationDepartureTextView  = (TextView) v.findViewById(R.id.station_departure_textview);
             mStationArrivalTextView    = (TextView) v.findViewById(R.id.station_arrival_textview);
-            mDurationTravelTextView = (TextView) v.findViewById(R.id.duration_travel_textview);
-            btn_share_journey       = (FloatingActionButton) v.findViewById(R.id.share_journey);
-
+        //    mDurationTravelTextView = (TextView) v.findViewById(R.id.duration_travel_textview);
+        //    btn_share_journey       = (FloatingActionButton) v.findViewById(R.id.share_journey);
 
             demoMpc = (MagicProgressCircle) v.findViewById(R.id.demo_mpc);
-            demoTv = (AnimTextView) v.findViewById(R.id.demo_tv);
+            mAnimTextView_time = (AnimTextView) v.findViewById(R.id.animTextView_time);
         }
     }
 
@@ -78,19 +81,51 @@ public class JourneysAdapter extends RecyclerView.Adapter<JourneysAdapter.ViewHo
         // - replace the contents of the view with that element
 
         final Connection connection  = mConnectionsList.get(position);
-        holder.btn_share_journey.setOnClickListener(new View.OnClickListener() {
+       /* holder.btn_share_journey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "connection : " + connection.toString(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
         holder.mStationDepartureTextView.setText(connection.getDeparture().getStation());
         holder.mTimeDepartureTextView.setText(Utils.getTimeFromDate(connection.getDeparture().getTime()));
         holder.mStationArrivalTextView.setText(connection.getArrival().getStation());
         holder.mTimeArrivalTextView.setText(Utils.getTimeFromDate(connection.getArrival().getTime()));
 
-        holder.mDurationTravelTextView.setText(Utils.getDurationString(connection.getDuration()));
+        //holder.mDurationTravelTextView.setText(Utils.getDurationString(connection.getDuration()));
+
+        final int progress = connection.getDuration();
+
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(
+                ObjectAnimator.ofFloat(holder.demoMpc, "percent", 0, progress / 100f),
+                ObjectAnimator.ofInt(holder.mAnimTextView_time, "progress", 0, progress)
+        );
+        set.setDuration(2000);
+        set.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                //isAnimActive = true;
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                // isAnimActive = false;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        set.setInterpolator(new AccelerateInterpolator());
+        set.start();
     }
 
     public Connection getItem(int position) {
