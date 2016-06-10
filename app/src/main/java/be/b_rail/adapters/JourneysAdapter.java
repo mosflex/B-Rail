@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.liulishuo.magicprogresswidget.MagicProgressCircle;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import be.b_rail.Models.Connection;
@@ -95,37 +97,53 @@ public class JourneysAdapter extends RecyclerView.Adapter<JourneysAdapter.ViewHo
 
         //holder.mDurationTravelTextView.setText(Utils.getDurationString(connection.getDuration()));
 
-        final int progress = connection.getDuration();
+        Calendar rightNow = Calendar.getInstance();
+        long seconds_now = rightNow.getTimeInMillis() / 1000;
+        long seconds_departure = Long.parseLong(connection.getDeparture().getTime());
+        final int progress = Utils.getDurationTimeSeconds(seconds_departure,seconds_now) ; // en second
 
+        Log.d("JourneyAdapter", "DEPART : "+ Utils.getTimeFromDate(connection.getDeparture().getTime()));
+        Log.d("JourneyAdapter", "connection.getDeparture().getTime() : " +connection.getDeparture().getTime());
+        Log.d("JourneyAdapter", "progress : " +progress);
+        Log.d("JourneyAdapter", "progress (HH:mm) : " +Utils.getDurationString(progress));
+        Log.d("JourneyAdapter", "seconds_now : " +seconds_now);
+        Log.d("JourneyAdapter", "seconds_departure : " +seconds_departure);
+        final float max = progress;
         AnimatorSet set = new AnimatorSet();
         set.playTogether(
-                ObjectAnimator.ofFloat(holder.demoMpc, "percent", 0, progress / 100f),
-                ObjectAnimator.ofInt(holder.mAnimTextView_time, "progress", 0, progress)
+            ObjectAnimator.ofFloat(holder.demoMpc, "percent",0,progress / max  ),
+            ObjectAnimator.ofInt(holder.mAnimTextView_time, "progress", ((int)progress)/60,0)
         );
-        set.setDuration(2000);
-        set.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                //isAnimActive = true;
-            }
+        if(progress > 0){
+            set.setDuration(progress*1000);
+            set.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    //isAnimActive = true;
+                }
 
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                // isAnimActive = false;
-            }
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    // isAnimActive = false;
+                    PrefsUtils.removeConnection(context, connection);
+                    mConnectionsList.remove(connection);
+                    notifyDataSetChanged();
 
-            @Override
-            public void onAnimationCancel(Animator animation) {
+                }
 
-            }
+                @Override
+                public void onAnimationCancel(Animator animation) {
 
-            @Override
-            public void onAnimationRepeat(Animator animation) {
+                }
 
-            }
-        });
-        set.setInterpolator(new AccelerateInterpolator());
-        set.start();
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+            set.setInterpolator(new AccelerateInterpolator());
+            set.start();
+        }
     }
 
     public Connection getItem(int position) {

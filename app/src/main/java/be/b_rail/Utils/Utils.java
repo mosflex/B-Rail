@@ -28,6 +28,9 @@ public class Utils {
         }
 
     }
+    public static long seconds(String dateFromAPI) {
+        return Long.valueOf(dateFromAPI)/1000;
+    }
 
     public static String getDurationString(long seconds) {
 
@@ -35,6 +38,18 @@ public class Utils {
         long minutes = (seconds % 3600) / 60;
 
         return twoDigitString(hours) + ":" + twoDigitString(minutes);
+    }
+    public static int getDurationTimeSeconds(long seconds_start, long second_end) {
+
+        long s = seconds_start % 60;
+        long m = ((seconds_start / 60) % 60)*60;
+        long h = ((seconds_start / (60 * 60)) % 24)*3600;
+
+        long s2 = second_end % 60;
+        long m2 = ((second_end / 60) % 60)*60;
+        long h2 = ((second_end / (60 * 60)) % 24)*3600;
+
+        return (int)((s+m+h)-(s2+m2+h2));
     }
 
     public static String twoDigitString(long number) {
