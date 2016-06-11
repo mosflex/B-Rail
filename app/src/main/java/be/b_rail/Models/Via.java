@@ -3,7 +3,7 @@ package be.b_rail.Models;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by AMOTBT on 30/05/2016.
+ * Created by Jawad AMOTBT on 30/05/2016.
  */
 public class Via {
 
