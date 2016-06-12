@@ -21,6 +21,8 @@ import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemAda
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractExpandableItemViewHolder;
 
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,6 +106,8 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
         private TextView mPlatformArrivalChildTextView;
         private TextView mPlatformViaChildTextView;
 
+        private TextView mDelayChildTextView;
+
         private LinearLayout mViasChildLinearLayout;
 
 
@@ -123,6 +127,8 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
             mPlatformViaChildTextView = (TextView) v.findViewById(R.id.platform_via_textview_child);
 
             mViasChildLinearLayout =(LinearLayout) v.findViewById(R.id.vias_linearlayout_child);
+
+            mDelayChildTextView =(TextView) v.findViewById(R.id.time_delay_textview_child);
 
         }
     }
@@ -251,6 +257,10 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
             holder.mStationViaChildTextView.setText(mVias.get(childPosition).getStation());
             holder.mPlatformViaChildTextView.setText(mVias.get(childPosition).getDeparture().getPlatform());
          }
+
+        if (connection.getDeparture().getDelay() > 0){
+            holder.mDelayChildTextView.setText("+ "+connection.getDeparture().getDelay()/60+"'");
+        }
         //holder.mDirectionChildTextView.setText(connection.getDeparture().getVehicle().substring(8)+""+connection.getDeparture().getDirection().getName());
 
     }
