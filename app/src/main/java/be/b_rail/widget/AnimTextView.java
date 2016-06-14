@@ -43,11 +43,11 @@ public class AnimTextView extends TextView implements ISmoothTarget {
         }
 
         this.progress = progress;
-      //  if(){
+        if(progress >= 60){
             setText(String.valueOf(((int)progress)/60) + " min.");
-      //  }else if(){
-
-     //   }
+        }else {
+            setText(String.valueOf(((int)progress)) + " sec.");
+        }
     }
 
     public int getProgress() {

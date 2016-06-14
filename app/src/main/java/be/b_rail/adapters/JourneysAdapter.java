@@ -94,12 +94,12 @@ public class JourneysAdapter extends RecyclerView.Adapter<JourneysAdapter.ViewHo
         long seconds_departure = Long.parseLong(connection.getDeparture().getTime());// en second
         final int progress = Utils.getDurationTimeSeconds(seconds_departure,seconds_now) ;
 
-        Log.d("JourneyAdapter", "DEPART : "+ Utils.getTimeFromDate(connection.getDeparture().getTime()));
+        /*Log.d("JourneyAdapter", "DEPART : "+ Utils.getTimeFromDate(connection.getDeparture().getTime()));
         Log.d("JourneyAdapter", "connection.getDeparture().getTime() : " +connection.getDeparture().getTime());
         Log.d("JourneyAdapter", "progress : " + progress);
         Log.d("JourneyAdapter", "progress (HH:mm) : " +Utils.getDurationString(progress));
         Log.d("JourneyAdapter", "seconds_now : " +seconds_now);
-        Log.d("JourneyAdapter", "seconds_departure : " +seconds_departure);
+        Log.d("JourneyAdapter", "seconds_departure : " +seconds_departure);*/
 
         final float max = progress;
         AnimatorSet set = new AnimatorSet();
@@ -118,6 +118,9 @@ public class JourneysAdapter extends RecyclerView.Adapter<JourneysAdapter.ViewHo
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     // isAnimActive = false;
+
+
+                    Log.d("onAnimationEnd", "onAnimationEnd" );
                     PrefsUtils.removeConnection(context, connection);
                     mConnectionsList.remove(connection);
                     notifyDataSetChanged();

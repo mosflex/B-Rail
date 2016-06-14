@@ -78,7 +78,8 @@
         <be.b_rail.widget.ExpandableItemIndicator
             android:id="@+id/indicator"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+          />
 
     </LinearLayout>
         <LinearLayout

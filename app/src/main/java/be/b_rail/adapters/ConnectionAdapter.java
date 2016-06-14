@@ -214,25 +214,25 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
         holder.itemView.setClickable(true);
 
         // set background resource (target view ID: container)
-       /* final int expandState = holder.getExpandStateFlags();
+       final int expandState = holder.getExpandStateFlags();
 
         if ((expandState & ExpandableItemConstants.STATE_FLAG_IS_UPDATED) != 0) {
-            int bgResId;
+            //int bgResId;
             boolean isExpanded;
             boolean animateIndicator = ((expandState & Expandable.STATE_FLAG_HAS_EXPANDED_STATE_CHANGED) != 0);
 
             if ((expandState & Expandable.STATE_FLAG_IS_EXPANDED) != 0) {
-                bgResId = R.drawable.bg_group_item_expanded_state;
+              //  bgResId = R.drawable.bg_group_item_expanded_state;
                 isExpanded = true;
             } else {
-                bgResId = R.drawable.bg_group_item_normal_state;
+             //   bgResId = R.drawable.bg_group_item_normal_state;
                 isExpanded = false;
             }
 
-            holder.mContainer.setBackgroundResource(bgResId);
+           // holder.mContainer.setBackgroundResource(bgResId);
             holder.mIndicator.setExpandedState(isExpanded, animateIndicator);
 
-        }*/
+        }
     }
 
     @Override

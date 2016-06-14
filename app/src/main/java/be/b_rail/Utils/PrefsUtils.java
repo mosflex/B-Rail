@@ -83,7 +83,7 @@ public class PrefsUtils {
         storeConnections(context, favorites);
     }
     public static void removeConnection(Context context, Connection connection) {
-        ArrayList favorites = loadConnections(context);
+        List favorites = loadConnections(context);
         if (favorites != null) {
             favorites.remove(connection);
             storeConnections(context, favorites);
