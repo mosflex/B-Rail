@@ -45,6 +45,20 @@ public class PrefsUtils {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         sp.edit().putBoolean(PREF_TOS_ACCEPTED, true).commit();
     }
+    public static void clearConnections(Context context) {
+        // used for store arrayList in json format
+        SharedPreferences settings;
+        SharedPreferences.Editor editor;
+        settings = context.getSharedPreferences(PREF_CONNECTIONS,Context.MODE_PRIVATE);
+        editor = settings.edit();
+       // try{
+            editor.clear();
+            editor.commit();
+       // }catch(Exception e){
+            System.out.println("Cart Error");
+      //  }
+
+    }
     public static void storeConnections(Context context, List connections) {
         // used for store arrayList in json format
         SharedPreferences settings;
@@ -86,6 +100,7 @@ public class PrefsUtils {
         List favorites = loadConnections(context);
         if (favorites != null) {
             favorites.remove(connection);
+            clearConnections(context);
             storeConnections(context, favorites);
         }
     }

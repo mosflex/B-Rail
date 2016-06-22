@@ -1,6 +1,7 @@
 package be.b_rail.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,11 +16,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ViewFlipper;
 
+import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
+import com.h6ah4i.android.widget.advrecyclerview.animator.SwipeDismissItemAnimator;
+import com.h6ah4i.android.widget.advrecyclerview.swipeable.RecyclerViewSwipeManager;
+import com.h6ah4i.android.widget.advrecyclerview.touchguard.RecyclerViewTouchActionGuardManager;
+import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import be.b_rail.Models.Connection;
 import be.b_rail.R;
+import be.b_rail.ScheduleActivity;
 import be.b_rail.Utils.PrefsUtils;
 import be.b_rail.adapters.JourneysAdapter;
 
@@ -88,25 +96,19 @@ public class JourneyFragment extends Fragment {
         button_add_journey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ScheduleFragment scheduleFragment = new ScheduleFragment();
-                Bundle bundle = new Bundle();
-                scheduleFragment.setArguments(bundle);
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.frame_container,scheduleFragment,null)
-                        .addToBackStack(null)
-                        .commit();
+                Intent intent = new Intent(getActivity(), ScheduleActivity.class);
+                startActivity(intent);
             }
         });
-
-        mLayoutManager          = new LinearLayoutManager(getActivity());
-        journeysListRecycleView.setLayoutManager(mLayoutManager);
         List<Connection> ListConnections = PrefsUtils.loadConnections(getContext());
         if(ListConnections != null && !ListConnections.isEmpty()){
+            mLayoutManager   = new LinearLayoutManager(getActivity());
             mJourneysAdapter = new JourneysAdapter(getActivity(),ListConnections);
+            journeysListRecycleView.setLayoutManager(mLayoutManager);// requires *wrapped* adapter
             journeysListRecycleView.setAdapter(mJourneysAdapter);
+
             vf.showNext();
         }
-
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -114,7 +116,10 @@ public class JourneyFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_journey, container, false);
     }
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

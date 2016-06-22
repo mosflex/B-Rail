@@ -4,7 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.support.design.widget.FloatingActionButton;
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,16 +12,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractSwipeableItemViewHolder;
 import com.liulishuo.magicprogresswidget.MagicProgressCircle;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import be.b_rail.MainActivity;
 import be.b_rail.Models.Connection;
 import be.b_rail.R;
 import be.b_rail.Utils.PrefsUtils;
@@ -31,10 +32,11 @@ import be.b_rail.widget.AnimTextView;
 /**
  * Created by Jawad on 29-05-16.
  */
-public class JourneysAdapter extends RecyclerView.Adapter<JourneysAdapter.ViewHolder>{
+public class JourneysAdapter
+        extends RecyclerView.Adapter<JourneysAdapter.ViewHolder> {
 
-    private List<Connection> mConnectionsList;
-    private Context context;
+    private static List<Connection> mConnectionsList;
+    private static Context          context;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -47,8 +49,11 @@ public class JourneysAdapter extends RecyclerView.Adapter<JourneysAdapter.ViewHo
         private MagicProgressCircle demoMpc;
         private AnimTextView        mAnimTextView_time;
 
+        private Button              btn_remove_journey;
+
         public ViewHolder(View v) {
             super(v);
+
             mTimeDepartureTextView      = (TextView) v.findViewById(R.id.time_departure_textview);
             mTimeArrivalTextView        = (TextView) v.findViewById(R.id.time_arrival_textview);
             mStationDepartureTextView   = (TextView) v.findViewById(R.id.station_departure_textview);
@@ -57,6 +62,8 @@ public class JourneysAdapter extends RecyclerView.Adapter<JourneysAdapter.ViewHo
 
             demoMpc             = (MagicProgressCircle) v.findViewById(R.id.demo_mpc);
             mAnimTextView_time  = (AnimTextView) v.findViewById(R.id.animTextView_time);
+
+            btn_remove_journey      = (Button) v.findViewById(R.id.btn_remove);
         }
     }
 
@@ -64,6 +71,9 @@ public class JourneysAdapter extends RecyclerView.Adapter<JourneysAdapter.ViewHo
     public JourneysAdapter(Context mContext, List<Connection> connectionsList) {
         context = mContext;
         mConnectionsList = connectionsList;
+        // SwipeableItemAdapter requires stable ID, and also
+        // have to implement the getItemId() method appropriately.
+        setHasStableIds(true);
 
     }
     // Create new views (invoked by the layout manager)
@@ -89,6 +99,16 @@ public class JourneysAdapter extends RecyclerView.Adapter<JourneysAdapter.ViewHo
         holder.mStationArrivalTextView.setText(connection.getArrival().getStation());
         holder.mTimeArrivalTextView.setText(Utils.getTimeFromDate(connection.getArrival().getTime()));
         holder.mPlatformDepartureTextView.setText(connection.getDeparture().getPlatform());
+        holder.btn_remove_journey.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PrefsUtils.removeConnection(context, connection);
+                mConnectionsList.remove(connection);
+                if (position == 0) {notifyDataSetChanged();} else {notifyItemRemoved(position);}
+                Snackbar.make(view, "connection supprimé : " + connection.toString(), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
 
         long seconds_now = TimeUnit.MILLISECONDS.toSeconds(Calendar.getInstance().getTimeInMillis());
         long seconds_departure = Long.parseLong(connection.getDeparture().getTime());// en second
@@ -118,19 +138,11 @@ public class JourneysAdapter extends RecyclerView.Adapter<JourneysAdapter.ViewHo
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     // isAnimActive = false;
-
-
                     Log.d("onAnimationEnd", "onAnimationEnd" );
-                    PrefsUtils.removeConnection(context, connection);
-                    mConnectionsList.remove(connection);
-                    notifyDataSetChanged();
-               /*     Snackbar.make(holder., "connection supprimé : " + connection.toString(), Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();*/
                 }
 
                 @Override
                 public void onAnimationCancel(Animator animation) {
-
                 }
 
                 @Override
@@ -143,7 +155,10 @@ public class JourneysAdapter extends RecyclerView.Adapter<JourneysAdapter.ViewHo
 
         }
     }
-
+    @Override
+    public long getItemId(int position) {
+        return mConnectionsList.get(position).getId();
+    }
     public Connection getItem(int position) {
         return mConnectionsList.get(position);
     }
@@ -153,4 +168,6 @@ public class JourneysAdapter extends RecyclerView.Adapter<JourneysAdapter.ViewHo
     public int getItemCount() {
         return mConnectionsList.size();
     }
+
+
 }

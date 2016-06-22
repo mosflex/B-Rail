@@ -6,13 +6,16 @@
     <string name="Stations">Stations</string>
     <string name="Schedule">Schedule</string>
     <string name="Connection">Connection</string>
-    <string name="Journey">Journey</string>
+    <string name="My_Journey">My journeys</string>
+    <string name="My_favourites">My favourites</string>
+    <string name="add_a_journey">Add a journey</string>
     <string name="Unknown">Unknown</string>
     <string name="Loading">Loading...</string>
     <string name="Departurein">Departure in</string>
     <string name="Platform">Platform</string>
 
     <string name="Search">Search</string>
+    <string name="REMOVE">REMOVE</string>
     <string name="search_hint">Search stations…</string>
 
     <string name="station_dep">Departure</string>
@@ -96,4 +99,5 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+    <string name="title_activity_schedule">ScheduleActivity</string>
 </resources>

@@ -158,7 +158,7 @@ public class SncbFragment extends BaseFragment {
         {
             switch (position){
                 case 0 : return JourneyFragment.newInstance("","");
-                case 1 : return ScheduleFragment.newInstance("","");
+                case 1 : return FavouritesFragment.newInstance("","");
             }
             return null;
         }
@@ -179,9 +179,9 @@ public class SncbFragment extends BaseFragment {
 
             switch (position){
                 case 0 :
-                    return getString(R.string.Journey);
+                    return getString(R.string.My_Journey);
                 case 1 :
-                    return getString(R.string.Schedule);
+                    return getString(R.string.My_favourites);
             }
             return null;
         }

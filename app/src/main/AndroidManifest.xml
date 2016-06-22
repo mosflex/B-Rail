@@ -36,7 +36,12 @@
             android:theme="@style/FullscreenTheme" />
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings" />
+        <activity
+            android:name=".ScheduleActivity"
+            android:parentActivityName=".MainActivity"
+            android:label="@string/title_activity_schedule"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

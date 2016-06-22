@@ -1,19 +1,21 @@
-package be.b_rail.fragments;
+package be.b_rail;
 
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 
@@ -28,80 +30,63 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import be.b_rail.ConnectionActivity;
 import be.b_rail.Models.Station;
-import be.b_rail.R;
 import be.b_rail.adapters.StationsAdapter;
 
-/**
- * Created by Jawad on 11-02-16.
- */
-public class ScheduleFragment extends Fragment {
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class ScheduleActivity extends AppCompatActivity {
 
+    private LinearLayout            swap_layout;
 
     private TextInputLayout         inputLayoutDepart, inputLayoutArr;
 
     private AutoCompleteTextView    mDepartureStationAutoCompleteTextView;
     private AutoCompleteTextView    mDirectionStationAutoCompleteTextView;
     private FloatingActionButton    requestButton;
+    private ImageButton             swapButton;
 
     private List<Station>           responseStationList;
     private StationsAdapter         stationsAdapter;
 
     private GetStationsJSONTask		getStationsJSONTask	= null;
 
-    public ScheduleFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment JourneyFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ScheduleFragment newInstance(String param1, String param2) {
-        ScheduleFragment fragment = new ScheduleFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_schedule);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        return inflater.inflate(R.layout.fragment_schedule, container, false);
-    }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setTitle(R.string.add_a_journey);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                submitForm();
+            }
+        });
         responseStationList = new ArrayList<>();
 
-        mDepartureStationAutoCompleteTextView = (AutoCompleteTextView)getActivity().findViewById(R.id.departure_autoCompleteTextView);
-        mDirectionStationAutoCompleteTextView = (AutoCompleteTextView)getActivity().findViewById(R.id.direction_autoCompleteTextView);
+        swap_layout = (LinearLayout) findViewById(R.id.swap_layout);
 
-        inputLayoutDepart = (TextInputLayout) getActivity().findViewById(R.id.input_layout_depart);
-        inputLayoutArr = (TextInputLayout) getActivity().findViewById(R.id.input_layout_arr);
+        mDepartureStationAutoCompleteTextView = (AutoCompleteTextView)findViewById(R.id.departure_autoCompleteTextView);
+        mDirectionStationAutoCompleteTextView = (AutoCompleteTextView)findViewById(R.id.direction_autoCompleteTextView);
+
+        inputLayoutDepart = (TextInputLayout) findViewById(R.id.input_layout_depart);
+        inputLayoutArr = (TextInputLayout) findViewById(R.id.input_layout_arr);
 
         mDepartureStationAutoCompleteTextView.addTextChangedListener(new MyTextWatcher(mDepartureStationAutoCompleteTextView));
         mDirectionStationAutoCompleteTextView.addTextChangedListener(new MyTextWatcher(mDirectionStationAutoCompleteTextView));
 
-        requestButton = (FloatingActionButton)getActivity().findViewById(R.id.requestButton);
-        requestButton.setOnClickListener(new View.OnClickListener() {
+        swapButton = (ImageButton)findViewById(R.id.swapButton);
+        swapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                submitForm();
+
+                swap_layout.removeViewAt(0);
             }
         });
 
@@ -109,7 +94,15 @@ public class ScheduleFragment extends Fragment {
         getStationsJSONTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
     }
-
+    @Override
+    public void onDestroy() {
+        try{
+            if(getStationsJSONTask != null)getStationsJSONTask.cancel(true);
+        }catch(IllegalStateException e) {
+            e.printStackTrace();
+        }
+        super.onDestroy();
+    }
     /**
      * Validating form
      */
@@ -122,7 +115,7 @@ public class ScheduleFragment extends Fragment {
             return;
         }
 
-        Intent intent = new Intent(getContext(), ConnectionActivity.class);
+        Intent intent = new Intent(this, ConnectionActivity.class);
         // extras
         intent.putExtra("Departure", mDepartureStationAutoCompleteTextView.getText().toString());
         intent.putExtra("Arrival", mDirectionStationAutoCompleteTextView.getText().toString());
@@ -153,18 +146,8 @@ public class ScheduleFragment extends Fragment {
     }
     private void requestFocus(View view) {
         if (view.requestFocus()) {
-            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        try{
-            if(getStationsJSONTask != null)getStationsJSONTask.cancel(true);
-        }catch(IllegalStateException e) {
-            e.printStackTrace();
-        }
-        super.onDestroy();
     }
 
     private class MyTextWatcher implements TextWatcher {
@@ -204,7 +187,7 @@ public class ScheduleFragment extends Fragment {
 
             try {
 
-                reader = new BufferedReader(new InputStreamReader(getActivity().getAssets().open(SERVER_URL)));
+                reader = new BufferedReader(new InputStreamReader(getAssets().open(SERVER_URL)));
 
                 StringBuffer buffer = new StringBuffer();
                 String line ="";
@@ -257,9 +240,10 @@ public class ScheduleFragment extends Fragment {
         }
         @Override
         protected void onPostExecute(Void params){
-            stationsAdapter = new StationsAdapter(getActivity(),R.layout.item_station,R.id.txtNameStation, responseStationList);
+            stationsAdapter = new StationsAdapter(ScheduleActivity.this,R.layout.item_station,R.id.txtNameStation, responseStationList);
             mDepartureStationAutoCompleteTextView.setAdapter(stationsAdapter);
             mDirectionStationAutoCompleteTextView.setAdapter(stationsAdapter);
         }
     }
+
 }
