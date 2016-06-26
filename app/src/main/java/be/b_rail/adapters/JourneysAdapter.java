@@ -27,6 +27,7 @@ import be.b_rail.Models.Connection;
 import be.b_rail.R;
 import be.b_rail.Utils.PrefsUtils;
 import be.b_rail.Utils.Utils;
+import be.b_rail.fragments.JourneyFragment;
 import be.b_rail.widget.AnimTextView;
 
 /**
@@ -37,6 +38,7 @@ public class JourneysAdapter
 
     private static List<Connection> mConnectionsList;
     private static Context          context;
+    private JourneyFragment     journeyFragment;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -50,6 +52,7 @@ public class JourneysAdapter
         private AnimTextView        mAnimTextView_time;
 
         private Button              btn_remove_journey;
+
 
         public ViewHolder(View v) {
             super(v);
@@ -68,12 +71,13 @@ public class JourneysAdapter
     }
 
 
-    public JourneysAdapter(Context mContext, List<Connection> connectionsList) {
+    public JourneysAdapter(Context mContext, List<Connection> connectionsList,JourneyFragment fragment) {
         context = mContext;
         mConnectionsList = connectionsList;
         // SwipeableItemAdapter requires stable ID, and also
         // have to implement the getItemId() method appropriately.
         setHasStableIds(true);
+        this.journeyFragment = fragment;
 
     }
     // Create new views (invoked by the layout manager)
@@ -102,9 +106,9 @@ public class JourneysAdapter
         holder.btn_remove_journey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PrefsUtils.removeConnection(context, connection);
+                PrefsUtils.removeConnection(context, position);
                 mConnectionsList.remove(connection);
-                if (position == 0) {notifyDataSetChanged();} else {notifyItemRemoved(position);}
+                if (position == 0) {notifyDataSetChanged(); journeyFragment.showFlip();} else {notifyItemRemoved(position);}
                 Snackbar.make(view, "connection supprimé : " + connection.toString(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }

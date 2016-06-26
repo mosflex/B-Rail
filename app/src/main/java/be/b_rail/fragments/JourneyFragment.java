@@ -103,12 +103,14 @@ public class JourneyFragment extends Fragment {
         List<Connection> ListConnections = PrefsUtils.loadConnections(getContext());
         if(ListConnections != null && !ListConnections.isEmpty()){
             mLayoutManager   = new LinearLayoutManager(getActivity());
-            mJourneysAdapter = new JourneysAdapter(getActivity(),ListConnections);
+            mJourneysAdapter = new JourneysAdapter(getActivity(),ListConnections,JourneyFragment.this);
             journeysListRecycleView.setLayoutManager(mLayoutManager);// requires *wrapped* adapter
             journeysListRecycleView.setAdapter(mJourneysAdapter);
 
             vf.showNext();
         }
+
+
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -156,5 +158,9 @@ public class JourneyFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void showFlip(){
+        vf.showPrevious();
     }
 }

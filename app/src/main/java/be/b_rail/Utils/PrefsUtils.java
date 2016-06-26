@@ -96,13 +96,14 @@ public class PrefsUtils {
         favorites.add(0,connection);
         storeConnections(context, favorites);
     }
-    public static void removeConnection(Context context, Connection connection) {
+    public static void removeConnection(Context context, int position) {
         List favorites = loadConnections(context);
         if (favorites != null) {
-            favorites.remove(connection);
-            clearConnections(context);
+            favorites.remove(position);
+             clearConnections(context);
             storeConnections(context, favorites);
         }
+
     }
 
 }
