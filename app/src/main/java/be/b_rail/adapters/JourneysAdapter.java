@@ -108,7 +108,7 @@ public class JourneysAdapter
             public void onClick(View view) {
                 PrefsUtils.removeConnection(context, position);
                 mConnectionsList.remove(connection);
-                if (position == 0) {notifyDataSetChanged(); journeyFragment.showFlip();} else {notifyItemRemoved(position);}
+                if (mConnectionsList.size() == 0) {notifyDataSetChanged(); journeyFragment.showFlip();} else {notifyItemRemoved(position);}
                 Snackbar.make(view, "connection supprimé : " + connection.toString(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
@@ -172,6 +172,5 @@ public class JourneysAdapter
     public int getItemCount() {
         return mConnectionsList.size();
     }
-
 
 }

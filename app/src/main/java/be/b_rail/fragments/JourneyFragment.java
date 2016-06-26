@@ -106,7 +106,6 @@ public class JourneyFragment extends Fragment {
             mJourneysAdapter = new JourneysAdapter(getActivity(),ListConnections,JourneyFragment.this);
             journeysListRecycleView.setLayoutManager(mLayoutManager);// requires *wrapped* adapter
             journeysListRecycleView.setAdapter(mJourneysAdapter);
-
             vf.showNext();
         }
 

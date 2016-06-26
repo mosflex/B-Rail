@@ -43,10 +43,10 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // Check if the EULA has been accepted; if not, show it.
-       // if (!PrefsUtils.isTosAccepted(this)) {
-       //     startActivity(new Intent(this, WelcomeActivity.class));
-       //     finish();
-       // }else{
+        if (!PrefsUtils.isTosAccepted(this)) {
+            startActivity(new Intent(this, IntroActivity.class));
+            finish();
+        }else{
 
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
@@ -80,9 +80,7 @@ public class MainActivity extends AppCompatActivity
                 //titleContact.setText(""+account.name);
                 userName.setText(""+account.name);
             }
-
-      //  }
-
+        }
     }
     private Account getAccount(AccountManager accountManager) {
         Account[] accounts = accountManager.getAccountsByType("com.google");
