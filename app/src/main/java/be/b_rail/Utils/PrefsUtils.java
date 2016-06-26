@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import be.b_rail.Models.Connection;
+import be.b_rail.Models.Favourite;
 
 /**
  * Created by Jawad on 10-02-16.
@@ -33,9 +34,11 @@ public class PrefsUtils {
     public static final String PREF_TOOLTIPS_A_ACCEPTED = "pref_tooltips_a_accepted";
     public static final String PREF_TOOLTIPS_B_ACCEPTED = "pref_tooltips_b_accepted";
 
-
     public static final String PREF_CONNECTIONS = "pref_connections";
     public static final String CONNECTIONS = "Connections";
+
+    public static final String PREF_FAVOURITES = "pref_favourites";
+    public static final String FAVOURITES = "Favourites";
 
     public static boolean isTosAccepted(final Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -106,4 +109,51 @@ public class PrefsUtils {
 
     }
 
+    public static void addFavourites(Context context, Favourite favourite) {
+        List favourites = loadFavourites(context);
+        if (favourites == null)
+            favourites = new ArrayList();
+        favourites.add(favourite);
+        storeFavourites(context, favourites);
+    }
+
+
+   public static ArrayList loadFavourites(Context context) {
+            // used for retrieving arraylist from json formatted string
+            SharedPreferences settings;
+            List favourites;
+            settings = context.getSharedPreferences(PREF_FAVOURITES,Context.MODE_PRIVATE);
+            if (settings.contains(FAVOURITES)) {
+                String jsonFavourites= settings.getString(FAVOURITES, null);
+                Log.d("jsonFavourites : ",jsonFavourites);
+                Gson gson = new Gson();
+                Favourite[] favouritesItems = gson.fromJson(jsonFavourites,Favourite[].class);
+
+                Log.d("favouritesItems : ",favouritesItems.length+"");
+                favourites = Arrays.asList(favouritesItems);
+                favourites = new ArrayList(favourites);
+                Log.d(" size favourites:  ",favourites.size()+"");
+            } else
+                return null;
+            return (ArrayList) favourites;
+    }
+    public static void removeFavourite(Context context, int position) {
+        List favourites = loadFavourites(context);
+        if (favourites != null) {
+            favourites.remove(position);
+            storeFavourites(context, favourites);
+        }
+    }
+
+    public static void storeFavourites(Context context, List favourites) {
+        // used for store arrayList in json format
+        SharedPreferences settings;
+        SharedPreferences.Editor editor;
+        settings = context.getSharedPreferences(PREF_FAVOURITES,Context.MODE_PRIVATE);
+        editor = settings.edit();
+        Gson gson = new Gson();
+        String jsonFavorites = gson.toJson(favourites);
+        editor.putString(FAVOURITES, jsonFavorites);
+        editor.commit();
+    }
 }

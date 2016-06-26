@@ -30,7 +30,9 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import be.b_rail.Models.Favourite;
 import be.b_rail.Models.Station;
+import be.b_rail.Utils.PrefsUtils;
 import be.b_rail.adapters.StationsAdapter;
 
 public class ScheduleActivity extends AppCompatActivity {
@@ -86,7 +88,13 @@ public class ScheduleActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                swap_layout.removeViewAt(0);
+                Favourite newFav = new Favourite(mDepartureStationAutoCompleteTextView.getText().toString(),mDirectionStationAutoCompleteTextView.getText().toString());
+                PrefsUtils.addFavourites(ScheduleActivity.this,newFav);
+
+                Snackbar.make(view, "favoris ajouté : " + newFav.toString(), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+
             }
         });
 

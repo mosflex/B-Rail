@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -31,8 +33,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import be.b_rail.ConnectionActivity;
+import be.b_rail.Models.Favourite;
 import be.b_rail.Models.Station;
 import be.b_rail.R;
+import be.b_rail.Utils.PrefsUtils;
+import be.b_rail.adapters.FavouritesAdapter;
+import be.b_rail.adapters.JourneysAdapter;
 import be.b_rail.adapters.StationsAdapter;
 
 /**
@@ -42,6 +48,10 @@ public class FavouritesFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private RecyclerView favouritesListRecycleView;
+    private RecyclerView.Adapter        mFavouritesAdapter;
+    private RecyclerView.LayoutManager  mLayoutManager;
+    private List<Favourite>            favouritesList;
 
     public FavouritesFragment() {
         // Required empty public constructor
@@ -69,12 +79,23 @@ public class FavouritesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
+
         return inflater.inflate(R.layout.fragment_favourites, container, false);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        favouritesListRecycleView = (RecyclerView) getActivity().findViewById(R.id.favourites_recyclerview);
+        favouritesList  = PrefsUtils.loadFavourites(getContext());
+        if(favouritesList != null && !favouritesList.isEmpty()){
+            mLayoutManager   = new LinearLayoutManager(getActivity());
+            mFavouritesAdapter = new FavouritesAdapter(getActivity(),favouritesList);
+            favouritesListRecycleView.setLayoutManager(mLayoutManager);// requires *wrapped* adapter
+            favouritesListRecycleView.setAdapter(mFavouritesAdapter);
+        }
+
+
     }
 
 

@@ -84,7 +84,7 @@
                     android:id="@+id/swapButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_import_export_white_24dp"/>
+                    android:src="@drawable/ic_grade_24dp"/>
             </LinearLayout>
 
         </LinearLayout>

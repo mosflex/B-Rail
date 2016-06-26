@@ -126,7 +126,6 @@ public class ConnectionActivity extends AppCompatActivity
         getConnectionsJSONTask = new GetConnectionsJSONTask();
         getConnectionsJSONTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-
     }
     @Override
     public void onDestroy() {
