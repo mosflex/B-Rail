@@ -18,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ViewFlipper;
 
 import com.google.gson.Gson;
 
@@ -48,10 +49,13 @@ public class FavouritesFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private RecyclerView favouritesListRecycleView;
+    private RecyclerView                favouritesListRecycleView;
     private RecyclerView.Adapter        mFavouritesAdapter;
     private RecyclerView.LayoutManager  mLayoutManager;
-    private List<Favourite>            favouritesList;
+    private List<Favourite>             favouritesList;
+
+
+    private ViewFlipper                 vf;
 
     public FavouritesFragment() {
         // Required empty public constructor
@@ -86,19 +90,21 @@ public class FavouritesFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        vf  = (ViewFlipper) getActivity().findViewById(R.id.viewFlipper_2);
         favouritesListRecycleView = (RecyclerView) getActivity().findViewById(R.id.favourites_recyclerview);
         favouritesList  = PrefsUtils.loadFavourites(getContext());
         if(favouritesList != null && !favouritesList.isEmpty()){
             mLayoutManager   = new LinearLayoutManager(getActivity());
-            mFavouritesAdapter = new FavouritesAdapter(getActivity(),favouritesList);
+            mFavouritesAdapter = new FavouritesAdapter(getActivity(),favouritesList,FavouritesFragment.this);
             favouritesListRecycleView.setLayoutManager(mLayoutManager);// requires *wrapped* adapter
             favouritesListRecycleView.setAdapter(mFavouritesAdapter);
+            vf.showNext();
         }
-
-
     }
 
-
+    public void showFlip(){
+        vf.showPrevious();
+    }
 
     @Override
     public void onDestroy() {
