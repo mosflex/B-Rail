@@ -31,7 +31,8 @@
     <string name="action_share">Share</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="text_journey">Recherchez votre itinéraire, puis enregistrez-les dans cet espace pour être accompagnée en temps réel.</string>
+    <string name="text_journey">Search for your itineray, then save them here to get support in real time.</string>
+    <string name="text_favourite">Search for your favourite journeys and save them here for quick access to your timetables in real time.</string>
     <string name="title_activity_connection">Connection</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -100,4 +101,13 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="title_activity_schedule">ScheduleActivity</string>
+
+    <string name="title_intro_1">Step 1</string>
+    <string name="title_intro_2">Step 2</string>
+    <string name="title_intro_3">Step 3</string>
+
+    <string name="description_intro_1">Search your itinerary</string>
+    <string name="description_intro_2">Find and add a journey in your dashboard</string>
+    <string name="description_intro_3">Just smile and drink a coffee </string>
+
 </resources>

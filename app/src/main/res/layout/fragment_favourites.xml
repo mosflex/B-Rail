@@ -7,16 +7,51 @@
     android:layout_height="match_parent">
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/favourites_recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="1dp"
-        android:layout_marginRight="1dp"
-        android:layout_marginBottom="1dp"
-        android:drawSelectorOnTop="true" >
+    <!-- TODO: Update blank fragment layout -->
+    <ViewFlipper
+        android:id="@+id/viewFlipper_2"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center">
+        <LinearLayout
+            android:id="@+id/layout_nofavourites"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical">
 
-    </android.support.v7.widget.RecyclerView>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_marginTop="38dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_grade_grey_256dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:lineSpacingMultiplier="1.4"
+                android:layout_marginTop="18dp"
+                android:gravity="center"
+                android:textColor="@android:color/darker_gray"
+                android:text="@string/text_favourite" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_favourites"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/favourites_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginBottom="1dp"
+                android:drawSelectorOnTop="true" />
+        </LinearLayout>
+    </ViewFlipper>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/requestButton"

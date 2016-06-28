@@ -6,11 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Toast;
 
-import com.github.paolorotolo.appintro.AppIntro;
 import com.github.paolorotolo.appintro.AppIntro2;
 import com.github.paolorotolo.appintro.AppIntroFragment;
 
@@ -34,13 +30,15 @@ public class IntroActivity extends AppIntro2 {
 
         setFadeAnimation();
 
-        //setImmersiveMode(true);
+        setImmersiveMode(true);
         //setGoBackLock(true);
-       // setColorTransitionsEnabled(true);
+        //setColorTransitionsEnabled(true);
 
         // Instead of fragments, you can also use our default slide
         // Just set a title, description, background and image. AppIntro will do the rest.
-       // addSlide(AppIntroFragment.newInstance(title, description, image, background_colour));
+       // addSlide(AppIntroFragment.newInstance(getString(R.string.title_intro_1), getString(R.string.description_intro_1), R.drawable.ic_search_white_256dp, Color.parseColor("#5C6BC0")));
+        //addSlide(AppIntroFragment.newInstance(getString(R.string.title_intro_2), getString(R.string.description_intro_2), R.drawable.ic_playlist_add_white_256dp, Color.parseColor("#00BCD4")));
+        //addSlide(AppIntroFragment.newInstance(getString(R.string.title_intro_3), getString(R.string.description_intro_3), R.drawable.ic_mood_white_256dp, Color.parseColor("#1ab394")));
 
         // OPTIONAL METHODS
         // Override bar/separator color.
