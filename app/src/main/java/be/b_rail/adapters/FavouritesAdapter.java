@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -57,13 +58,14 @@ public class FavouritesAdapter  extends RecyclerView.Adapter<FavouritesAdapter.V
         holder.btn_remove_favourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PrefsUtils.removeConnection(context, position);
+                PrefsUtils.removeFavourite(context, position);
                 mFavouriteList.remove(favourite);
                 if (mFavouriteList.size() == 0) {
                     notifyDataSetChanged();
                     favouriteFragment.showFlip();
                 } else {
                     notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, mFavouriteList.size());
                 }
                 Snackbar.make(view, "connection supprimé : " + favourite.toString(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
@@ -101,7 +103,7 @@ public class FavouritesAdapter  extends RecyclerView.Adapter<FavouritesAdapter.V
         private TextView        mFavouriteDepartureStationTextView;
         private TextView        mFavouriteArrivalStationTextView;
         private LinearLayout    mContainer;
-        private Button          btn_remove_favourite;
+        private ImageButton          btn_remove_favourite;
 
         public ViewHolder(View v) {
             super(v);
@@ -109,7 +111,7 @@ public class FavouritesAdapter  extends RecyclerView.Adapter<FavouritesAdapter.V
             mFavouriteArrivalStationTextView = (TextView) v.findViewById(R.id.arrival_favourite_textview);
             mContainer = (LinearLayout) v.findViewById(R.id.container);
 
-            btn_remove_favourite      = (Button) v.findViewById(R.id.btn_remove);
+            btn_remove_favourite      = (ImageButton) v.findViewById(R.id.btn_remove);
         }
     }
 }

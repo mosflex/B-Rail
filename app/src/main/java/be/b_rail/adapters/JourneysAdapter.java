@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.h6ah4i.android.widget.advrecyclerview.utils.AbstractSwipeableItemViewHolder;
@@ -51,7 +52,7 @@ public class JourneysAdapter
         private MagicProgressCircle demoMpc;
         private AnimTextView        mAnimTextView_time;
 
-        private Button              btn_remove_journey;
+        private ImageButton         btn_remove_journey;
 
 
         public ViewHolder(View v) {
@@ -66,7 +67,7 @@ public class JourneysAdapter
             demoMpc             = (MagicProgressCircle) v.findViewById(R.id.demo_mpc);
             mAnimTextView_time  = (AnimTextView) v.findViewById(R.id.animTextView_time);
 
-            btn_remove_journey      = (Button) v.findViewById(R.id.btn_remove);
+            btn_remove_journey      = (ImageButton) v.findViewById(R.id.btn_remove);
         }
     }
 
@@ -108,7 +109,7 @@ public class JourneysAdapter
             public void onClick(View view) {
                 PrefsUtils.removeConnection(context, position);
                 mConnectionsList.remove(connection);
-                if (mConnectionsList.size() == 0) {notifyDataSetChanged(); journeyFragment.showFlip();} else {notifyItemRemoved(position);}
+                if (mConnectionsList.size() == 0) {notifyDataSetChanged(); journeyFragment.showFlip();} else {notifyItemRemoved(position);    notifyItemRangeChanged(position, mConnectionsList.size());}
                 Snackbar.make(view, "connection supprimé : " + connection.toString(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
