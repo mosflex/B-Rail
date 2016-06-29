@@ -109,9 +109,14 @@ public class JourneysAdapter
             public void onClick(View view) {
                 PrefsUtils.removeConnection(context, position);
                 mConnectionsList.remove(connection);
-                if (mConnectionsList.size() == 0) {notifyDataSetChanged(); journeyFragment.showFlip();} else {notifyItemRemoved(position);    notifyItemRangeChanged(position, mConnectionsList.size());}
-                Snackbar.make(view, "connection supprimé : " + connection.toString(), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                if (mConnectionsList.size() == 0) {
+                    notifyDataSetChanged();
+                    journeyFragment.showFlip();
+                } else {
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, mConnectionsList.size());
+                }
+                Snackbar.make(view, R.string.snackar_journey_deleted, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
             }
         });
 

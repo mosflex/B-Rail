@@ -37,14 +37,12 @@ import be.b_rail.adapters.StationsAdapter;
 
 public class ScheduleActivity extends AppCompatActivity {
 
-    private LinearLayout            swap_layout;
-
     private TextInputLayout         inputLayoutDepart, inputLayoutArr;
 
     private AutoCompleteTextView    mDepartureStationAutoCompleteTextView;
     private AutoCompleteTextView    mDirectionStationAutoCompleteTextView;
     private FloatingActionButton    requestButton;
-    private ImageButton             swapButton;
+    private ImageButton             favouriteButton;
 
     private List<Station>           responseStationList;
     private StationsAdapter         stationsAdapter;
@@ -63,16 +61,14 @@ public class ScheduleActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.add_a_journey);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        requestButton = (FloatingActionButton) findViewById(R.id.fab);
+        requestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 submitForm();
             }
         });
         responseStationList = new ArrayList<>();
-
-        swap_layout = (LinearLayout) findViewById(R.id.swap_layout);
 
         mDepartureStationAutoCompleteTextView = (AutoCompleteTextView)findViewById(R.id.departure_autoCompleteTextView);
         mDirectionStationAutoCompleteTextView = (AutoCompleteTextView)findViewById(R.id.direction_autoCompleteTextView);
@@ -83,16 +79,15 @@ public class ScheduleActivity extends AppCompatActivity {
         mDepartureStationAutoCompleteTextView.addTextChangedListener(new MyTextWatcher(mDepartureStationAutoCompleteTextView));
         mDirectionStationAutoCompleteTextView.addTextChangedListener(new MyTextWatcher(mDirectionStationAutoCompleteTextView));
 
-        swapButton = (ImageButton)findViewById(R.id.swapButton);
-        swapButton.setOnClickListener(new View.OnClickListener() {
+        favouriteButton = (ImageButton)findViewById(R.id.swapButton);
+        favouriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 Favourite newFav = new Favourite(mDepartureStationAutoCompleteTextView.getText().toString(),mDirectionStationAutoCompleteTextView.getText().toString());
                 PrefsUtils.addFavourites(ScheduleActivity.this,newFav);
 
-                Snackbar.make(view, "favoris ajouté : " + newFav.toString(), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Snackbar.make(view, R.string.snackar_favourite_added, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
 
 
             }

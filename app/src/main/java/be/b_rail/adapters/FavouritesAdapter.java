@@ -67,8 +67,8 @@ public class FavouritesAdapter  extends RecyclerView.Adapter<FavouritesAdapter.V
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, mFavouriteList.size());
                 }
-                Snackbar.make(view, "connection supprimé : " + favourite.toString(), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
+                Snackbar.make(view, R.string.snackar_favourite_deleted, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
             }
         });
 

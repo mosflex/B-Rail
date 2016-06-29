@@ -194,10 +194,9 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
             @Override
             public void onClick(View view) {
                 PrefsUtils.addConnection(context, connection);
-                Snackbar.make(view, "connection ajouté : " + connection.toString(), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
                 Intent intent = new Intent(context, MainActivity.class);
                 context.startActivity(intent);
+                Snackbar.make(view, R.string.snackar_journey_added, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
             }
         });
         //holder.mStationDepartureTextView.setText(connection.getDeparture().getStation());

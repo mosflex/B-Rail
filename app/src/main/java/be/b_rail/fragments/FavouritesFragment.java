@@ -88,6 +88,22 @@ public class FavouritesFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        favouritesList  = PrefsUtils.loadFavourites(getContext());
+        if(favouritesList != null && !favouritesList.isEmpty()){
+            mLayoutManager   = new LinearLayoutManager(getActivity());
+            mFavouritesAdapter = new FavouritesAdapter(getActivity(),favouritesList,FavouritesFragment.this);
+            favouritesListRecycleView.setLayoutManager(mLayoutManager);// requires *wrapped* adapter
+            favouritesListRecycleView.setAdapter(mFavouritesAdapter);
+            if(vf.getDisplayedChild() == 0){
+                vf.showNext();
+            }
+
+        }
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         vf  = (ViewFlipper) getActivity().findViewById(R.id.viewFlipper_2);

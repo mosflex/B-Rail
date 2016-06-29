@@ -14,6 +14,11 @@
     <string name="Departurein">Departure in</string>
     <string name="Platform">Platform</string>
 
+    <string name="snackar_journey_deleted">Journey deleted !</string>
+    <string name="snackar_favourite_deleted">Favourite deleted !</string>
+    <string name="snackar_journey_added">Journey added !</string>
+    <string name="snackar_favourite_added">Favourite added !</string>
+
     <string name="Search">Search</string>
     <string name="REMOVE">REMOVE</string>
     <string name="search_hint">Search stations…</string>
