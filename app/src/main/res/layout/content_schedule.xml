@@ -80,12 +80,23 @@
                 android:layout_weight=".2"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <ImageButton
-                    android:id="@+id/swapButton"
-                    android:layout_width="wrap_content"
+
+                <com.like.LikeButton
+                    android:id="@+id/favourite_button"
+                    app:icon_type="star"
+                    app:circle_start_color="@color/colorPrimary"
+                    app:like_drawable="@drawable/star_on"
+                    app:unlike_drawable="@drawable/star_off"
+                    app:dots_primary_color="@color/colorAccent"
+                    app:dots_secondary_color="@color/colorPrimary"
+                    app:circle_end_color="@color/colorAccent"
+                    app:icon_size="32dp"
+                    app:liked="true"
+                    app:anim_scale_factor="2"
+                    app:is_enabled="false"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_grade_24dp"
-                    style="?attr/borderlessButtonStyle"/>
+                    android:layout_width="wrap_content" />
+
             </LinearLayout>
 
         </LinearLayout>

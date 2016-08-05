@@ -18,6 +18,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,7 +44,7 @@ public class ScheduleActivity extends AppCompatActivity {
     private AutoCompleteTextView    mDepartureStationAutoCompleteTextView;
     private AutoCompleteTextView    mDirectionStationAutoCompleteTextView;
     private FloatingActionButton    requestButton;
-    private ImageButton             favouriteButton;
+    private LikeButton favouriteButton;
 
     private List<Station>           responseStationList;
     private StationsAdapter         stationsAdapter;
@@ -79,16 +81,36 @@ public class ScheduleActivity extends AppCompatActivity {
         mDepartureStationAutoCompleteTextView.addTextChangedListener(new MyTextWatcher(mDepartureStationAutoCompleteTextView));
         mDirectionStationAutoCompleteTextView.addTextChangedListener(new MyTextWatcher(mDirectionStationAutoCompleteTextView));
 
-        favouriteButton = (ImageButton)findViewById(R.id.swapButton);
-        favouriteButton.setOnClickListener(new View.OnClickListener() {
+        favouriteButton = (LikeButton) findViewById(R.id.favourite_button);
+        favouriteButton.setLiked(false);
+        favouriteButton.setEnabled(true);
+   /*     favouriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+
+                if(favouriteButton.isL)
                 Favourite newFav = new Favourite(mDepartureStationAutoCompleteTextView.getText().toString(),mDirectionStationAutoCompleteTextView.getText().toString());
                 PrefsUtils.addFavourites(ScheduleActivity.this,newFav);
 
                 Snackbar.make(view, R.string.snackar_favourite_added, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
 
+
+            }
+        });*/
+
+        favouriteButton.setOnLikeListener(new OnLikeListener() {
+            @Override
+            public void liked(LikeButton likeButton) {
+                Favourite newFav = new Favourite(mDepartureStationAutoCompleteTextView.getText().toString(),mDirectionStationAutoCompleteTextView.getText().toString());
+                PrefsUtils.addFavourites(ScheduleActivity.this,newFav);
+                favouriteButton.setLiked(true);
+               //Snackbar.make(view, R.string.snackar_favourite_added, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+            }
+
+            @Override
+            public void unLiked(LikeButton likeButton) {
+                favouriteButton.setLiked(false);
 
             }
         });
