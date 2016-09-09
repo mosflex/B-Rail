@@ -54,7 +54,7 @@
         </LinearLayout>
     </ViewFlipper>
 
-    <android.support.design.widget.FloatingActionButton
+<!--    <android.support.design.widget.FloatingActionButton
         android:id="@+id/requestButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -67,5 +67,5 @@
         android:layout_alignParentEnd="true"
         app:elevation="5dp"
         app:borderWidth="1dp"
-        app:rippleColor="@android:color/white" />
+        app:rippleColor="@android:color/white" />-->
 </RelativeLayout>

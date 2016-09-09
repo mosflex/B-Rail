@@ -105,7 +105,7 @@
                         android:layout_height="match_parent"
                         app:mpc_stroke_width="10dp" />
 
-                    <be.b_rail.widget.AnimTextView
+                    <be.ontime.widget.AnimTextView
                         android:id="@+id/animTextView_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -143,14 +143,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="end">
+            android:gravity="end"
+           >
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/details"
+                style="?attr/borderlessButtonStyle"
+                android:textColor="@color/colorAccent"
+               />
             <ImageButton
                 android:id="@+id/btn_remove"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/REMOVE"
                 android:src="@drawable/ic_delete_white_24dp"
-                style="?attr/borderlessButtonStyle"/>
+                style="?attr/borderlessButtonStyle"
+                />
         </LinearLayout>
 
     </LinearLayout>

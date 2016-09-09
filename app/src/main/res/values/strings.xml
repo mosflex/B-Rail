@@ -18,6 +18,7 @@
     <string name="snackar_favourite_deleted">Favourite deleted !</string>
     <string name="snackar_journey_added">Journey added !</string>
     <string name="snackar_favourite_added">Favourite added !</string>
+    <string name="snackar_connection_lost">Check your device network !</string>
 
     <string name="Search">Search</string>
     <string name="REMOVE">REMOVE</string>
@@ -114,5 +115,6 @@
     <string name="description_intro_1">Search your itinerary</string>
     <string name="description_intro_2">Find and add a journey in your dashboard</string>
     <string name="description_intro_3">Just smile and drink a coffee </string>
+    <string name="details">DETAILS</string>
 
 </resources>

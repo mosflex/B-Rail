@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="be.b_rail.ScheduleActivity"
+    tools:context="be.ontime.ScheduleActivity"
     tools:showIn="@layout/activity_schedule">
 
     <android.support.v7.widget.CardView
@@ -52,8 +52,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="32dp"
                             android:ems="10"
-                            android:hint="@string/station_dep"
-                            android:text="Bruxelles Central"/>
+                            android:hint="@string/station_dep"/>
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
@@ -71,7 +70,7 @@
                             android:layout_marginTop="24dp"
                             android:ems="10"
                             android:hint="@string/station_arr"
-                            android:text="Bockstael"/>
+                            />
                     </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
             </LinearLayout>
