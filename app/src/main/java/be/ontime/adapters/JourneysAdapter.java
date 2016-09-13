@@ -44,6 +44,7 @@ public class JourneysAdapter
         private TextView mStationDepartureTextView;
         private TextView mStationArrivalTextView;
         private TextView mPlatformDepartureTextView;
+        private TextView mDelayTextView;
 
         private MagicProgressCircle demoMpc;
         private AnimTextView        mAnimTextView_time;
@@ -59,6 +60,7 @@ public class JourneysAdapter
             mStationDepartureTextView   = (TextView) v.findViewById(R.id.station_departure_textview);
             mStationArrivalTextView     = (TextView) v.findViewById(R.id.station_arrival_textview);
             mPlatformDepartureTextView  = (TextView) v.findViewById(R.id.Platform_departure_textview);
+            mDelayTextView              = (TextView) v.findViewById(R.id.time_delay_textview);
 
             demoMpc             = (MagicProgressCircle) v.findViewById(R.id.demo_mpc);
             mAnimTextView_time  = (AnimTextView) v.findViewById(R.id.animTextView_time);
@@ -100,6 +102,9 @@ public class JourneysAdapter
         holder.mStationArrivalTextView.setText(connection.getArrival().getStation());
         holder.mTimeArrivalTextView.setText(Utils.getTimeFromDate(connection.getArrival().getTime()));
         holder.mPlatformDepartureTextView.setText(connection.getDeparture().getPlatform());
+        if (connection.getDeparture().getDelay() > 0){
+            holder.mDelayTextView.setText("+ "+connection.getDeparture().getDelay()/60+"'");
+        }
         holder.btn_remove_journey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -115,6 +120,7 @@ public class JourneysAdapter
                 Snackbar.make(view, R.string.snackar_journey_deleted, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
             }
         });
+
 
         long seconds_now = TimeUnit.MILLISECONDS.toSeconds(Calendar.getInstance().getTimeInMillis());
         long seconds_departure = Long.parseLong(connection.getDeparture().getTime());// en second

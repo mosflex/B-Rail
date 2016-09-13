@@ -72,6 +72,7 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
         private TextView mTimeArrivalTextView;
         private TextView mDurationTravelTextView;
         private TextView mViasNumberTextView;
+        private TextView mDelayTextView;
 
         private FloatingActionButton btn_add_journey;
 
@@ -83,6 +84,7 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
             mDurationTravelTextView = (TextView) v.findViewById(R.id.duration_travel_textview);
             btn_add_journey = (FloatingActionButton) v.findViewById(R.id.add_journey);
             mViasNumberTextView = (TextView) v.findViewById(R.id.vias_number_textview);
+            mDelayTextView = (TextView) v.findViewById(R.id.time_delay_textview);
         }
     }
 
@@ -100,6 +102,7 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
         private TextView mPlatformDepartureChildTextView;
         private TextView mPlatformArrivalChildTextView;
         private TextView mPlatformViaChildTextView;
+
 
         private TextView mDelayChildTextView;
 
@@ -123,7 +126,9 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
 
             mViasChildLinearLayout =(LinearLayout) v.findViewById(R.id.vias_linearlayout_child);
 
+
             mDelayChildTextView =(TextView) v.findViewById(R.id.time_delay_textview_child);
+
 
         }
     }
@@ -206,6 +211,10 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
         }
 
         holder.itemView.setClickable(true);
+
+        if (connection.getDeparture().getDelay() > 0){
+            holder.mDelayTextView.setText("+ "+connection.getDeparture().getDelay()/60+"'");
+        }
 
         // set background resource (target view ID: container)
        final int expandState = holder.getExpandStateFlags();
