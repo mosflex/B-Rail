@@ -31,12 +31,11 @@ import be.ontime.widget.AnimTextView;
 /**
  * Created by Jawad on 29-05-16.
  */
-public class JourneysAdapter
-        extends RecyclerView.Adapter<JourneysAdapter.ViewHolder> {
+public class JourneysAdapter extends RecyclerView.Adapter<JourneysAdapter.ViewHolder> {
 
     private static List<Connection> mConnectionsList;
     private static Context          context;
-    private JourneyFragment     journeyFragment;
+    private JourneyFragment         journeyFragment;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -121,8 +120,6 @@ public class JourneysAdapter
                 Snackbar.make(view, R.string.snackar_journey_deleted, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
             }
         });
-
-
         long seconds_now = TimeUnit.MILLISECONDS.toSeconds(Calendar.getInstance().getTimeInMillis());
         long seconds_departure = Long.parseLong(connection.getDeparture().getTime());// en second
         final int progress = Utils.getDurationTimeSeconds(seconds_departure,seconds_now) ;

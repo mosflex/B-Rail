@@ -98,8 +98,6 @@ public class JourneyFragment extends Fragment {
             journeysListRecycleView.setAdapter(mJourneysAdapter);
             vf.showNext();
         }
-
-
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -117,7 +115,6 @@ public class JourneyFragment extends Fragment {
             mListener.onFragmentInteraction(uri);
         }
     }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
