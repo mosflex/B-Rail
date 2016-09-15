@@ -77,7 +77,7 @@
     <string name="title_activity_schedule">ScheduleActivity</string>
 
     <string name="Search">Chercher</string>
-    <string name="REMOVE">SUPPRIME</string>
+    <string name="REMOVE">SUPPRIMER</string>
     <string name="search_hint">Chercher des stations…</string>
 
     <string name="station_dep">Départ</string>

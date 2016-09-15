@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -49,7 +50,7 @@ public class JourneysAdapter
         private MagicProgressCircle demoMpc;
         private AnimTextView        mAnimTextView_time;
 
-        private ImageButton         btn_remove_journey;
+        private Button         btn_remove_journey;
 
 
         public ViewHolder(View v) {
@@ -65,7 +66,7 @@ public class JourneysAdapter
             demoMpc             = (MagicProgressCircle) v.findViewById(R.id.demo_mpc);
             mAnimTextView_time  = (AnimTextView) v.findViewById(R.id.animTextView_time);
 
-            btn_remove_journey      = (ImageButton) v.findViewById(R.id.btn_remove);
+            btn_remove_journey      = (Button) v.findViewById(R.id.btn_remove);
         }
     }
 

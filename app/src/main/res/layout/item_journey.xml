@@ -154,7 +154,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="end"
+
            >
 <!--            <Button
                 android:layout_width="wrap_content"
@@ -163,12 +163,13 @@
                 style="?attr/borderlessButtonStyle"
                 android:textColor="@color/colorAccent"
                />-->
-            <ImageButton
+            <Button
                 android:id="@+id/btn_remove"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/REMOVE"
                 android:src="@drawable/ic_delete_white_24dp"
+                android:textColor="@color/colorAccent"
                 style="?attr/borderlessButtonStyle"
                 />
         </LinearLayout>
