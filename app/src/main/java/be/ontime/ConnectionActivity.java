@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -181,7 +182,7 @@ public class ConnectionActivity extends AppCompatActivity
         private static final String TAG = "GetConnectionsJSONTask";
 
         private String SERVER_URL =
-                "http://api.irail.be/connections/?to="
+                "https://api.irail.be/connections/?to="
                         + arrival+"&from="
                         + departure+"&format=json&fast=true";
 
@@ -190,7 +191,6 @@ public class ConnectionActivity extends AppCompatActivity
             HttpURLConnection conn = null;
             BufferedReader reader = null;
             SERVER_URL = SERVER_URL.replace(" ", "%20");
-
             try {
 
                 URL url = new URL(SERVER_URL);
