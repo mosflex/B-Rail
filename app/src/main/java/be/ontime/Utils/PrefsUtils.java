@@ -96,7 +96,6 @@ public class PrefsUtils {
              clearConnections(context);
             storeConnections(context, favorites);
         }
-
     }
 
     public static void addFavourites(Context context, Favourite favourite) {
@@ -107,8 +106,7 @@ public class PrefsUtils {
         storeFavourites(context, favourites);
     }
 
-
-   public static ArrayList loadFavourites(Context context) {
+    public static ArrayList loadFavourites(Context context) {
             // used for retrieving arraylist from json formatted string
             SharedPreferences settings;
             List favourites;

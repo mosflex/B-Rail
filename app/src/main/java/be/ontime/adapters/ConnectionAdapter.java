@@ -103,11 +103,8 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
         private TextView mPlatformArrivalChildTextView;
         private TextView mPlatformViaChildTextView;
 
-
         private TextView mDelayChildTextView;
-
         private LinearLayout mViasChildLinearLayout;
-
 
         public ChildViewHolder(View v) {
            super(v);
@@ -123,13 +120,8 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
             mPlatformDepartureChildTextView = (TextView) v.findViewById(R.id.platform_departure_textview_child);
             mPlatformArrivalChildTextView = (TextView) v.findViewById(R.id.platform_arrival_textview_child);
             mPlatformViaChildTextView = (TextView) v.findViewById(R.id.platform_via_textview_child);
-
             mViasChildLinearLayout =(LinearLayout) v.findViewById(R.id.vias_linearlayout_child);
-
-
             mDelayChildTextView =(TextView) v.findViewById(R.id.time_delay_textview_child);
-
-
         }
     }
 
@@ -146,8 +138,6 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
         mConnectionsList.add(connection);
         notifyDataSetChanged();
     }
-
-
     @Override
     public int getGroupCount() {
         return mConnectionsList.size();
@@ -231,13 +221,10 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
              //   bgResId = R.drawable.bg_group_item_normal_state;
                 isExpanded = false;
             }
-
-           // holder.mContainer.setBackgroundResource(bgResId);
+            // holder.mContainer.setBackgroundResource(bgResId);
             holder.mIndicator.setExpandedState(isExpanded, animateIndicator);
-
         }
     }
-
     @Override
     public void onBindChildViewHolder(ChildViewHolder holder, int groupPosition, int childPosition, int viewType) {
         final Connection connection = mConnectionsList.get(groupPosition);
@@ -267,7 +254,6 @@ public class ConnectionAdapter extends AbstractExpandableItemAdapter<ConnectionA
         //holder.mDirectionChildTextView.setText(connection.getDeparture().getVehicle().substring(8)+""+connection.getDeparture().getDirection().getName());
 
     }
-
     @Override
     public boolean onCheckCanExpandOrCollapseGroup(GroupViewHolder holder, int groupPosition, int x, int y, boolean expand) {
         // check the item is *not* pinned

@@ -50,7 +50,6 @@ public class ConnectionActivity extends AppCompatActivity
         implements RecyclerViewExpandableItemManager.OnGroupCollapseListener,
         RecyclerViewExpandableItemManager.OnGroupExpandListener {
 
-
     private static final String SAVED_STATE_EXPANDABLE_ITEM_MANAGER = "RecyclerViewExpandableItemManager";
 
     private String                      departure, arrival;
@@ -80,7 +79,6 @@ public class ConnectionActivity extends AppCompatActivity
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setTitle(R.string.Connection);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
       /*  FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -276,7 +274,6 @@ public class ConnectionActivity extends AppCompatActivity
 
             super.onPostExecute(aVoid);
         }
-
         @Override
         protected void onProgressUpdate(Object... values) {
             super.onProgressUpdate(values);
@@ -286,7 +283,5 @@ public class ConnectionActivity extends AppCompatActivity
         protected void onCancelled() {
             super.onCancelled();
         }
-
-
     }
 }
