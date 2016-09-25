@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import be.ontime.Utils.PrefsUtils;
+import be.ontime.Utils.Utils;
 import be.ontime.fragments.BaseFragment;
 import be.ontime.fragments.SncbFragment;
 import com.crashlytics.android.Crashlytics;
@@ -64,36 +65,21 @@ public class MainActivity extends AppCompatActivity
 
             userName	= (TextView) navigationView.getHeaderView(0).findViewById(R.id.textView_username);
 
-            //-----------------------------------------------------------------
-
             if (savedInstanceState != null) {
                 mSelectedFragment = savedInstanceState.getInt(BUNDLE_SELECTEDFRAGMENT);
-
                 if ( getSupportFragmentManager().findFragmentById(R.id.frame_container) == null)
                     selectFragment(mSelectedFragment);
-
             }else {
                 selectFragment(CASE_SNCB);
             }
 
             AccountManager accountManager = AccountManager.get(this);
-            Account account = getAccount(accountManager);
+            Account account = Utils.getAccount(accountManager);
 
             if (account != null) {
-                //titleContact.setText(""+account.name);
                 userName.setText(""+account.name);
             }
         }
-    }
-    private Account getAccount(AccountManager accountManager) {
-        Account[] accounts = accountManager.getAccountsByType("com.google");
-        Account account;
-        if (accounts.length > 0) {
-            account = accounts[0];
-        } else {
-            account = null;
-        }
-        return account;
     }
     @Override
     public void onBackPressed() {
@@ -119,7 +105,6 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -136,30 +121,27 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_sncb:
                 selectFragment(CASE_SNCB);
                 return true;
-          /*  case R.id.nav_share:
+            case R.id.nav_share:
                 //startActivity( new Intent(MainActivity.this, HelpActivity.class));
                 return true;
             case R.id.nav_settings:
-                 startActivity( new Intent(MainActivity.this, SettingsActivity.class));
-                return true;*/
+                 //startActivity( new Intent(MainActivity.this, SettingsActivity.class));
+                return true;
             default:
                 Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();
                 return true;
         }
     }
     private void selectFragment(int position) {
-
         switch (position) {
 
             case CASE_SNCB:  openFragment(SncbFragment.newInstance("",""));  break;
 
             default: break;
         }
-
     }
     private void openFragment(BaseFragment baseFragment) {
         if (baseFragment != null) {
-
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frame_container, baseFragment)
                     .commitAllowingStateLoss();

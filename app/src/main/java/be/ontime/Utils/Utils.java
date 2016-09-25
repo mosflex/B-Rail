@@ -1,5 +1,8 @@
 package be.ontime.Utils;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -46,5 +49,15 @@ public class Utils {
             return "0" + number;
         }
         return String.valueOf(number);
+    }
+    public static Account getAccount(AccountManager accountManager) {
+        Account[] accounts = accountManager.getAccountsByType("com.google");
+        Account account;
+        if (accounts.length > 0) {
+            account = accounts[0];
+        } else {
+            account = null;
+        }
+        return account;
     }
 }
