@@ -108,6 +108,13 @@ public class ScheduleActivity extends AppCompatActivity {
         favouriteButton.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
+                if (!validateDepart()) {
+                    return;
+                }
+
+                if (!validateArr()) {
+                    return;
+                }
                 Favourite newFav = new Favourite(mDepartureStationAutoCompleteTextView.getText().toString(),mDirectionStationAutoCompleteTextView.getText().toString());
                 PrefsUtils.addFavourites(ScheduleActivity.this,newFav);
                 favouriteButton.setLiked(true);

@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
 
-            userName	= (TextView) navigationView.getHeaderView(0).findViewById(R.id.textView_username);
+            userName  = (TextView) navigationView.getHeaderView(0).findViewById(R.id.textView_username);
 
             if (savedInstanceState != null) {
                 mSelectedFragment = savedInstanceState.getInt(BUNDLE_SELECTEDFRAGMENT);
@@ -122,10 +122,15 @@ public class MainActivity extends AppCompatActivity
                 selectFragment(CASE_SNCB);
                 return true;
             case R.id.nav_share:
-                //startActivity( new Intent(MainActivity.this, HelpActivity.class));
+                final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=" + appPackageName);
+                sendIntent.setType("text/plain");
+                startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.ShareOnTimevia)));
                 return true;
             case R.id.nav_settings:
-                 //startActivity( new Intent(MainActivity.this, SettingsActivity.class));
+                 startActivity( new Intent(MainActivity.this, SettingsActivity.class));
                 return true;
             default:
                 Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();

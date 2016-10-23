@@ -2,8 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="be.ontime"
     android:versionCode="8"
-    android:versionName="1.7"
-    >
+    android:versionName="1.7">
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -47,7 +46,10 @@
             android:windowSoftInputMode="adjustResize"
             android:parentActivityName="be.ontime.MainActivity"
             android:label="@string/title_activity_schedule"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings" />
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="3cde8097c2f9dc87a8112c77fb364dd84ad2f2f1" />
